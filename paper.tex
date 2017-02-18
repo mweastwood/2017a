@@ -1,0 +1,719 @@
+% OUTLINE
+% =======
+%
+% 1. Introduction
+%
+%   Here I will introduce the need for a new high-fidelity, low-frequency map of the sky. The
+%   justifications are: 21 cm foreground mapping, galactic structure (?), others?
+%
+% 2. Observations
+%
+%   2.1 - Introduce the Owens Valley LWA
+%   2.2 - Describe the 100 hour dataset
+%   2.3 - Calibration strategy
+%   2.4 - Source removal strategy
+%   2.5 - Horizon RFI suppression strategy
+%   2.6 - Beam fitting work
+%   2.7 - Ionospheric conditions
+%
+% 3. Imaging
+%
+%   Give a brief overview of other widefield imaging algorithms. This should set the context for the
+%   advantages of m-mode analysis.
+%
+%   3.1 - Introduce m-mode analysis imaging
+%   3.2 - Describe my implementation of m-mode analysis on the ASTM
+%   3.3 - L-curves (?)
+%   3.4 - CLEAN
+%
+% 4. Results
+%
+%   Present sky maps with an estimate of the thermal noise in each pixel. Systematic errors will be
+%   described in the following sub-sections.
+%
+%   4.1 - Horizon RFI
+%   4.2 - Ionospheric effects
+%   4.3 - Beam errors
+%   4.4 - Peeling failures
+%
+% 5. Discussion
+%
+%   Compare with the Haslam map and Jayce's map.
+%
+% 6. Conclusion
+%
+% FIGURES
+% =======
+%
+% * Antenna layout of the OVRO LWA
+% * Before/after snapshot image of the RFI removal
+% * Image of the empirical beam (with source tracks)
+% * Plot of ionospheric scintillation and refraction of an A-team source
+% * Example L-curve
+% * Zoom-in of the dirty PSF
+% * Sky maps with their boot-strapped thermal noise estimates
+% * (Model) image of the horizontal stripes that show up if the horizon RFI is not removed
+% * (Model) image of the PSF distortion from ionospheric effects (scintillation, refraction)
+% * (Model) image of the systematic errors in the map created from beam errors
+% * (Model) image of the errors created from sporadic peeling failures
+
+\documentclass[twocolumn]{aastex6}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+
+\renewcommand{\b}{\pmb}
+\renewcommand{\d}{{\rm d}}
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
+
+\begin{document}
+
+\title{The Radio Sky at Meter Wavelengths: $m$-Mode Analysis Imaging with the Owens Valley Long Wavelength Array}
+
+\author{
+    Michael W. Eastwood,
+    Gregg Hallinan
+}
+
+\begin{abstract}
+    I present all-sky maps of the sky from the Owens Valley Long Wavelength Array.
+    These maps are created from the application of $m$-mode analysis.
+\end{abstract}
+
+\section{Introduction}
+
+Studies of the cosmic microwave background (CMB) have given us an unprecedented understanding of the
+universe during the epoch of recombination \citep{2013ApJS..208...19H}.  Following the epoch of
+recombination the universe continued to expand and cool.  Small inhomogeneities observed in the CMB
+grew larger and galaxies formed. The first stars formed and flooded the universe with light during
+the cosmic dawn, bringing the dark ages to an end. Eventually the cumulative influence of these
+galaxies completed a phase change in the inter-galactic medium (IGM), and the universe returned to
+an ionized state following the conclusion of the epoch of reionization (EoR). Low frequency radio
+telescopes are poised to provide the first direct detection of the IGM from the cosmic dawn and the
+EoR using the redshifted hyperfine structure line of neutral hydrogen.
+
+These low-frequency 21-cm cosmology experiments are limited by the dynamic range they can achieve
+against the low-redshift sources of emission. Depending on the redshift, length scale, and model the
+expected amplitude of the cosmological signal is 10 to 100 mK. On the other hand the galactic
+synchrotron emission is 1000 to 10000 K. \todo{citation} Therefore experiments conservatively need
+to achieve at least 4 orders of dynamic range. In theory this kind of dynamic range can be obtained
+by exploiting the fact that the foreground emission is predominantly synchrotron emission that has a
+smooth power law spectrum. On the other hand the frequency structure of the cosmological signal is
+expected to be un-smooth because different frequencies trace different redshifts. This is the basic
+assumption made by all published upper limits on the cosmological 21 cm power spectrum.  In practice
+the interferometer itself imparts frequency structure into the measurements and therefore an
+experiment's ability to separate the foreground signal from the cosmological signal can be limited
+by the instrumental spectral smoothness.
+
+Ideally the foreground removal strategy should be informed by the measured spatial and frequency
+structure of all foreground components. This possibility is limited by the availability of suitable
+high-fidelity low-frequency sky maps on angular scales ranging from tens of degrees to arcminutes.
+
+
+
+
+
+The Global Sky Model (GSM) \citep{2008MNRAS.388..247D, 2017MNRAS.464.3486Z} is a data-driven
+interpolation of various maps between 10 MHz and 100 GHz, but below 408 MHz, the interpolation is
+largely driven by the Haslam 408 MHz map \citep{1981A&A...100..209H, 1982A&AS...47....1H}.
+
+\todo{TGSS, MSSS, GLEAM}
+
+
+At lower frequencies, free-free absorption and synchrotron self-absorption becomes important.
+
+
+Galactic structure.
+
+Planets?
+
+
+
+
+
+
+
+
+%Optical observers have become increasingly proficient at discovering high-redshift galaxies
+%\citep{2013ApJS..209....3K} and quasars \citep{2011Natur.474..616M}.  While these objects have
+%provided valuable insight into galaxy formation and the timing of the epoch of reionization (EoR),
+%they are necessarily exceptional. Flux-limited surveys find the most luminous objects, which are not
+%representative of galaxy properties as a whole.  Furthermore, the observed luminosity function of
+%galaxies at $z\sim8$ needs to be extrapolated by 4 UV magnitudes below the detection threshold in
+%order to provide enough ionizing photons to complete reionization on a timescale consistent with the
+%electron scattering optical depth measurements from the CMB \citep{2013ApJ...768...71R}. An
+%independent measurement of the state of the IGM at these redshifts would instead provide an integral
+%constraint on galaxy properties that includes the important contributions of these fainter galaxies.
+%
+%Prior to the EoR, the IGM is predominantly composed of neutral hydrogen gas.
+%
+%
+%The 21-cm hyperfine structure transition is one of the few optically thin
+%tracers of neutral hydrogen.
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%However there
+%are no direct observational constraints between $z\sim 10$ and $z\sim 1100$
+%(the surface of last scattering).
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%21 cm cosmology offers us a window into an epoch of the universe that was
+%previously inaccessible.  Hydrogen is the most common element in the universe,
+%but the 21 cm hyperfine structure line is so weak that the transition is
+%optically thin out to cosmological distances. Therefore by looking for slight
+%deviations in the black-body spectrum of the CMB we can begin to probe the
+%state of the IGM directly. Because the frequency of these deviations is tied to
+%the cosmological redshifting of the 21 cm line, different frequencies probe
+%different distances and different times in the universe's history. In this way
+%21 cm cosmology can be used to study the dark ages ($z \sim 1100$ to $30$),
+%cosmic dawn ($z \sim 30$ to $15$) , and the epoch of reionization ($z \sim 15$
+%to $7$).
+%
+%The observed brightness temperature deviation due to the 21 cm transition is
+%\begin{equation}\label{eq:deltaT}
+%    \Delta T_B = \tau_{21} \frac{T_s - T_{CMB}}{1 + z},
+%\end{equation}
+%where $\tau_{21}$ is the optical depth of the 21 cm transition, $T_s$ is the spin temperature of the
+%neutral hydrogen gas (the excitation temperature for the 21 cm transition), and $T_{CMB}$ is the
+%temperature of the CMB at the appropriate redshift. Equation~\ref{eq:deltaT} defines the scope of 21
+%cm cosmology in that it ultimately determines what can and cannot be learned from 21 cm cosmology.
+%For example, if the 21 cm transition is in equilibrium with the CMB, the number of photons absorbed
+%and the number of photons emitted will be equal. In this case $T_s = T_{CMB}$ and there will be no
+%signal to detect. A calculation of $\tau_{21}$ yields
+%\begin{equation}\label{eq:deltaT-expanded}
+%    \Delta T_B \approx 27 x_{\rm HI} (1+\delta) \left(\frac{1+z}{10}\right)^{1/2}
+%                       \left(\frac{T_s - T_{CMB}}{T_s}\right) \, \text{mK},
+%\end{equation}
+%where $x_{\rm HI}$ is the neutral fraction and $\delta$ is the fractional overdensity of baryons
+%\citep{2012RPPh...75h6901P}.
+%
+%The cosmological 21 cm brightness temperature is therefore expected to be $\sim10$ mK. It is
+%sensitive to the neutral fraction of hydrogen and density inhomogeneities. The brightness
+%temperature is also sensitive to the quantity $1 - T_{CMB} / T_s$, but note that this term can vary
+%from $-T_{CMB} / T_s$ (when $T_s \ll T_{CMB}$) to $1$ (when $T_s \gg T_{CMB}$). This term saturates
+%when the spin temperature is large. Figure~\ref{fig:global-signal} illustrates the globally
+%averaged 21 cm brightness temperature as a function of time (where $x_{\rm HI}$ and $T_s$ come from
+%cosmological simulations). There are three phases where $T_s \ne T_{CMB}$:
+%
+%\begin{enumerate}
+%    \item \emph{The dark ages} -- During this period both the matter and the radiation are cooling
+%        due to the expansion of the universe. The matter ($\gamma = 5/3$) cools faster than the
+%        radiation ($\gamma = 4/3$) due to the physics of adiabatic cooling. During this time the
+%        universe is dense enough such that collisions are enough to couple the spin temperature to
+%        the gas temperature and the result is $T_s < T_{CMB}$.
+%    \item \emph{The cosmic dawn} -- Once star formation begins, the IGM is inundated with Ly$\alpha$
+%        photons which scatter through the IGM. When a hydrogen atom absorbs and re-emits a
+%        Ly$\alpha$ photon the spin of the electron can flip. This process is known as the
+%        Wouthuysen-Field effect \citep{1952AJ.....57R..31W, 1958PIRE...46..240F}. The ultimate
+%        effect of this is that the spin temperature is once again locked to the temperature of the
+%        gas. X-ray heating of the IGM eventually warms the gas enough to flip the signal into
+%        emission.
+%    \item \emph{The epoch of reionization} -- Finally the 21 cm signal dies away as the neutral
+%        fraction $x_{\rm HI} \rightarrow 0$ during the epoch of reionization.
+%\end{enumerate}
+%
+%While Figure~\ref{fig:global-signal} shows a theoretical model for the globally averaged 21 cm
+%signal as a function of redshift, there will also be spatial fluctuations associated with
+%ionization, density, and temperature fluctuations according to Equation~\ref{eq:deltaT-expanded}.
+%Figure~\ref{fig:power-spectrum} shows the amplitude of the three-dimensional spatial power spectrum
+%as a function of redshift for a variety of theoretical models \citep{2014MNRAS.437L..36F}. The peak
+%near $z\sim 30$ is driven by inhomogeneous Ly$\alpha$ flux from early star formation, while the peak
+%near $z\sim 20$ is driven by inhomogeneous X-ray heating from the products of early star formation.
+%The timing and amplitude of the power spectrum during the cosmic dawn is sensitive to many of the
+%details of early star formation including the X-ray emissivity and star formation feedback.
+%Additionally, the supersonic relative motion of the baryons relative to the dark matter following
+%recombination suppresses star formation in low mass halos, enhancing the amplitude of the
+%fluctuations and imprinting the signature of baryon acoustic oscillations (BAO) onto the power
+%spectrum \citep{2010PhRvD..82h3520T}. However, strong Lyman-Werner feedback may temper the effects
+%of baryon streaming on the power spectrum \citep{2013MNRAS.432.2909F}.
+%
+%21 cm cosmology is opening a new window into an epoch of the universe that is essentially
+%unconstrained by observations. As a result it is a driving science case for many new and planned
+%low-frequency radio observatories (MWA, LOFAR, PAPER/HERA, CHIME, SKA, and others). However this
+%measurement will be incredibly challenging chiefly due to the fact that the cosmological temperature
+%fluctuations are very small relative to the blinding brightness of the Milky Way galaxy's
+%synchrotron emission and the sea of unresolved radio galaxies that lie between the telescope and the
+%cosmological gold mine. At high galactic latitudes the brightness temperature of the sky is
+%\begin{equation}
+%    T_{\rm sky} \sim 180 \left(\frac{\nu}{180\,{\rm MHz}}\right)^{-2.6} \, \rm{K},
+%\end{equation}
+%which means that the foreground emission is $10^4$ to $10^5$ times brighter than the 21 cm
+%fluctuations \citep{2006PhR...433..181F}. 21 cm cosmology is therefore a high dynamic range problem
+%with strict requirements on instrumental calibration. For example, \citet{2015PhRvD..91h3514S}
+%estimate that width of CHIME's antenna response pattern must be known to 0.1\%. Innovative
+%calibration and data reduction strategies will be critical.
+
+\section{Observations}
+
+\subsection{The Owens Valley Long Wavelength Array}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{plots/antenna-layout}
+    \caption{
+        This figure shows the antenna layout for the OVRO LWA.
+        The 200 meter diameter area indicated by the dashed line contains 251 antennas distributed
+        in a pseudo-random configuration. The 32 filled circles are the expansion antennas built in
+        early 2016 to increase the longest baseline to 1.5 km. The 5 open circles are antennas
+        equipped with noise-switched front ends.
+    }
+    \label{fig:antenna-layout}
+\end{figure}
+
+The Owens Valley Long Wavelength Array (OVRO LWA) is a 288-element interferometer located at the
+Owens Valley Radio Observatory (OVRO) near Big Pine, California.  The OVRO LWA is a low-frequency
+instrument with instantaneous bandwidth covering 24.768 MHz to 82.296 MHz \todo{double check this
+frequency range, I think it's wrong}.  Each antenna stand hosts two perpendicular broadband dipoles
+so that there are $288\times2$ signal paths in total. These signal paths feed into the 512-input
+LEDA correlator, which allows the OVRO LWA to capture the entire visible hemisphere in a single
+snapshot image.  In the current configuration, 32 antennas (64 signal paths) are unused.
+
+The 288 antennas are arranged in a maximally non-redundant configuration optimized for minimum
+sidelobes in snapshot imaging. 251 of these antennas are contained within a 200 m diameter core that
+is independently optimized for imaging sidelobe levels. 32 antennas are placed outside of the core
+in order to extend the maximum baseline length out to $\sim$1.5 km. The final 5 antennas are
+equipped with noise-switched front ends for calibrated total power measurements of the global sky
+brightness. These antennas are used as part of the LEDA experiment to measure the global signal of
+21 cm absorption from the cosmic dawn. \todo{cite a leda paper} Calibrated total power measurements
+from these antennas will be used to constrain sky modes with $l \lesssim 2$ including the monopole.
+
+%See Figure~\ref{fig:antenna-layout} for an image of the antenna
+%layout. The antennas can be categorized into 3 groups:
+%\begin{enumerate}
+%    \item
+%        Core antennas - 251 antennas are contained within a 200 m diameter core where they are
+%        arranged in a configuration optimized to reduce sidelobe levels in snapshot imaging.
+%    \item
+%        Total power antennas - 5 antennas are equipped with noise-switched front ends for calibrated
+%        total power measurements of the sky brightness.
+%    \item
+%        Expansion antennas - 32 additional antennas were installed in early 2016. These antennas
+%        extend the longest baselines of the OVRO LWA out to 1.5 km. This allows for $\sim10$
+%        arcminute resolution in the snapshot images.
+%\end{enumerate}
+%When fully completed, the OVRO LWA will have 352 antennas in total spanning 2.5 km.
+%
+%\todo{cite Gregg's instrument paper}
+%
+%The field-of-view and compactness of the OVRO LWA make it a promising instrument for 21 cm
+%cosmology. The field-of-view increases the number of cosmological modes measured at any instant in
+%time. The inner core of 251 antennas within a 200 m diameter provides excellent brightness
+%temperature sensitivity. Figure~\ref{fig:ps-sensitivity} shows the expected signal-noise ratio
+%achieved by the OVRO LWA on the three-dimensional spatial power spectrum of 21 cm emission for a
+%variety of models. A large integration time and careful calibration will be needed to make a
+%detection.
+%
+%The Owens Valley Long Wavelength Array (OVRO LWA) is a 288-antenna interferometer located at the
+%Owens Valley Radio Observatory (OVRO) near Big Pine, California. Each antenna is composed of two
+%crossed dipoles bringing the total number of signal paths to 576.  The OVRO LWA hosts the LEDA
+%correlator that allows cross-correlation of 512 signal paths with $>50$ MHz instantaneous bandwidth.
+%
+%Of the 288 antennas, 251 are located within a 200 m diameter core.  The location of these antennas
+%has been optimized to minimize imaging sidelobes.  5 antenna stands are dedicated to the LEDA
+%experiment and have switching front-ends for total-power radiometry. The remaining 32 antennas
+%extend out to 2 km baselines to improve the angular resolution of the interferometer.
+
+\subsection{The OVRO LWA 100 Hour Dataset}
+
+Because the correlator only accepts 512 inputs (256 antennas with 2 polarizations for each antenna),
+a subset of the antennas must be selected for correlation.
+
+Include plot of antenna layout.
+
+The integration time is 13 seconds. This was chosen because the remainder of one sidereal day
+divided into 13 second intervals is only 90 milliseconds.  Finer control of the integration time is
+not possible due to technical constraints.
+
+\subsection{Antenna Gain Calibration}
+
+Antenna gain calibration is accomplished using an iterative method independently developed by
+\citet{2008ISTSP...2..707M} and \citet{2014A&A...571A..97S}. The calibration routine is written in
+the Julia programming language \citep{BEKS14}, and is publicly available
+online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
+
+The antenna complex gains are updated once per day when Cas A and Cyg A are near the meridian.
+These two sources are -- by an order of magnitude -- the brightest radio sources in the northern
+hemisphere.  Therefore the optimal time to solve for the interferometer's gain calibration is when
+Cas A and Cyg A are at high elevations. A calibration obtained in this manner is good for $>24$
+hours. \todo{quantify this? how much does the next day's calibration differ?}
+
+The flux scale is tied to the work of \citet{2016arXiv160905940P}.
+
+\todo{sawtooth pattern removal}
+
+\subsection{Source Removal}
+
+At low frequencies, propagation effects through the ionosphere must be accounted for in order to
+achieve high dynamic range images. This necessitates the use of direction-dependent calibration and
+peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.
+
+In the dataset used in this paper, scintillation and diffraction events on the timescale of a single
+integration (13 seconds) are observed. Therefore the direction dependent calibration changes on
+these timescales and the peeling routine must solve for one set of complex gains per source per
+integration. Mild smoothing of the gain solutions along the frequency axis is possible without
+degrading the dynamic range.
+
+Given the angular resolution of the OVRO LWA and the angular extent of Cas A and Cyg A, these two
+sources are marginally resolved and a simple point source model will not achieve the necessary
+dynamic range. \todo{describe my source fitting routine}
+
+\subsection{RFI Suppression}
+
+The Owens Valley is an important source of water and power for the city of Los Angeles.
+Unfortunately this means that high voltage power lines run along the valley to the west of the OVRO
+LWA. Some of these power line poles have faulty insulators that arc and produce pulsed, broadband
+RFI. Because these poles exist in the near-field of the array, we have been able to localize some of
+them by using the curvature of the incoming wavefront. Efforts are currently underway to work with
+the utility pole owners to have the arcing fixed.
+
+In the meantime it is possible to suppress their contamination in the dataset.  The path difference
+from a point source of RFI located at the position $\vec r$ to two antennas located at positions
+$\vec x_1$ and $\vec x_2$ respectively is given by
+\begin{equation}
+    \delta = \|\vec r - \vec x_1\| - \|\vec r - \vec x_2\|\,,
+\end{equation}
+where $\|\cdot\|$ denotes the Euclidean norm. The contribution to the visibility observed on the
+baseline between these two antennas is therefore
+\begin{equation}\label{eq:rfi-contribution}
+    V^\text{RFI}_\nu = F_\nu \exp\bigg(2\pi i\frac{\delta}{\lambda}\bigg)\,,
+\end{equation}
+where $F_\nu$ is the flux of the RFI at the frequency $\nu$ (wavelength $\lambda$).  At first glance
+it might seem to be sufficient to know the location of the RFI. Then by fitting for the value of
+$F_\nu$ in equation~\ref{eq:rfi-contribution} one can subtract the contribution of the RFI from each
+visibility. This approach is insufficient because the RFI originates from extremely low elevations
+where antenna shadowing effects are large. In practice this means that the response of each antenna
+to a source near or on the horizon is unknown and inhomogeneous between antennas. Therefore a free
+parameter for the response of each antenna towards the source of RFI must also be included as a free
+parameter when removing the RFI.
+
+\todo{can we take advantage of the fact that the antenna response shouldn't be changing very much
+between integrations?}
+
+If the RFI from the horizon is not adequately removed from the data set, it will introduce
+systematic errors into the map of the sky.
+
+\subsection{Fitting the Beam}
+
+The OVRO LWA is composed of dipole antennas that are not combined into a beam prior to
+cross-correlation. As a result
+
+\subsection{Ionospheric Conditions}
+
+\section{Imaging}
+
+The goal of all imaging algorithms is to estimate the brightness of the sky $I_\nu(\hat r)$ in the
+direction $\hat r$ and frequency $\nu$. A radio interferometer measures the visibilities
+$V_{ij,\nu}$ between pairs of antennas -- here numbered $i$ and $j$ respectively. If the antennas
+are separated by the baseline $\vec b_{ij}$, and $A_\nu(\hat r)$ describes their response to the
+incident radiation, then
+\begin{equation}\label{eq:basic-imaging}
+    V^{ij}_\nu = \int_\text{sky}
+                 A_\nu(\hat r) I_\nu(\hat r)
+                 \exp\bigg(2\pi i \hat r\cdot\vec b_{ij}/\lambda\bigg) \,\d\Omega \, .
+\end{equation}
+Imaging the output of a radio interferometer therefore consists of estimating $I_\nu(\hat r)$ given
+the available measurements $V^{ij}_\nu$.
+
+Naively one might attempt to solve equation~\ref{eq:basic-imaging} by discretizing, and subsequently
+solving the resulting matrix equation. If the interferometer is composed of $N_\text{base}$
+baselines, and measures $N_\text{freq}$ frequency channels over $N_\text{time}$ integrations then
+the entire data set consists of $N_\text{base}N_\text{freq}N_\text{time}$ complex numbers. If the
+sky is discretized into $N_\text{pix}$ pixels then the relevant matrix has dimensions of
+$(N_\text{base}N_\text{freq}N_\text{time})\times(N_\text{pix})$. For making single-channel maps with
+the Owens Valley LWA this becomes a 5 petabyte array (assuming each matrix element is a 64-bit
+complex floating point number).  This matrix equation is therefore prohibitively large, and solving
+equation~\ref{eq:basic-imaging} by means of discretization is usually impossible \todo{cite Jayce's
+paper (has he published that yet?) where he does this, but explain why his work is the exception
+instead of the rule}.
+
+Instead it is common to make mild assumptions that simplify equation~\ref{eq:basic-imaging} and ease
+the computational burden in solving for $I_\nu(\hat r)$. For example, when all of the baselines
+$\vec b_{ij}$ lie in a plane and the field-of-view is small, equation~\ref{eq:basic-imaging} can be
+well-approximated by a two-dimensional Fourier transform.
+
+\todo{discuss w-projection}
+
+\todo{discuss a-projection}
+
+\citet{2017MNRAS.465.2901Z}
+
+\subsection{$m$-Mode Analysis}
+
+On the other hand, transit telescopes can take advantage of a symmetry in
+equation~\ref{eq:basic-imaging} that greatly reduces the amount of computer time required to image
+the full-sky with exact incorporation of widefield imaging effects. This technique, called $m$-mode
+analysis, also obviates the need for gridding, mosaicing, and multi-scale deconvolution. Instead the
+entire sky is imaged in one coherent synthesis imaging step.
+
+In this context we will define a transit telescope as any interferometer where the response pattern
+of the individual elements does not change with respect to time. This may be an interferometer like
+the OVRO LWA where the correlation elements are fixed dipoles, but it may also be an interferometer
+like the MWA if the steerable beams are held in a fixed position (not necessarily at zenith).
+
+We will briefly summarize $m$-mode analysis below, but the interested reader should consult
+\citet{2014ApJ...781...57S, 2015PhRvD..91h3514S} for a complete derivation.
+
+For a transit telescope, the visibilities $V^{ij}_\nu$ are a periodic function of sidereal
+time\footnote{
+    This is not strictly true. Ionospheric fluctuations and non-sidereal sources (such as the sun)
+    will violate this assumption. This paper will, however, demonstrate that the impact on the final
+    maps is mild.
+}.
+Therefore it is a very natural operation to compute the Fourier transform of the visibilities with
+respect to sidereal time $\phi\in(0,2\pi]$.
+\begin{equation}
+    V^{ij}_{m,\nu} = \int_0^{2\pi} V^{ij}_\nu(\phi)\exp\bigg(-im\phi\bigg)\,\d\phi
+\end{equation}
+The output of this Fourier transform is the set of $m$-modes $V^{ij}_{m,\nu}$ where
+$m=0,\,\pm1,\,\pm2,\,\ldots$ is the Fourier conjugate variable to the sidereal time. The $m$-mode
+corresponding to $m=0$ is a simple average of the visibilities over sidereal time. Similarly $m=1$
+corresponds to the component of the visibilities that varies over half-day timescales. Larger values
+of $m$ correspond to components that vary on quicker timescales.
+
+\todo{introduce the baseline transfer function because I will want to use it in later sections}
+
+It can be shown that there is a discrete linear relationship between the $m$-modes $V^{ij}_{m,\nu}$
+and the spherical harmonic coefficients of the sky brightness $a_{lm,\nu}$.
+\begin{equation}\label{eq:m-mode-sum-equation}
+    V^{ij}_{m,\nu} = \sum_l B^{ij}_{lm,\nu} a_{lm,\nu}\,,
+\end{equation}
+where the transfer coefficients $B^{ij}_{lm,\nu}$ define the interferometer's response to the sky.
+For example, the transfer coefficients are a function of the baseline and antenna primary beam
+pattern.
+
+Equation~\ref{eq:m-mode-sum-equation} can be recognized as a matrix equation where the transfer
+matrix $\b B$ is block-diagonal.
+\begin{equation}
+    \b B = \left(\begin{array}{cccc}
+        m = 0 &&& \\
+              & m=\pm1 && \\
+              && m=\pm2 & \\
+              &&& \ddots \\
+    \end{array}\right)
+\end{equation}
+The vector $\b v$ contains the list of $m$-modes and the vector $\b a$ contains the list of
+spherical harmonic coefficients representing the sky brightness. In order to take advantage of the
+block-diagonal structure in $\b B$, $\b v$ and $\b a$ must be sorted by the value of $m$.
+\begin{equation}\label{eq:m-mode-matrix-equation}
+    \overbrace{\left(
+        \begin{array}{c}
+            \vdots \\
+            m\text{-modes} \\
+            \vdots \\
+        \end{array}
+    \right)}^{\b v}
+    =
+    \overbrace{\left(
+        \begin{array}{ccc}
+            \ddots & & \\
+            & \text{transfer matrix} & \\
+            & & \ddots \\
+        \end{array}
+    \right)}^{\b B}
+    \overbrace{\left(
+        \begin{array}{c}
+            \vdots \\
+            a_{lm} \\
+            \vdots \\
+        \end{array}
+    \right)}^{\b a}
+\end{equation}
+
+In practice we now need to pick the set of spherical harmonics we will use to represent the sky. For
+an interferometer like the OVRO LWA with lots of short baselines, a sensible choice is to use all
+spherical harmonics with $l\le l_\text{max}$ for some $l_\text{max}$. The parameter $l_\text{max}$
+is determined by the maximum baseline length of the interferometer.  For an interferometer without
+short spacings, a minimum value for $l$ might also be used. This $l_\text{min}$ parameter should be
+determined by the minimum baseline length.  When creating the maps presented in this paper, we use
+$l_\text{min} = 0$ and $l_\text{max} = 1000$.
+\todo{exclude l = 0 and cite tejas' paper}
+
+The size of a typical block in the transfer matrix is
+$(2N_\text{base}N_\text{freq})\times(l_\text{max})$. If each element of the matrix is stored as a
+64-bit complex floating point number, a single block is 500 MB for the case of single-channel
+imaging with the OVRO LWA. Compare this number with the 5 PB required for the naive approach.  The
+power of $m$-mode analysis is the block-diagonal structure of
+equation~\ref{eq:m-mode-matrix-equation}.  By breaking up the problem into $N$ independent blocks,
+the computational complexity involved in inverting the equation is reduced by a factor $N^3$. For
+the case of the OVRO LWA the equation breaks up into $\sim10^3$ blocks and so we save a factor of
+$\sim10^9$ in processing time by using $m$-mode analysis.
+
+Imaging in $m$-mode analysis essentially amounts to inverting
+equation~\ref{eq:m-mode-matrix-equation} to solve for the spherical harmonic coefficients $\b a$.
+The linear-least squares solution, which minimizes $\|\b v - \b B\b a\|^2$, is given by
+\begin{equation}
+    \b{\hat a}_\text{LLS} = (\b B^*\b B)^{-1}\b B^*\b v\,,
+\end{equation}
+where $^*$ indicates the conjugate-transpose. However, usually one will find that $\b B$ is not
+full-rank and hence $\b B^*\b B$ is not an invertible matrix. For example, an interferometer located
+in the northern hemisphere will never see a region of the southern sky centered on the southern
+celestial pole. The $m$-modes contained in the vector $\b v$ must contain no information
+about the sky around the southern celestial pole, and therefore the act of multiplying by $\b B$
+must destroy some information about the sky. The consequence of this fact is that $\b B^*\b B$ must
+have at least one zero eigenvalue, which means it is not invertible.
+
+Another way of looking at the problem is that because the interferometer is not sensitive to part of
+the southern hemisphere, there are infinitely many possible solutions to
+equation~\ref{eq:m-mode-matrix-equation} that will fit the measured data equally well. So we need to
+regularize the problem and apply an additional constraint that prefers a unique solution. For
+example, you may prefer that in the absence of any information the sky should be set to zero or you
+may prefer that the sky should be set to some prior expectation. The process of Tikhonov
+regularization minimizes $\|\b v - \b B\b a\|^2 + \epsilon\|\b a\|^2$ for some arbitrary value of
+$\epsilon > 0$ chosen by the observer. The solution that minimizes this expression is given by
+\begin{equation}
+    \b{\hat a}_\text{Tikhonov} = (\b B^*\b B + \epsilon\b I)^{-1}\b B^*\b v\,.
+\end{equation}
+Tikhonov regularization adds a small value $\epsilon$ to the diagonal of $\b B^*\b B$, fixing the
+matrix's singularity.
+
+\todo{describe how Tikhonov regularization improves the noise properties of the map}
+
+\todo{describe the Moore-Penrose pseudoinverse and why I have elected not to use it}
+
+While Tikhonov regularization will force unmeasured modes to zero, if a prior map of the sky already
+exists, it will be preferrable to instead minimize $\|\b v - \b B\b a\|^2 + \epsilon \|\b a-\b
+a_\text{prior}\|^2$.
+
+Tikhonov regularization requires the observer to pick the value of $\epsilon$. If $\epsilon$ is too
+large then too much importance is placed on minimizing the norm of the solution and the
+least-squares residuals will suffer. However if $\epsilon$ is too small then the problem will be
+poorly regularized and the resulting sky map may not represent the true sky.
+
+A tool that can be used to address this problem is the L-Curve.
+
+\subsection{$m$-Mode Analysis with the OVRO LWA}
+
+
+
+
+
+
+\subsection{CLEAN}
+
+\section{Errors}
+
+\subsection{Horizon RFI}
+
+However it is instructive to analyze the contaminating effect the RFI will have
+on $m$-mode analysis maps of the sky. The correlation observed on a given
+baseline and frequency channel for a single source of RFI is
+\begin{equation}
+    V(t) = I(t) B^\textrm{near-field}
+\end{equation}
+
+However we need a strategy to mitigate the RFI before imaging. A constant source attached to the
+horizon has a fringe rate of zero. The only possible astronomical origins for a source with zero
+fringe rate are:
+
+\begin{enumerate}
+    \item a point source located at the north or south celestial poles, and
+    \item a ring of constant declination.
+\end{enumerate}
+
+Therefore while snapshot images will show the RFI source on the horizon, extended integrations will
+show the RFI as rings of constant declination. We can take advantage of this discrepancy to separate
+astronomical emission from terrestrial RFI.
+
+
+
+
+\subsection{Scintillation}
+
+One of the key assumptions made by $m$-mode analysis is that the sky is completely static.  We
+assume that the only time-dependent behavior is the rotation of the Earth, which slowly rotates the
+sky through the fringe patterns of the interferometer. At low frequencies the ionosphere violates
+this assumption. In particular, ionospheric scintillation will cause even static sources to exhibit
+significant variability.
+
+The correlation observed on a given baseline for a single point source is
+\begin{equation}
+    V_\nu(t_{\textrm{sidereal}}) = I_\nu B_\nu(t_{\textrm{sidereal}}),
+\end{equation}
+where $I_\nu$ is the flux of the source at the frequency $\nu$, and $B_\nu$
+is the baseline transfer function. The transfer function is a function of
+the direction to the source, which is in turn a function of the sidereal
+time $t_{\textrm{sidereal}}$. If the source is varying, from intrinsic
+variability or due to scintillation, than the source flux is also a function
+of the time coordinate $t$ such that
+\begin{equation}
+    V_\nu(t_{\textrm{sidereal}}) = I_\nu(t) B_\nu(t_{\textrm{sidereal}}),
+\end{equation}
+where $t_{\textrm{sidereal}} = (t \mod 23.9345\,\textrm{hours})$.
+
+Now assume we have observed with our interferometer for a single sidereal day.
+In order to compute the $m$-modes we must Fourier transform with respect to
+sidereal time. In a real measurement this is a discrete Fourier transform of
+the observed correlation with respect to time (where the sum over time is
+restricted to a sidereal day). \todo{fix normalization}
+\begin{equation}
+    V_{\nu, m} = \sum_{t} V_\nu(t) e^{-imt}
+\end{equation}
+Define $V_{\nu, m}^{\textrm{static}}$ to be the observed $m$-modes if the source
+was actually static ($I_\nu(t) \equiv I_{\nu,0}$). Then as a consequence of the
+Fourier convolution theorem
+\begin{equation}
+    V_{\nu, m} = \sum_{m^\prime} V_{m^\prime}^\textrm{static} I_{\nu, m-m^\prime}.
+\end{equation}
+
+This will tend to scatter power between $m$-modes.
+
+Simulate images of point sources with this
+
+
+
+\subsection{Beam Errors}
+
+
+\subsection{Peeling Failure}
+
+\section{Results}
+
+\subsection{Sky Maps}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{ccc}
+        \# & $\nu$ / MHz & $\Delta\nu$ / MHz \\ \hline
+        1 & 36.528 & 0.024 \\
+        2 & 41.760 & 0.024 \\
+        3 & 46.992 & 0.024 \\
+        4 & 52.224 & 0.024 \\
+        5 & 57.456 & 0.024 \\
+        6 & 62.688 & 0.024 \\
+        7 & 67.920 & 0.024 \\
+        8 & 73.152 & 0.024 \\
+    \end{tabular}
+    \caption{Summary of the produced maps}
+\end{table}
+
+\subsection{Error Maps}
+
+
+\todo{Cite Abhilash, Eastwood 2016}
+
+\section{Discussion}
+
+\bibliographystyle{apj}
+\bibliography{paper}
+
+\end{document}
+

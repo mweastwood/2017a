@@ -1,0 +1,16 @@
+all: paper.pdf
+
+clean:
+	rm paper.aux
+	rm paper.bbl
+
+paper.aux: paper.tex $(shell find plots)
+	pdflatex paper
+
+paper.bbl: paper.aux paper.bib
+	bibtex paper
+
+paper.pdf: paper.aux paper.bbl
+	pdflatex paper
+	pdflatex paper
+
