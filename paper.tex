@@ -295,6 +295,7 @@ equipped with noise-switched front ends for calibrated total power measurements 
 brightness. These antennas are used as part of the LEDA experiment to measure the global signal of
 21 cm absorption from the cosmic dawn. \todo{cite a leda paper} Calibrated total power measurements
 from these antennas will be used to constrain sky modes with $l \lesssim 2$ including the monopole.
+\todo{What values of $l$ actually contribute to the total power measurements?}
 
 %See Figure~\ref{fig:antenna-layout} for an image of the antenna
 %layout. The antennas can be categorized into 3 groups:
@@ -362,28 +363,54 @@ The flux scale is tied to the work of \citet{2016arXiv160905940P}.
 
 \subsection{Source Removal}
 
+\subsubsection{Cassiopeia A and Cygnus A}
+
+Without removing bright sources from the data, sidelobes from bright sources will dominate the
+variance in the image.  At 74 MHz Cyg A is a 15,000 Jy source \citep{2016arXiv160905940P}. A
+conservative estimate for the confusion limit at 74 MHz with a 10 arcminute beam is 500 mJy
+\citep{2012RaSc...47.0K04L}. Therefore we require that Cyg A's sidelobes be at most of $-$45 dB down
+from its peak flux to prevent Cyg A's sidelobes from dominating the variance in the image.
+\todo{Measure Cyg A's sidelobe levels if it is not subtracted}
+
 At low frequencies, propagation effects through the ionosphere must be accounted for in order to
 achieve high dynamic range images. This necessitates the use of direction-dependent calibration and
-peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.
+peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.  In the dataset used in this paper,
+scintillation and diffraction events on the timescale of a single integration (13 seconds) are
+observed. Therefore the direction dependent calibration changes on these timescales and the we must
+solve for one set of complex gains per source per integration.
 
-In the dataset used in this paper, scintillation and diffraction events on the timescale of a single
-integration (13 seconds) are observed. Therefore the direction dependent calibration changes on
-these timescales and the peeling routine must solve for one set of complex gains per source per
-integration. Mild smoothing of the gain solutions along the frequency axis is possible without
-degrading the dynamic range.
+The largest angular scale of Cas A is $\sim$8 arcminutes, while the largest angular scale of Cyg A
+is $\sim$2 arcminutes. With a 10 arcminute resolution, the OVRO LWA marginally resolves both
+sources. A resolved source model is needed for both sources. We fit a self-consistent resolved
+source model to eachs ource. This is performed by minimizing the minimizing the variance within an
+aperture located on each source after peeling. By phasing up a large number of integrations before
+imaging (at least over 1 hour) it is possible to smear out the contribution of the rest of the sky.
+We then use NLopt's Sbplx routine \citep{nlopt, sbplx} to vary the parameters in a source model
+until the variance within the aperture is minimized.
 
-Given the angular resolution of the OVRO LWA and the angular extent of Cas A and Cyg A, these two
-sources are marginally resolved and a simple point source model will not achieve the necessary
-dynamic range. \todo{describe my source fitting routine}
+\todo{Show a before and after with the updated source models}
 
-\subsection{RFI Suppression}
+\todo{Give a plot with the updated source models}
+
+\subsubsection{The Sun}
+
+The Sun can be trivially removed from any map of the sky by constructing the map using only data
+taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
+However the OVRO LWA 100 hour dataset consists of 100 consecutive hours of data, and hence roughly
+half of the data is from the day.
+
+The Sun is a time variable source in radio.
+
+\todo{does the previous routine work on the Sun too? worth a shot}
+
+\subsubsection{Sparking Power Lines}
 
 The Owens Valley is an important source of water and power for the city of Los Angeles.
 Unfortunately this means that high voltage power lines run along the valley to the west of the OVRO
 LWA. Some of these power line poles have faulty insulators that arc and produce pulsed, broadband
 RFI. Because these poles exist in the near-field of the array, we have been able to localize some of
 them by using the curvature of the incoming wavefront. Efforts are currently underway to work with
-the utility pole owners to have the arcing fixed.
+the utility pole owners to have these insulators replaced.
 
 In the meantime it is possible to suppress their contamination in the dataset.  The path difference
 from a point source of RFI located at the position $\vec r$ to two antennas located at positions
@@ -611,7 +638,7 @@ A tool that can be used to address this problem is the L-Curve.
 
 \section{Errors}
 
-\subsection{Horizon RFI}
+\subsection{Stationary Correlated Noise}
 
 However it is instructive to analyze the contaminating effect the RFI will have
 on $m$-mode analysis maps of the sky. The correlation observed on a given
@@ -636,7 +663,7 @@ astronomical emission from terrestrial RFI.
 
 
 
-\subsection{Scintillation}
+\subsection{Ionospheric Scintillation}
 
 One of the key assumptions made by $m$-mode analysis is that the sky is completely static.  We
 assume that the only time-dependent behavior is the rotation of the Earth, which slowly rotates the
@@ -679,11 +706,11 @@ This will tend to scatter power between $m$-modes.
 Simulate images of point sources with this
 
 
+\subsection{Ionospheric Refraction}
+
 
 \subsection{Beam Errors}
 
-
-\subsection{Peeling Failure}
 
 \section{Results}
 
