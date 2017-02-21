@@ -111,18 +111,23 @@ Ideally the foreground removal strategy should be informed by the measured spati
 structure of all foreground components. This possibility is limited by the availability of suitable
 high-fidelity low-frequency sky maps on angular scales ranging from tens of degrees to arcminutes.
 
-
-
-
-
 The Global Sky Model (GSM) \citep{2008MNRAS.388..247D, 2017MNRAS.464.3486Z} is a data-driven
-interpolation of various maps between 10 MHz and 100 GHz, but below 408 MHz, the interpolation is
-largely driven by the Haslam 408 MHz map \citep{1981A&A...100..209H, 1982A&AS...47....1H}.
+interpolation of various maps between 10 MHz and 100 GHz. However the majority of information
+contained in the GSM is derived at higher frequencies where the majority of the input maps are from.
+Below 408 MHz, the interpolation is largely driven by the Haslam 408 MHz map
+\citep{1981A&A...100..209H, 1982A&AS...47....1H}.  At lower frequencies, free-free absorption and
+synchrotron self-absorption becomes increasingly important and hence spectral indices derived at
+higher frequencies need corrections at lower frequencies.
+
+
+
+
+
+\citet{2011A&A...525A.138G}
 
 \todo{TGSS, MSSS, GLEAM}
 
 
-At lower frequencies, free-free absorption and synchrotron self-absorption becomes important.
 
 
 Galactic structure.
@@ -134,133 +139,6 @@ Planets?
 
 
 
-
-
-%Optical observers have become increasingly proficient at discovering high-redshift galaxies
-%\citep{2013ApJS..209....3K} and quasars \citep{2011Natur.474..616M}.  While these objects have
-%provided valuable insight into galaxy formation and the timing of the epoch of reionization (EoR),
-%they are necessarily exceptional. Flux-limited surveys find the most luminous objects, which are not
-%representative of galaxy properties as a whole.  Furthermore, the observed luminosity function of
-%galaxies at $z\sim8$ needs to be extrapolated by 4 UV magnitudes below the detection threshold in
-%order to provide enough ionizing photons to complete reionization on a timescale consistent with the
-%electron scattering optical depth measurements from the CMB \citep{2013ApJ...768...71R}. An
-%independent measurement of the state of the IGM at these redshifts would instead provide an integral
-%constraint on galaxy properties that includes the important contributions of these fainter galaxies.
-%
-%Prior to the EoR, the IGM is predominantly composed of neutral hydrogen gas.
-%
-%
-%The 21-cm hyperfine structure transition is one of the few optically thin
-%tracers of neutral hydrogen.
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%However there
-%are no direct observational constraints between $z\sim 10$ and $z\sim 1100$
-%(the surface of last scattering).
-%
-%
-%
-%
-%
-%
-%
-%
-%
-%21 cm cosmology offers us a window into an epoch of the universe that was
-%previously inaccessible.  Hydrogen is the most common element in the universe,
-%but the 21 cm hyperfine structure line is so weak that the transition is
-%optically thin out to cosmological distances. Therefore by looking for slight
-%deviations in the black-body spectrum of the CMB we can begin to probe the
-%state of the IGM directly. Because the frequency of these deviations is tied to
-%the cosmological redshifting of the 21 cm line, different frequencies probe
-%different distances and different times in the universe's history. In this way
-%21 cm cosmology can be used to study the dark ages ($z \sim 1100$ to $30$),
-%cosmic dawn ($z \sim 30$ to $15$) , and the epoch of reionization ($z \sim 15$
-%to $7$).
-%
-%The observed brightness temperature deviation due to the 21 cm transition is
-%\begin{equation}\label{eq:deltaT}
-%    \Delta T_B = \tau_{21} \frac{T_s - T_{CMB}}{1 + z},
-%\end{equation}
-%where $\tau_{21}$ is the optical depth of the 21 cm transition, $T_s$ is the spin temperature of the
-%neutral hydrogen gas (the excitation temperature for the 21 cm transition), and $T_{CMB}$ is the
-%temperature of the CMB at the appropriate redshift. Equation~\ref{eq:deltaT} defines the scope of 21
-%cm cosmology in that it ultimately determines what can and cannot be learned from 21 cm cosmology.
-%For example, if the 21 cm transition is in equilibrium with the CMB, the number of photons absorbed
-%and the number of photons emitted will be equal. In this case $T_s = T_{CMB}$ and there will be no
-%signal to detect. A calculation of $\tau_{21}$ yields
-%\begin{equation}\label{eq:deltaT-expanded}
-%    \Delta T_B \approx 27 x_{\rm HI} (1+\delta) \left(\frac{1+z}{10}\right)^{1/2}
-%                       \left(\frac{T_s - T_{CMB}}{T_s}\right) \, \text{mK},
-%\end{equation}
-%where $x_{\rm HI}$ is the neutral fraction and $\delta$ is the fractional overdensity of baryons
-%\citep{2012RPPh...75h6901P}.
-%
-%The cosmological 21 cm brightness temperature is therefore expected to be $\sim10$ mK. It is
-%sensitive to the neutral fraction of hydrogen and density inhomogeneities. The brightness
-%temperature is also sensitive to the quantity $1 - T_{CMB} / T_s$, but note that this term can vary
-%from $-T_{CMB} / T_s$ (when $T_s \ll T_{CMB}$) to $1$ (when $T_s \gg T_{CMB}$). This term saturates
-%when the spin temperature is large. Figure~\ref{fig:global-signal} illustrates the globally
-%averaged 21 cm brightness temperature as a function of time (where $x_{\rm HI}$ and $T_s$ come from
-%cosmological simulations). There are three phases where $T_s \ne T_{CMB}$:
-%
-%\begin{enumerate}
-%    \item \emph{The dark ages} -- During this period both the matter and the radiation are cooling
-%        due to the expansion of the universe. The matter ($\gamma = 5/3$) cools faster than the
-%        radiation ($\gamma = 4/3$) due to the physics of adiabatic cooling. During this time the
-%        universe is dense enough such that collisions are enough to couple the spin temperature to
-%        the gas temperature and the result is $T_s < T_{CMB}$.
-%    \item \emph{The cosmic dawn} -- Once star formation begins, the IGM is inundated with Ly$\alpha$
-%        photons which scatter through the IGM. When a hydrogen atom absorbs and re-emits a
-%        Ly$\alpha$ photon the spin of the electron can flip. This process is known as the
-%        Wouthuysen-Field effect \citep{1952AJ.....57R..31W, 1958PIRE...46..240F}. The ultimate
-%        effect of this is that the spin temperature is once again locked to the temperature of the
-%        gas. X-ray heating of the IGM eventually warms the gas enough to flip the signal into
-%        emission.
-%    \item \emph{The epoch of reionization} -- Finally the 21 cm signal dies away as the neutral
-%        fraction $x_{\rm HI} \rightarrow 0$ during the epoch of reionization.
-%\end{enumerate}
-%
-%While Figure~\ref{fig:global-signal} shows a theoretical model for the globally averaged 21 cm
-%signal as a function of redshift, there will also be spatial fluctuations associated with
-%ionization, density, and temperature fluctuations according to Equation~\ref{eq:deltaT-expanded}.
-%Figure~\ref{fig:power-spectrum} shows the amplitude of the three-dimensional spatial power spectrum
-%as a function of redshift for a variety of theoretical models \citep{2014MNRAS.437L..36F}. The peak
-%near $z\sim 30$ is driven by inhomogeneous Ly$\alpha$ flux from early star formation, while the peak
-%near $z\sim 20$ is driven by inhomogeneous X-ray heating from the products of early star formation.
-%The timing and amplitude of the power spectrum during the cosmic dawn is sensitive to many of the
-%details of early star formation including the X-ray emissivity and star formation feedback.
-%Additionally, the supersonic relative motion of the baryons relative to the dark matter following
-%recombination suppresses star formation in low mass halos, enhancing the amplitude of the
-%fluctuations and imprinting the signature of baryon acoustic oscillations (BAO) onto the power
-%spectrum \citep{2010PhRvD..82h3520T}. However, strong Lyman-Werner feedback may temper the effects
-%of baryon streaming on the power spectrum \citep{2013MNRAS.432.2909F}.
-%
-%21 cm cosmology is opening a new window into an epoch of the universe that is essentially
-%unconstrained by observations. As a result it is a driving science case for many new and planned
-%low-frequency radio observatories (MWA, LOFAR, PAPER/HERA, CHIME, SKA, and others). However this
-%measurement will be incredibly challenging chiefly due to the fact that the cosmological temperature
-%fluctuations are very small relative to the blinding brightness of the Milky Way galaxy's
-%synchrotron emission and the sea of unresolved radio galaxies that lie between the telescope and the
-%cosmological gold mine. At high galactic latitudes the brightness temperature of the sky is
-%\begin{equation}
-%    T_{\rm sky} \sim 180 \left(\frac{\nu}{180\,{\rm MHz}}\right)^{-2.6} \, \rm{K},
-%\end{equation}
-%which means that the foreground emission is $10^4$ to $10^5$ times brighter than the 21 cm
-%fluctuations \citep{2006PhR...433..181F}. 21 cm cosmology is therefore a high dynamic range problem
-%with strict requirements on instrumental calibration. For example, \citet{2015PhRvD..91h3514S}
-%estimate that width of CHIME's antenna response pattern must be known to 0.1\%. Innovative
-%calibration and data reduction strategies will be critical.
 
 \section{Observations}
 
@@ -351,15 +229,17 @@ Antenna gain calibration is accomplished using an iterative method independently
 the Julia programming language \citep{BEKS14}, and is publicly available
 online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
 
-The antenna complex gains are updated once per day when Cas A and Cyg A are near the meridian.
-These two sources are -- by an order of magnitude -- the brightest radio sources in the northern
-hemisphere.  Therefore the optimal time to solve for the interferometer's gain calibration is when
-Cas A and Cyg A are at high elevations. A calibration obtained in this manner is good for $>24$
-hours. \todo{quantify this? how much does the next day's calibration differ?}
+The antenna complex gains are updated once per day from a 9 hour track of data when Cas A and Cyg A
+are at high elevations.  These two sources are -- by an order of magnitude -- the brightest radio
+sources in the northern hemisphere.  Therefore the optimal time to solve for the interferometer's
+gain calibration is when Cas A and Cyg A are at high elevations. A calibration obtained in this
+manner is good consistent with the following day's calibration to within a 1\% error in the flux
+scale and 1$'$ error in the astrometry \todo{double check these numbers}. These residual errors are
+likely driven by differing ionospheric conditions.
 
 The flux scale is tied to the work of \citet{2016arXiv160905940P}.
 
-\todo{sawtooth pattern removal}
+\todo{sawtooth pattern removal, does it affect phase???}
 
 \subsection{Source Removal}
 
@@ -412,38 +292,38 @@ RFI. Because these poles exist in the near-field of the array, we have been able
 them by using the curvature of the incoming wavefront. Efforts are currently underway to work with
 the utility pole owners to have these insulators replaced.
 
-In the meantime it is possible to suppress their contamination in the dataset.  The path difference
-from a point source of RFI located at the position $\vec r$ to two antennas located at positions
-$\vec x_1$ and $\vec x_2$ respectively is given by
-\begin{equation}
-    \delta = \|\vec r - \vec x_1\| - \|\vec r - \vec x_2\|\,,
-\end{equation}
-where $\|\cdot\|$ denotes the Euclidean norm. The contribution to the visibility observed on the
-baseline between these two antennas is therefore
-\begin{equation}\label{eq:rfi-contribution}
-    V^\text{RFI}_\nu = F_\nu \exp\bigg(2\pi i\frac{\delta}{\lambda}\bigg)\,,
-\end{equation}
-where $F_\nu$ is the flux of the RFI at the frequency $\nu$ (wavelength $\lambda$).  At first glance
-it might seem to be sufficient to know the location of the RFI. Then by fitting for the value of
-$F_\nu$ in equation~\ref{eq:rfi-contribution} one can subtract the contribution of the RFI from each
-visibility. This approach is insufficient because the RFI originates from extremely low elevations
-where antenna shadowing effects are large. In practice this means that the response of each antenna
-to a source near or on the horizon is unknown and inhomogeneous between antennas. Therefore a free
-parameter for the response of each antenna towards the source of RFI must also be included as a free
-parameter when removing the RFI.
+In the meantime it is possible to suppress their contamination in the dataset. The contribution of
+these RFI sources to the visibilities can be plainly seen by averaging $>$24 hours of data with the
+phase center set to zenith. In this way, true sky components are smeared along tracks of constant
+declination while terrestrial sources (ie. the arcing power lines) are not smeared. For similar
+reasons, when constructing a map of the sky from $>$24 hours of data these sparking power lines will
+produce artifacts in the map that are smeared along tracks of constant declination. However while
+the amplitude of the RFI will fluctuate with time, its phase will be constant. Therefore if you can
+use isolate a set of model visibilities for the RFI, it can be removed from each integration by
+scaling and subtracting these model visibilities from the measured visibilities.
 
-\todo{can we take advantage of the fact that the antenna response shouldn't be changing very much
-between integrations?}
+Obtaining a model for the RFI is complicated by the fact that the contaminating sources are at
+extremely low elevations where the antenna response is maximally inhomogeneous. Therefore it is not
+enough to know the physical location of the faulty insulator generating the RFI. In addition you
+must also know the response of each antenna (amplitude and phase) in the appropriate direction. This
+motivates the use of peeling, which allows the antenna response to be a free parameter.
 
-If the RFI from the horizon is not adequately removed from the data set, it will introduce
-systematic errors into the map of the sky.
+Therefore model visibilities for the RFI can be obtained by peeling the sources after smearing the
+visibilities over $>$24 hours. These model visibilities are then scaled and subtracted from each
+integration in the data set.
 
-\subsection{Fitting the Beam}
+\todo{show an example smeared image before and after peeling}
 
-The OVRO LWA is composed of dipole antennas that are not combined into a beam prior to
-cross-correlation. As a result
+\subsection{Fitting the Antenna Response}
 
-\subsection{Ionospheric Conditions}
+In order to generate wide-field images of the sky, the response of the antenna to the sky must be
+known. Fortunately drift-scanning interferometers like the OVRO LWA can empirically measure their
+primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
+assume that the primary beam is invariant under north-south and east-west flips, and additionally
+that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
+We measure the flux of several point sources \todo{which ones??} as they pass through the sky and
+then fit a beam model composed of Zernike polynomials to those flux measurements. We select the
+basis functions to have the desired symmetry.
 
 \section{Imaging}
 
@@ -715,6 +595,41 @@ Simulate images of point sources with this
 \section{Results}
 
 \subsection{Sky Maps}
+
+\begin{figure*}[ht]
+    \includegraphics[width=\textwidth, draft]{maps/rgb-map}
+    \caption{three color map}
+\end{figure*}
+
+\begin{figure*}[ht]
+    \centering
+    \begin{tabular}{cc}
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+    \end{tabular}
+    \caption{single channel maps}
+\end{figure*}
+
+\begin{figure*}[ht]
+    \centering
+    \begin{tabular}{cc}
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
+        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
+    \end{tabular}
+    \caption{jackknifed error maps}
+\end{figure*}
 
 \begin{table}[ht]
     \centering
