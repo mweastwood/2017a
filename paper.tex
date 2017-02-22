@@ -239,7 +239,11 @@ likely driven by differing ionospheric conditions.
 
 The flux scale is tied to the work of \citet{2016arXiv160905940P}.
 
-\todo{sawtooth pattern removal, does it affect phase???}
+Temperature fluctuations within the electronics shelter generate 0.1 dB sawtooth oscillations in the
+analog gain. These oscillations occur with a variable 15 to 17 minute period. The amplitude of these
+gain fluctuations is calibrated by smoothing the autocorrelation amplitudes on 45 minute timescales.
+The ratio of the measured auto-correlation power to the smoothed auto-correlation power defines a
+per-antenna amplitude correction that is then applied to the cross-correlations.
 
 \subsection{Source Removal}
 
@@ -597,7 +601,7 @@ Simulate images of point sources with this
 \subsection{Sky Maps}
 
 \begin{figure*}[ht]
-    \includegraphics[width=\textwidth, draft]{maps/rgb-map}
+    \includegraphics[width=\textwidth]{maps/rgb-map-small}
     \caption{three color map}
 \end{figure*}
 
