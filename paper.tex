@@ -66,6 +66,7 @@
 
 \renewcommand{\b}{\pmb}
 \renewcommand{\d}{{\rm d}}
+\newcommand{\atikh}{\b{\hat a}_\text{Tikhonov}}
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 
 \begin{document}
@@ -514,16 +515,39 @@ the southern hemisphere, there are infinitely many possible solutions to
 equation~\ref{eq:m-mode-matrix-equation} that will fit the measured data equally well. So we need to
 regularize the problem and apply an additional constraint that prefers a unique solution. For
 example, you may prefer that in the absence of any information the sky should be set to zero or you
-may prefer that the sky should be set to some prior expectation. The process of Tikhonov
-regularization minimizes $\|\b v - \b B\b a\|^2 + \epsilon\|\b a\|^2$ for some arbitrary value of
-$\epsilon > 0$ chosen by the observer. The solution that minimizes this expression is given by
-\begin{equation}
-    \b{\hat a}_\text{Tikhonov} = (\b B^*\b B + \epsilon\b I)^{-1}\b B^*\b v\,.
+may prefer that the sky should be set to some prior expectation.
+
+The process of Tikhonov regularization minimizes $\|\b v - \b B\b a\|^2 + \epsilon\|\b a\|^2$ for
+some arbitrary value of $\epsilon > 0$ chosen by the observer. The solution that minimizes this
+expression is given by
+\begin{equation}\label{eq:tikhonov-solution}
+    \atikh = (\b B^*\b B + \epsilon\b I)^{-1}\b B^*\b v\,.
 \end{equation}
 Tikhonov regularization adds a small value $\epsilon$ to the diagonal of $\b B^*\b B$, fixing the
-matrix's singularity.
+matrix's singularity. We can see this by using the singular value decomposition (SVD) of the matrix
+$\b B = \b U \b \Sigma \b V^*$. Equation~\ref{eq:tikhonov-solution} becomes
+\[
+    \atikh = \b V (\b\Sigma^2 + \epsilon \b I)^{-1}\b\Sigma \b U^*\b v\,.
+\]
+The diagonal elements of $\b\Sigma$ are the singular values of $\b B$ and so the contribution of
+each singular component to the Tikhonov-regularized solution is scaled by $\sigma / (\sigma^2 +
+\epsilon)$, where $\sigma$ is the singular value for the given singular component. Tikhonov
+regularization therefore acts to suppress any component for which $\sigma\lesssim\sqrt{\epsilon}$.
+If $\sigma = 0$, the component is set to zero.
 
-\todo{describe how Tikhonov regularization improves the noise properties of the map}
+In practice the measurement $\b v$ is corrupted by noise with covariance $\b N$. For illustrative
+purposes we now assume that $\b N=n\b I$ for some scalar $n$. In this case the covariance of the
+Tikhonov-regularized spherical harmonic coefficients $\b C = \left\langle\atikh^*\atikh\right\rangle
+- \left\langle\atikh\right\rangle\left\langle\atikh^*\right\rangle$ is
+\begin{equation}
+    \b C = n \b V \b\Sigma^2 (\b\Sigma^2 + \epsilon\b I)^{-2} \b V^*\,.
+\end{equation}
+Each singular component is scaled by a factor of $\sigma^2/(\sigma^2 + \epsilon)^2$.
+In the absence of Tikhonov regularization ($\epsilon=0$)
+singular components with the smallest singular values -- the ones that the interferometer is
+the least sensitive to -- actually come to dominate the covariance of the measured spherical
+harmonic coefficients. Tikhonov regularization improves this situation by downweighting these
+components.
 
 \todo{describe the Moore-Penrose pseudoinverse and why I have elected not to use it}
 
