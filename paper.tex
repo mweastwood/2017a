@@ -496,6 +496,8 @@ the computational complexity involved in inverting the equation is reduced by a 
 the case of the OVRO LWA the equation breaks up into $\sim10^3$ blocks and so we save a factor of
 $\sim10^9$ in processing time by using $m$-mode analysis.
 
+\subsection{$m$-Mode Analysis Imaging}
+
 Imaging in $m$-mode analysis essentially amounts to inverting
 equation~\ref{eq:m-mode-matrix-equation} to solve for the spherical harmonic coefficients $\b a$.
 The linear-least squares solution, which minimizes $\|\b v - \b B\b a\|^2$, is given by
@@ -516,6 +518,13 @@ equation~\ref{eq:m-mode-matrix-equation} that will fit the measured data equally
 regularize the problem and apply an additional constraint that prefers a unique solution. For
 example, you may prefer that in the absence of any information the sky should be set to zero or you
 may prefer that the sky should be set to some prior expectation.
+
+\subsubsection{The Moore-Penrose Pseudoinverse}
+
+\todo{describe the Moore-Penrose pseudoinverse and why I have elected not to use it}
+
+
+\subsubsection{Tikhonov Regularization}
 
 The process of Tikhonov regularization minimizes $\|\b v - \b B\b a\|^2 + \epsilon\|\b a\|^2$ for
 some arbitrary value of $\epsilon > 0$ chosen by the observer. The solution that minimizes this
@@ -549,18 +558,33 @@ the least sensitive to -- actually come to dominate the covariance of the measur
 harmonic coefficients. Tikhonov regularization improves this situation by downweighting these
 components.
 
-\todo{describe the Moore-Penrose pseudoinverse and why I have elected not to use it}
-
 While Tikhonov regularization will force unmeasured modes to zero, if a prior map of the sky already
 exists, it will be preferrable to instead minimize $\|\b v - \b B\b a\|^2 + \epsilon \|\b a-\b
 a_\text{prior}\|^2$.
 
+\subsubsection{L-Curves}
+
 Tikhonov regularization requires the observer to pick the value of $\epsilon$. If $\epsilon$ is too
 large then too much importance is placed on minimizing the norm of the solution and the
 least-squares residuals will suffer. However if $\epsilon$ is too small then the problem will be
-poorly regularized and the resulting sky map may not represent the true sky.
+poorly regularized and the resulting sky map may not represent the true sky. Picking the value of
+$\epsilon$ therefore requires understanding the trade-off between the two norms.
 
-A tool that can be used to address this problem is the L-Curve.
+This trade-off can be analyzed quantitatively by trialing several values of $\epsilon$ and computing
+$\|\b v - \b B\b a\|^2$ and $\|\b a\|^2$ for each trial. An example is shown in Figure \todo{create
+a figure}. The shape of this curve has a characteristic L-shape, and as a result this type of plot
+is called an L-curve \todo{reference}. The ideal value of $\epsilon$ lies near the turning point of
+the plot. At this point a small decrease in $\epsilon$ will lead to an undesired rapid increase in
+$\|\b a\|^2$, and a small increase in $\epsilon$ will lead to an undesired rapid increase in $\|\b v
+- \b B\b a\|^2$.
+
+In practice, the L-curve should be used as a guide to estimate a reasonable value of $\epsilon$.
+However better results can often be obtained by tuning the value of $\epsilon$. For instance
+increasing the value of $\epsilon$ can improve the noise properties of the map by down-weighting
+noisy modes. Decreasing the value of $\epsilon$ can improve the resolution in the map by
+up-weighting the contribution of longer baselines, which are likely fewer in number. In this respect
+choosing the value of $\epsilon$ is analagous to picking the weighting scheme in traditional
+imaging where robust weighting schemes can be tuned to similar effect.
 
 \subsection{$m$-Mode Analysis with the OVRO LWA}
 
@@ -570,6 +594,29 @@ A tool that can be used to address this problem is the L-Curve.
 
 
 \subsection{CLEAN}
+
+While $m$-mode analysis imaging automatically deconvolves large angular scales, point sources do not
+get deconvolved by the imaging process. This is a limitation of the set of basis functions we have
+chosen to represent the sky -- the spherical harmonics. Point sources carry power to large values of
+$l$, but the regularization will eventually begin to downweight spherical harmonics with $l$ larger
+than what the interferometer is sensitive to. This consequence of this is that point sources will
+appear in the maps with some characteristic point spread function. This point spread function may be
+computed with
+\begin{equation}
+    \b a_\text{PSF}(\theta, \phi)
+        = (\b B^*\b B + \epsilon\b I)^{-1}\b B^*\b B\b a_\text{PS}(\theta, \phi)\,,
+\end{equation}
+where $\b a_\text{PSF}(\theta, \phi)$ is the vector of spherical harmonic coefficients representing
+the point spread function at the spherical coordinates $(\theta, \phi)$, and $\b a_\text{PS}(\theta,
+\phi)$ is the vector of spherical harmonic coefficients for a point source at $(\theta, \phi)$ given
+by
+\begin{equation}
+    a_{lm, \text{PS}}(\theta, \phi) = Y_{lm}^*(\theta, \phi)\,.
+\end{equation}
+
+\todo{include a few images of the computed PSF for my maps}
+
+\todo{describe how we incorporate this into major and minor iterations}
 
 \section{Errors}
 
