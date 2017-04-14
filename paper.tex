@@ -519,11 +519,6 @@ regularize the problem and apply an additional constraint that prefers a unique 
 example, you may prefer that in the absence of any information the sky should be set to zero or you
 may prefer that the sky should be set to some prior expectation.
 
-\subsubsection{The Moore-Penrose Pseudoinverse}
-
-\todo{describe the Moore-Penrose pseudoinverse and why I have elected not to use it}
-
-
 \subsubsection{Tikhonov Regularization}
 
 The process of Tikhonov regularization minimizes $\|\b v - \b B\b a\|^2 + \epsilon\|\b a\|^2$ for
@@ -585,6 +580,23 @@ noisy modes. Decreasing the value of $\epsilon$ can improve the resolution in th
 up-weighting the contribution of longer baselines, which are likely fewer in number. In this respect
 choosing the value of $\epsilon$ is analagous to picking the weighting scheme in traditional
 imaging where robust weighting schemes can be tuned to similar effect.
+
+\subsubsection{The Moore-Penrose Pseudoinverse}
+
+The Moore-Penrose pseudoinverse (denoted in this paper with a superscript $\dagger$), is commonly
+applied to find the minimum-norm linear-least squares solution to a set of linear equations. This
+can be used in place of Tikhonov regularization as
+\begin{equation}
+    \b{\hat a}_\text{Moore-Penrose} = \b B^\dagger\b v\,.
+\end{equation}
+Much like Tikhonov regularization, the Moore-Penrose pseudoinverse sets components with small
+singular values (below some user-defined threshold) to zero. Components with large singular values
+(above the user-defined threshold) are included in the calculation at their full amplitude with no
+down-weighting of modes near the threshold. The essential difference between using the Moore-Penrose
+pseudoinverse and Tikhonov regularization is that the pseudoinverse defines a hard transition from
+on-off. Modes are either set to zero or included in the map at their full amplitude. On the other
+hand Tikhonov regularization smoothly interpolates between these behaviors. Because of this,
+Tikhonov regularization tends to produce better results in practical applications.
 
 \subsection{$m$-Mode Analysis with the OVRO LWA}
 
