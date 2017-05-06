@@ -508,23 +508,32 @@ expression is given by
 Tikhonov regularization adds a small value $\epsilon$ to the diagonal of $\b B^*\b B$, fixing the
 matrix's singularity. We can see this by using the singular value decomposition (SVD) of the matrix
 $\b B = \b U \b \Sigma \b V^*$. Equation~\ref{eq:tikhonov-solution} becomes
+\begin{equation}
+    \atikh = \b V (\b\Sigma^2 + \epsilon \b I)^{-1}\b\Sigma \b U^*\b v\,,
+\end{equation}
+where
 \[
-    \atikh = \b V (\b\Sigma^2 + \epsilon \b I)^{-1}\b\Sigma \b U^*\b v\,.
+    \b\Sigma = \left(
+        \begin{array}{ccc}
+            \sigma_1 & & \\
+                     & \sigma_2 & \\
+                     & & \ddots \\
+        \end{array}
+    \right)\,.
 \]
 The diagonal elements of $\b\Sigma$ are the singular values of $\b B$ and so the contribution of
-each singular component to the Tikhonov-regularized solution is scaled by $\sigma / (\sigma^2 +
-\epsilon)$, where $\sigma$ is the singular value for the given singular component. Tikhonov
-regularization therefore acts to suppress any component for which $\sigma\lesssim\sqrt{\epsilon}$.
-If $\sigma = 0$, the component is set to zero.
+each singular component to the Tikhonov-regularized solution is scaled by $\sigma_i / (\sigma_i^2 +
+\epsilon)$, where $\sigma_i$ is the singular value for the $i$th singular component. Tikhonov
+regularization therefore acts to suppress any component for which $\sigma_i\lesssim\sqrt{\epsilon}$.
+If $\sigma_i = 0$, the component is set to zero.
 
 In practice the measurement $\b v$ is corrupted by noise with covariance $\b N$. For illustrative
-purposes we now assume that $\b N=n\b I$ for some scalar $n$. In this case the covariance of the
-Tikhonov-regularized spherical harmonic coefficients $\b C = \left\langle\atikh^*\atikh\right\rangle
-- \left\langle\atikh\right\rangle\left\langle\atikh^*\right\rangle$ is
+purposes we will assume that $\b N=n\b I$ for some scalar $n$. In this case the covariance of the
+Tikhonov-regularized spherical harmonic coefficients is
 \begin{equation}
-    \b C = n \b V \b\Sigma^2 (\b\Sigma^2 + \epsilon\b I)^{-2} \b V^*\,.
+    \b C = n \b V (\b\Sigma^2 + \epsilon\b I)^{-2} \b\Sigma^2 \b V^*\,.
 \end{equation}
-Each singular component is scaled by a factor of $\sigma^2/(\sigma^2 + \epsilon)^2$.
+Each singular component is scaled by a factor of $\sigma_i^2/(\sigma_i^2 + \epsilon)^2$.
 In the absence of Tikhonov regularization ($\epsilon=0$)
 singular components with the smallest singular values -- the ones that the interferometer is
 the least sensitive to -- actually come to dominate the covariance of the measured spherical
@@ -557,7 +566,7 @@ increasing the value of $\epsilon$ can improve the noise properties of the map b
 noisy modes. Decreasing the value of $\epsilon$ can improve the resolution in the map by
 up-weighting the contribution of longer baselines, which are likely fewer in number. In this respect
 choosing the value of $\epsilon$ is analagous to picking the weighting scheme in traditional
-imaging where robust weighting schemes can be tuned to similar effect.
+imaging where robust weighting schemes can be tuned to similar effect. \todo{citation}
 
 \subsubsection{The Moore-Penrose Pseudoinverse}
 
@@ -686,8 +695,12 @@ Therefore while snapshot images will show the RFI source on the horizon, extende
 show the RFI as rings of constant declination. We can take advantage of this discrepancy to separate
 astronomical emission from terrestrial RFI.
 
+\subsection{Beam Errors}
 
-
+\begin{itemize}
+    \item declination dependent flux scale errors
+    \item failure to reconcile observations from two separate times
+\end{itemize}
 
 \subsection{Ionospheric Scintillation}
 
@@ -735,7 +748,6 @@ Simulate images of point sources with this
 \subsection{Ionospheric Refraction}
 
 
-\subsection{Beam Errors}
 
 
 \section{Results}
@@ -777,28 +789,33 @@ Simulate images of point sources with this
     \caption{jackknifed error maps}
 \end{figure*}
 
-\begin{table}[ht]
+\begin{table*}[t]
     \centering
-    \begin{tabular}{ccc}
-        \# & $\nu$ / MHz & $\Delta\nu$ / MHz \\ \hline
-        1 & 36.528 & 0.024 \\
-        2 & 41.760 & 0.024 \\
-        3 & 46.992 & 0.024 \\
-        4 & 52.224 & 0.024 \\
-        5 & 57.456 & 0.024 \\
-        6 & 62.688 & 0.024 \\
-        7 & 67.920 & 0.024 \\
-        8 & 73.152 & 0.024 \\
+    \begin{tabular}{ccccc}
+        \hline\hline
+        \# & $\nu$ / MHz & $\Delta\nu$ / MHz
+           & $\theta$ / arcmin  & noise / Jy \\ \hline
+        1 & 36.528 & 0.024 & & \\
+        2 & 41.760 & 0.024 & & \\
+        3 & 46.992 & 0.024 & & \\
+        4 & 52.224 & 0.024 & & \\
+        5 & 57.456 & 0.024 & & \\
+        6 & 62.688 & 0.024 & & \\
+        7 & 67.920 & 0.024 & & \\
+        8 & 73.152 & 0.024 & & \\
+        \hline\hline
     \end{tabular}
     \caption{Summary of the produced maps}
-\end{table}
+\end{table*}
 
 \subsection{Error Maps}
 
 
-\todo{Cite Abhilash, Eastwood 2016}
+\todo{Cite Abhilash, Eastwood 2017}
 
 \section{Discussion}
+
+These maps are pretty cool.
 
 \bibliographystyle{apj}
 \bibliography{paper}
