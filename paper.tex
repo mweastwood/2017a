@@ -97,61 +97,54 @@ essential \citep{2016A&A...594A..10P, 2016A&A...594A..25P}.
 
 However in many cases the study of CMB foregrounds is scientifically interesting in its own right.
 Measurements of dust-correlated anomalous microwave emission \citep{1997ApJ...486L..23L} led to the
-discovery of spinning dust emission \citep{1998ApJ...508..157D}. Thomson scattering attenuates the
-CMB spectrum, but implies a mean redshift to the Epoch of Reionization (EoR) of $8.8^{+1.7}_{-1.4}$
-\citep{2016A&A...594A..13P}. Inverse Compton scattering of CMB photons propagating through galaxy
-clusters produces an effect known as the Sunyaev-Zel'dovich effect \citep{1970CoASP...2...66S,
-1972CoASP...4..173S} that can be used to discover new galaxy clusters \citep{2010ApJ...722.1180V}
-and measure the distance to galaxy clusters when combined with X-ray measurements
-\citep{2006ApJ...647...25B}.
+discovery of spinning dust emission \citep{1998ApJ...508..157D}. Thomson scattering in the IGM
+attenuates the CMB spectrum, but the optical depth implies a mean redshift to the Epoch of
+Reionization (EoR) of $8.8^{+1.7}_{-1.4}$ \citep{2016A&A...594A..13P}.  The thermal
+Sunyaev-Zel'dovich effect \citep{1970CoASP...2...66S, 1972CoASP...4..173S} has been used to discover
+new galaxy clusters \citep{2010ApJ...722.1180V} and measure the distance to galaxy clusters when
+combined with X-ray measurements \citep{2006ApJ...647...25B}.
+
+\todo{kinetic SZ effect puts an upper limit on the duration of reionization}
 
 At redshifts $20 \gtrsim z \gtrsim 7$ the 21 cm hyperfine structure line of neutral hydrogen is
 expected to produce a 10 to 100 mK perturbation in the CMB spectrum \citep{2006PhR...433..181F,
-2012RPPh...75h6901P}. The amplitude of the perturbation on a given line-of-sight is a function of
+2012RPPh...75h6901P}. The amplitude of this perturbation on a given line-of-sight is a function of
 the neutral fraction of hydrogen, the baryon overdensity, the spin temperature relative to the CMB
-temperature at the given redshift, and the line-of-sight peculiar velocity of the gas.  Current 21
-cm cosmology experiments can be broadly separated into two classes: global experiments that are
-aiming to detect the spectral signature of the cosmologically redshifted 21 cm transition after
-averaging over the entire sky, and power spectrum experiments that incorporate angular information
-to attempt to measure the spatial power spectrum of cosmological 21 cm perturbations.
-
-Ongoing global experiments include EDGES, SCI-HI, LEDA, and SARAS 2 \citep{2017arXiv170306647S}.
-
-Ongoing power spectrum experiments include PAPER/HERA \citep{2015ApJ...809...61A,
-2016arXiv160607473D}, LOFAR \citep{2017ApJ...838...65P}, and the MWA \citep{2016ApJ...833..102B}.
-
+temperature at the given redshift, and the line-of-sight peculiar velocity of the gas.
 
 \todo{discuss 21cmmc ionizing efficiency, photon mean free path, minimum halo mass}
 \todo{discuss what can be learned from global experiments}
-
-
-
 
 The spatial power spectrum of this perturbation is expected to be dominated
 by inhomogeneous heating of the IGM at $z\sim 20$ \citep{2014MNRAS.437L..36F}, and by growing
 ionized bubbles during the EoR at $z\sim 7$ \todo{citation}.
 
-\todo{discuss more interesting science to be done}
+Current 21 cm cosmology experiments can be broadly separated into two classes: global experiments
+that are aiming to detect the spectral signature of the cosmologically redshifted 21 cm transition
+after averaging over the entire sky, and power spectrum experiments that incorporate angular
+information to attempt to measure the spatial power spectrum of cosmological 21 cm perturbations.
+Ongoing global experiments include EDGES \citep{2010Natur.468..796B, 2017ApJ...835...49M}, LEDA
+\todo{cite Price et al. 2017}, BIGHORNS \citep{2015PASA...32....4S}, SCI-HI
+\citep{2014ApJ...782L...9V}, and SARAS 2 \citep{2017arXiv170306647S}.  Ongoing power spectrum
+experiments include PAPER/HERA \citep{2015ApJ...809...61A, 2016arXiv160607473D}, LOFAR
+\citep{2017ApJ...838...65P}, and the MWA \citep{2016ApJ...833..102B}.
 
-
-\todo{discuss global experiments too, edges, sci-hi, leda, saras 2}
-
-These low-frequency 21 cm cosmology experiments are limited by the dynamic range they can achieve
-against low-redshift sources of emission. The brightness temperature of the galactic synchrotron
+Just as for CMB experiments, foreground removal or suppression is an essential component of both
+classes of 21 cm cosmology experiments. The brightness temperature of the galactic synchrotron
 emission at high galactic latitudes is measured by \citet{2008AJ....136..641R} as
 \begin{equation}
     T \sim 300\,{\rm K} \times \left(\frac{\nu}{150\,{\rm MHz}}\right)^{-2.5}\,.
 \end{equation}
-Therefore experiments conservatively need to achieve at least 4 orders of dynamic range.  In theory
-this kind of dynamic range can be obtained by exploiting the fact that the foreground emission is
-predominantly synchrotron emission that has a smooth power law spectrum \todo{citation}.  In
-practice the interferometer itself imparts frequency structure into the measurements and therefore
-an experiment's ability to separate the foreground signal from the cosmological signal can be
-limited by the instrumental spectral smoothness \todo{citation}.
-
-Ideally the foreground removal strategy should be informed by the measured spatial and frequency
-structure of all foreground components. This possibility is limited by the availability of suitable
-high-fidelity low-frequency sky maps on angular scales ranging from tens of degrees to arcminutes.
+Therefore experiments conservatively need to achieve at least 4 orders of dynamic range against this
+foreground emission before the cosmological signal can be measured. Current foreground removal
+methods (for example, \citealt{2012ApJ...756..165P}) rely on the assumption that the foreground
+emission (after convolving with the instrumental response) is spectrally smooth. However the
+low-frequency radio sky is composed of several components: galactic synchrotron emission, free-free
+emission and absorption, supernova remnants, radio galaxies, and a confusing background of point
+sources.  Ideally a foreground removal strategy should be informed by the measured spatial and
+frequency structure of all foreground components. However, this possibility is limited by the
+availability of suitable high-fidelity low-frequency sky maps on angular scales ranging from tens of
+degrees to arcminutes.
 
 The Global Sky Model (GSM) \citep{2008MNRAS.388..247D, 2017MNRAS.464.3486Z} is a data-driven
 interpolation of various maps between 10 MHz and 100 GHz. However the majority of information
@@ -370,20 +363,17 @@ sky is discretized into $N_\text{pix}$ pixels then the relevant matrix has dimen
 $(N_\text{base}N_\text{freq}N_\text{time})\times(N_\text{pix})$. For making single-channel maps with
 the Owens Valley LWA this becomes a 5 petabyte array (assuming each matrix element is a 64-bit
 complex floating point number).  This matrix equation is therefore prohibitively large, and solving
-equation~\ref{eq:basic-imaging} by means of discretization is usually impossible \todo{cite Jayce's
-paper (has he published that yet?) where he does this, but explain why his work is the exception
-instead of the rule}.
+equation~\ref{eq:basic-imaging} by means of discretization is usually impossible although
+\citet{2017MNRAS.465.2901Z} demonstrate this technique with the MITEOR telescope.
 
 Instead it is common to make mild assumptions that simplify equation~\ref{eq:basic-imaging} and ease
 the computational burden in solving for $I_\nu(\hat r)$. For example, when all of the baselines
 $\vec b_{ij}$ lie in a plane and the field-of-view is small, equation~\ref{eq:basic-imaging} can be
-well-approximated by a two-dimensional Fourier transform.
+well-approximated by a two-dimensional Fourier transform \citep{2001isra.book.....T}.
 
 \todo{discuss w-projection}
 
 \todo{discuss a-projection}
-
-\citet{2017MNRAS.465.2901Z}
 
 \subsection{$m$-Mode Analysis}
 
@@ -408,7 +398,7 @@ time\footnote{
     maps is mild.
 }.
 Therefore it is a very natural operation to compute the Fourier transform of the visibilities with
-respect to sidereal time $\phi\in(0,2\pi]$.
+respect to sidereal time $\phi\in[0,2\pi)$.
 \begin{equation}
     V^{ij}_{m,\nu} = \int_0^{2\pi} V^{ij}_\nu(\phi)\exp\bigg(-im\phi\bigg)\,\d\phi
 \end{equation}
