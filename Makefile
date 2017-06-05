@@ -4,6 +4,9 @@ clean:
 	rm paper.aux
 	rm paper.bbl
 
+format:
+	biber --tool --configfile=biber.conf --collate --output-align --output-indent=4 --fixinits -O paper.bib paper.bib
+
 paper.aux: paper.tex $(shell find plots)
 	pdflatex paper
 
