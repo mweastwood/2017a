@@ -59,6 +59,8 @@
 
 \documentclass[twocolumn]{aastex6}
 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -159,6 +161,7 @@ higher frequencies need corrections at lower frequencies.
 
 
 \citet{2011A&A...525A.138G}
+
 
 \todo{TGSS, MSSS, GLEAM}
 
@@ -283,12 +286,12 @@ until the variance within the aperture is minimized.
 
 The Sun can be trivially removed from any map of the sky by constructing the map using only data
 taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
-However the OVRO-LWA 100 hour dataset consists of 100 consecutive hours of data, and hence roughly
-half of the data is from the day.
+However the dataset used in this paper consists of 28 consecutive hours. Additionally while most
+astronomical sources at these frequencies have negative spectral indices, the Sun has a large
+positive spectral index. Therefore more care will need to be taken in subtracting the Sun at higher
+frequencies than at lower frequencies.
 
-The Sun is a time variable source in radio.
-
-\todo{does the previous routine work on the Sun too? worth a shot}
+\todo{describe sun removal -- this isn't entirely settled yet}
 
 \subsubsection{Sparking Power Lines}
 
@@ -321,25 +324,25 @@ integration in the data set.
 
 \todo{show an example smeared image before and after peeling}
 
-\begin{figure*}[ht]
-    \centering
-    \begin{tabular}{cccc}
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw04-small} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw06-small} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw08-small} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw10-small} \\
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw12-small} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw14-small} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw16-small} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw18-small} \\
-    \end{tabular}
-    \caption{
-        Dirty snapshot images after smearing the visiblities over the entire 100 hour observation
-        window.  The two bright source tracks correspond to Cas A (top track) and Cyg A (bottom
-        track) smeared along a ring of constant declination. The sources dotting the horizon are
-        faulty power line insulators.
-    }
-\end{figure*}
+%\begin{figure*}[ht]
+%    \centering
+%    \begin{tabular}{cccc}
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw04-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw06-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw08-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw10-small} \\
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw12-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw14-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw16-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw18-small} \\
+%    \end{tabular}
+%    \caption{
+%        Dirty snapshot images after smearing the visiblities over the entire 100 hour observation
+%        window.  The two bright source tracks correspond to Cas A (top track) and Cyg A (bottom
+%        track) smeared along a ring of constant declination. The sources dotting the horizon are
+%        faulty power line insulators.
+%    }
+%\end{figure*}
 
 \section{Imaging}
 
@@ -362,19 +365,18 @@ baselines, and measures $N_\text{freq}$ frequency channels over $N_\text{time}$ 
 the entire data set consists of $N_\text{base}N_\text{freq}N_\text{time}$ complex numbers. If the
 sky is discretized into $N_\text{pix}$ pixels then the relevant matrix has dimensions of
 $(N_\text{base}N_\text{freq}N_\text{time})\times(N_\text{pix})$. For making single-channel maps with
-the Owens Valley LWA this becomes a 5 petabyte array (assuming each matrix element is a 64-bit
-complex floating point number).  This matrix equation is therefore prohibitively large, and solving
+the OVRO-LWA this becomes a 5 petabyte array (assuming each matrix element is a 64-bit complex
+floating point number).  This matrix equation is therefore prohibitively large, and solving
 equation~\ref{eq:basic-imaging} by means of discretization is usually impossible although
 \citet{2017MNRAS.465.2901Z} demonstrate this technique with the MITEOR telescope.
 
 Instead it is common to make mild assumptions that simplify equation~\ref{eq:basic-imaging} and ease
 the computational burden in solving for $I_\nu(\hat r)$. For example, when all of the baselines
 $\vec b_{ij}$ lie in a plane and the field-of-view is small, equation~\ref{eq:basic-imaging} can be
-well-approximated by a two-dimensional Fourier transform \citep{2001isra.book.....T}.
-
-\todo{discuss w-projection}
-
-\todo{discuss a-projection}
+well-approximated by a two-dimensional Fourier transform \citep{2001isra.book.....T}. The
+restriction on baseline co-planarity and field-of-view can be relaxed by using W-projection
+\citep{2008ISTSP...2..647C}. Known primary beam effects can also be accounted for during imaging by
+using A-projection \citep{2013ApJ...770...91B}.
 
 \subsection{$m$-Mode Analysis}
 
@@ -387,7 +389,8 @@ entire sky is imaged in one coherent synthesis imaging step.
 In this context we will define a transit telescope as any interferometer where the response pattern
 of the individual elements does not change with respect to time. This may be an interferometer like
 the OVRO-LWA where the correlation elements are fixed dipoles, but it may also be an interferometer
-like the MWA if the steerable beams are held in a fixed position (not necessarily at zenith).
+like LOFAR or the MWA if the steerable beams are held in a fixed position (not necessarily at
+zenith).
 
 We will briefly summarize $m$-mode analysis below, but the interested reader should consult
 \citet{2014ApJ...781...57S, 2015PhRvD..91h3514S} for a complete derivation.
@@ -472,7 +475,8 @@ only sensitive to the monopole of the sky brightness if there exists some form o
 common-mode noise. In fact, the sensitivity of the interferometer is proportional to the amplitude
 of these effects. For consistency we will include $a_{00}$ while solving
 Equation~\ref{eq:m-mode-matrix-equation} for the vector $\b a$, but we set $a_{00} = 0$ afterwards
-because we do not have a measurement of cross-talk or common-mode noise.
+because we do not have a measurement of the amplitude of cross-talk or common-mode noise, which
+would be needed to correctly calibrate $a_{00}$.
 
 The size of a typical block in the transfer matrix is
 $(2N_\text{base}N_\text{freq})\times(l_\text{max})$. If each element of the matrix is stored as a
@@ -497,8 +501,9 @@ full-rank and hence $\b B^*\b B$ is not an invertible matrix. For example, an in
 in the northern hemisphere will never see a region of the southern sky centered on the southern
 celestial pole. The $m$-modes contained in the vector $\b v$ must contain no information
 about the sky around the southern celestial pole, and therefore the act of multiplying by $\b B$
-must destroy some information about the sky. The consequence of this fact is that $\b B^*\b B$ must
-have at least one zero eigenvalue, which means it is not invertible.
+must destroy some information about the sky. The consequence of this fact is that $\b B$ must have
+at least one singular value that is equal to zero. It is then trivial to show that $\b B^*\b B$ must
+have at least one eigenvalue that is equal to zero, which means it is not an invertible matrix.
 
 Another way of looking at the problem is that because the interferometer is not sensitive to part of
 the southern hemisphere, there are infinitely many possible solutions to
@@ -595,14 +600,7 @@ on to off. Modes are either set to zero or included in the map at their full amp
 hand Tikhonov regularization smoothly interpolates between these behaviors. Because of this,
 Tikhonov regularization tends to produce better results in practical applications.
 
-\subsection{$m$-Mode Analysis with the OVRO-LWA}
-
-
-
-
-
-
-\subsection{CLEAN}
+\subsection{Image Deconvolution}
 
 While $m$-mode analysis imaging automatically deconvolves large angular scales, point sources do not
 get deconvolved by the imaging process. This is a limitation of the set of basis functions we have
