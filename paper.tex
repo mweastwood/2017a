@@ -167,184 +167,7 @@ higher frequencies need corrections at lower frequencies.
 
 
 
-
-
-
-
-
-
-
-\section{Observations}
-
-\subsection{The Owens Valley Long Wavelength Array}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\columnwidth]{figures/antenna-layout}
-    \caption{
-        This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
-        within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
-        built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
-        antennas equipped with noise-switched front ends.
-    }
-    \label{fig:antenna-layout}
-\end{figure}
-
-The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
-Owens Valley Radio Observatory (OVRO) near Big Pine, California.  The OVRO-LWA is a low-frequency
-instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz and 24 kHz channelization.
-Each antenna stand hosts two perpendicular broadband dipoles so that there are $288\times2$ signal
-paths in total. These signal paths feed into the 512-input LEDA correlator
-\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
-single snapshot image.  In the current configuration 32 antennas (64 signal paths) are unused.
-
-The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
-snapshot imaging.  251 of the antennas are contained within a 200 m diameter core. 32 antennas are
-placed outside of the core in order to extend the maximum baseline length out to $\sim$1.5 km. The
-final 5 antennas are equipped with noise-switched front ends for calibrated total power measurements
-of the global sky brightness.  These antennas are used as part of the LEDA experiment \todo{cite
-Price et al. 2017} to measure the global signal of 21 cm absorption from the cosmic dawn.
-Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
-
-\todo{cite Gregg's instrument paper}
-
-Beginning at 2017-02-17 12:00:00 UTC time, 28 consecutive hours of data was collected. This time was
-chosen based on the fact that it was raining at OVRO and rain tends to improve the low-frequency RFI
-environment considerably. During this time the OVRO-LWA operated as a zenith-pointing drift scanning
-interferometer.  The correlator dump time was selected to be 13 seconds such that the correlator
-output evenly divides a sidereal day.
-
-\todo{describe the ionospheric conditions at the time}
-
-\subsection{Gain Calibration}
-
-Antenna gain calibration is accomplished using an iterative method independently developed by
-\citet{2008ISTSP...2..707M} and \citet{2014A&A...571A..97S}. The calibration routine is written in
-the Julia programming language \citep{doi:10.1137/141000671}, and is publicly available
-online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
-
-The antenna complex gains are updated once per day from a 9 hour track of data when Cas A and Cyg A
-are at high elevations \todo{the rainy day dataset actually uses a shorter track of data, we should
-try using the 9 hour track again}.  These two sources are -- by an order of magnitude -- the
-brightest radio sources in the northern hemisphere.  Therefore the optimal time to solve for the
-interferometer's gain calibration is when Cas A and Cyg A are at high elevations. A calibration
-obtained in this manner is good consistent with the following day's calibration to within a 1\%
-error in the flux scale and 1$'$ error in the astrometry \todo{double check these numbers}. These
-residual errors are likely driven by differing ionospheric conditions.
-
-The flux scale is tied to the work of \citet{2016arXiv160905940P}.
-
-Temperature fluctuations within the electronics shelter generate 0.1 dB sawtooth oscillations in the
-analog gain. These oscillations occur with a variable 15 to 17 minute period. The amplitude of these
-gain fluctuations is calibrated by smoothing the autocorrelation amplitudes on 45 minute timescales.
-The ratio of the measured auto-correlation power to the smoothed auto-correlation power defines a
-per-antenna amplitude correction that is then applied to the cross-correlations.
-
-\subsection{Primary Beam Measurements}
-
-In order to generate wide-field images of the sky, the response of the antenna to the sky must be
-known. Fortunately drift-scanning interferometers like the OVRO-LWA can empirically measure their
-primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
-assume that the primary beam is invariant under north-south and east-west flips, and additionally
-that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
-We measure the flux of several point sources \todo{which ones??} as they pass through the sky and
-then fit a beam model composed of Zernike polynomials to those flux measurements. We select the
-basis functions to have the desired symmetry.
-
-\subsection{Source Removal}
-
-\subsubsection{Cassiopeia A and Cygnus A}
-
-Without removing bright sources from the data, sidelobes from bright sources will dominate the
-variance in the image.  At 74 MHz Cyg A is a 15,000 Jy source \citep{2016arXiv160905940P}. A
-conservative estimate for the confusion limit at 74 MHz with a 10 arcminute beam is 500 mJy
-\citep{2012RaSc...47.0K04L}. Therefore we require that Cyg A's sidelobes be at most of $-$45 dB down
-from its peak flux to prevent Cyg A's sidelobes from dominating the variance in the image.
-\todo{Measure Cyg A's sidelobe levels if it is not subtracted}
-
-At low frequencies, propagation effects through the ionosphere must be accounted for in order to
-achieve high dynamic range images. This necessitates the use of direction-dependent calibration and
-peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.  In the dataset used in this paper,
-scintillation and diffraction events on the timescale of a single integration (13 seconds) are
-observed. Therefore the direction dependent calibration changes on these timescales and the we must
-solve for one set of complex gains per source per integration.
-
-The largest angular scale of Cas A is $\sim$8 arcminutes, while the largest angular scale of Cyg A
-is $\sim$2 arcminutes. With a 10 arcminute resolution, the OVRO-LWA marginally resolves both
-sources. A resolved source model is needed for both sources. We fit a self-consistent resolved
-source model to eachs ource. This is performed by minimizing the minimizing the variance within an
-aperture located on each source after peeling. By phasing up a large number of integrations before
-imaging (at least over 1 hour) it is possible to smear out the contribution of the rest of the sky.
-We then use NLopt's Sbplx routine \citep{nlopt, sbplx} to vary the parameters in a source model
-until the variance within the aperture is minimized.
-
-\todo{Show a before and after with the updated source models}
-
-\todo{Give a plot with the updated source models}
-
-\subsubsection{The Sun}
-
-The Sun can be trivially removed from any map of the sky by constructing the map using only data
-taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
-However the dataset used in this paper consists of 28 consecutive hours. Additionally while most
-astronomical sources at these frequencies have negative spectral indices, the Sun has a large
-positive spectral index. Therefore more care will need to be taken in subtracting the Sun at higher
-frequencies than at lower frequencies.
-
-\todo{describe sun removal -- this isn't entirely settled yet}
-
-\subsubsection{Sparking Power Lines}
-
-The Owens Valley is an important source of water and power for the city of Los Angeles.
-Unfortunately this means that high voltage power lines run along the valley to the west of the OVRO-
-LWA. Some of these power line poles have faulty insulators that arc and produce pulsed, broadband
-RFI. Because these poles exist in the near-field of the array, we have been able to localize some of
-them by using the curvature of the incoming wavefront. Efforts are currently underway to work with
-the utility pole owners to have these insulators replaced.
-
-In the meantime it is possible to suppress their contamination in the dataset. The contribution of
-these RFI sources to the visibilities can be plainly seen by averaging $>$24 hours of data with the
-phase center set to zenith. In this way, true sky components are smeared along tracks of constant
-declination while terrestrial sources (ie. the arcing power lines) are not smeared. For similar
-reasons, when constructing a map of the sky from $>$24 hours of data these sparking power lines will
-produce artifacts in the map that are smeared along tracks of constant declination. However while
-the amplitude of the RFI will fluctuate with time, its phase will be constant. Therefore if you can
-use isolate a set of model visibilities for the RFI, it can be removed from each integration by
-scaling and subtracting these model visibilities from the measured visibilities.
-
-Obtaining a model for the RFI is complicated by the fact that the contaminating sources are at
-extremely low elevations where the antenna response is maximally inhomogeneous. Therefore it is not
-enough to know the physical location of the faulty insulator generating the RFI. In addition you
-must also know the response of each antenna (amplitude and phase) in the appropriate direction. This
-motivates the use of peeling, which allows the antenna response to be a free parameter.
-
-Therefore model visibilities for the RFI can be obtained by peeling the sources after smearing the
-visibilities over $>$24 hours. These model visibilities are then scaled and subtracted from each
-integration in the data set.
-
-\todo{show an example smeared image before and after peeling}
-
-%\begin{figure*}[ht]
-%    \centering
-%    \begin{tabular}{cccc}
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw04-small} &
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw06-small} &
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw08-small} &
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw10-small} \\
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw12-small} &
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw14-small} &
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw16-small} &
-%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw18-small} \\
-%    \end{tabular}
-%    \caption{
-%        Dirty snapshot images after smearing the visiblities over the entire 100 hour observation
-%        window.  The two bright source tracks correspond to Cas A (top track) and Cyg A (bottom
-%        track) smeared along a ring of constant declination. The sources dotting the horizon are
-%        faulty power line insulators.
-%    }
-%\end{figure*}
-
-\section{Imaging}
+\section{All-Sky Imaging}
 
 The goal of all imaging algorithms is to estimate the brightness of the sky $I_\nu(\hat r)$ in the
 direction $\hat r$ and frequency $\nu$. A radio interferometer measures the visibilities
@@ -600,7 +423,7 @@ on to off. Modes are either set to zero or included in the map at their full amp
 hand Tikhonov regularization smoothly interpolates between these behaviors. Because of this,
 Tikhonov regularization tends to produce better results in practical applications.
 
-\subsection{Image Deconvolution}
+\subsection{$m$-Mode Analysis Image Deconvolution}
 
 While $m$-mode analysis imaging automatically deconvolves large angular scales, point sources do not
 get deconvolved by the imaging process. This is a limitation of the set of basis functions we have
@@ -625,7 +448,184 @@ by
 
 \todo{describe how we incorporate this into major and minor iterations}
 
-\section{Errors}
+
+
+
+
+
+
+
+\section{Observations}
+
+\subsection{The Owens Valley Long Wavelength Array}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/antenna-layout}
+    \caption{
+        This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
+        within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
+        built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
+        antennas equipped with noise-switched front ends.
+    }
+    \label{fig:antenna-layout}
+\end{figure}
+
+The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
+Owens Valley Radio Observatory (OVRO) near Big Pine, California.  The OVRO-LWA is a low-frequency
+instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz and 24 kHz channelization.
+Each antenna stand hosts two perpendicular broadband dipoles so that there are $288\times2$ signal
+paths in total. These signal paths feed into the 512-input LEDA correlator
+\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
+single snapshot image.  In the current configuration 32 antennas (64 signal paths) are unused.
+
+The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
+snapshot imaging.  251 of the antennas are contained within a 200 m diameter core. 32 antennas are
+placed outside of the core in order to extend the maximum baseline length out to $\sim$1.5 km. The
+final 5 antennas are equipped with noise-switched front ends for calibrated total power measurements
+of the global sky brightness.  These antennas are used as part of the LEDA experiment \todo{cite
+Price et al. 2017} to measure the global signal of 21 cm absorption from the cosmic dawn.
+Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
+
+\todo{cite Gregg's instrument paper}
+
+Beginning at 2017-02-17 12:00:00 UTC time, 28 consecutive hours of data was collected. This time was
+chosen based on the fact that it was raining at OVRO and rain tends to improve the low-frequency RFI
+environment considerably. During this time the OVRO-LWA operated as a zenith-pointing drift scanning
+interferometer.  The correlator dump time was selected to be 13 seconds such that the correlator
+output evenly divides a sidereal day.
+
+\todo{describe the ionospheric conditions at the time}
+
+\subsection{Gain Calibration}
+
+Antenna gain calibration is accomplished using an iterative method independently developed by
+\citet{2008ISTSP...2..707M} and \citet{2014A&A...571A..97S}. The calibration routine is written in
+the Julia programming language \citep{doi:10.1137/141000671}, and is publicly available
+online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
+
+The antenna complex gains are updated once per day from a 9 hour track of data when Cas A and Cyg A
+are at high elevations \todo{the rainy day dataset actually uses a shorter track of data, we should
+try using the 9 hour track again}.  These two sources are -- by an order of magnitude -- the
+brightest radio sources in the northern hemisphere.  Therefore the optimal time to solve for the
+interferometer's gain calibration is when Cas A and Cyg A are at high elevations. A calibration
+obtained in this manner is good consistent with the following day's calibration to within a 1\%
+error in the flux scale and 1$'$ error in the astrometry \todo{double check these numbers}. These
+residual errors are likely driven by differing ionospheric conditions.
+
+The flux scale is tied to the work of \citet{2016arXiv160905940P}.
+
+Temperature fluctuations within the electronics shelter generate 0.1 dB sawtooth oscillations in the
+analog gain. These oscillations occur with a variable 15 to 17 minute period. The amplitude of these
+gain fluctuations is calibrated by smoothing the autocorrelation amplitudes on 45 minute timescales.
+The ratio of the measured auto-correlation power to the smoothed auto-correlation power defines a
+per-antenna amplitude correction that is then applied to the cross-correlations.
+
+\subsection{Primary Beam Measurements}
+
+In order to generate wide-field images of the sky, the response of the antenna to the sky must be
+known. Fortunately drift-scanning interferometers like the OVRO-LWA can empirically measure their
+primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
+assume that the primary beam is invariant under north-south and east-west flips, and additionally
+that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
+We measure the flux of several point sources \todo{which ones??} as they pass through the sky and
+then fit a beam model composed of Zernike polynomials to those flux measurements. We select the
+basis functions to have the desired symmetry.
+
+\subsection{Source Removal}
+
+\subsubsection{Cassiopeia A and Cygnus A}
+
+Without removing bright sources from the data, sidelobes from bright sources will dominate the
+variance in the image.  At 74 MHz Cyg A is a 15,000 Jy source \citep{2016arXiv160905940P}. A
+conservative estimate for the confusion limit at 74 MHz with a 10 arcminute beam is 500 mJy
+\citep{2012RaSc...47.0K04L}. Therefore we require that Cyg A's sidelobes be at most of $-$45 dB down
+from its peak flux to prevent Cyg A's sidelobes from dominating the variance in the image.
+\todo{Measure Cyg A's sidelobe levels if it is not subtracted}
+
+At low frequencies, propagation effects through the ionosphere must be accounted for in order to
+achieve high dynamic range images. This necessitates the use of direction-dependent calibration and
+peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.  In the dataset used in this paper,
+scintillation and diffraction events on the timescale of a single integration (13 seconds) are
+observed. Therefore the direction dependent calibration changes on these timescales and the we must
+solve for one set of complex gains per source per integration.
+
+The largest angular scale of Cas A is $\sim$8 arcminutes, while the largest angular scale of Cyg A
+is $\sim$2 arcminutes. With a 10 arcminute resolution, the OVRO-LWA marginally resolves both
+sources. A resolved source model is needed for both sources. We fit a self-consistent resolved
+source model to eachs ource. This is performed by minimizing the minimizing the variance within an
+aperture located on each source after peeling. By phasing up a large number of integrations before
+imaging (at least over 1 hour) it is possible to smear out the contribution of the rest of the sky.
+We then use NLopt's Sbplx routine \citep{nlopt, sbplx} to vary the parameters in a source model
+until the variance within the aperture is minimized.
+
+\todo{Show a before and after with the updated source models}
+
+\todo{Give a plot with the updated source models}
+
+\subsubsection{The Sun}
+
+The Sun can be trivially removed from any map of the sky by constructing the map using only data
+taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
+However the dataset used in this paper consists of 28 consecutive hours. Additionally while most
+astronomical sources at these frequencies have negative spectral indices, the Sun has a large
+positive spectral index. Therefore more care will need to be taken in subtracting the Sun at higher
+frequencies than at lower frequencies.
+
+\todo{describe sun removal -- this isn't entirely settled yet}
+
+\subsubsection{Sparking Power Lines}
+
+The Owens Valley is an important source of water and power for the city of Los Angeles.
+Unfortunately this means that high voltage power lines run along the valley to the west of the OVRO-
+LWA. Some of these power line poles have faulty insulators that arc and produce pulsed, broadband
+RFI. Because these poles exist in the near-field of the array, we have been able to localize some of
+them by using the curvature of the incoming wavefront. Efforts are currently underway to work with
+the utility pole owners to have these insulators replaced.
+
+In the meantime it is possible to suppress their contamination in the dataset. The contribution of
+these RFI sources to the visibilities can be plainly seen by averaging $>$24 hours of data with the
+phase center set to zenith. In this way, true sky components are smeared along tracks of constant
+declination while terrestrial sources (ie. the arcing power lines) are not smeared. For similar
+reasons, when constructing a map of the sky from $>$24 hours of data these sparking power lines will
+produce artifacts in the map that are smeared along tracks of constant declination. However while
+the amplitude of the RFI will fluctuate with time, its phase will be constant. Therefore if you can
+use isolate a set of model visibilities for the RFI, it can be removed from each integration by
+scaling and subtracting these model visibilities from the measured visibilities.
+
+Obtaining a model for the RFI is complicated by the fact that the contaminating sources are at
+extremely low elevations where the antenna response is maximally inhomogeneous. Therefore it is not
+enough to know the physical location of the faulty insulator generating the RFI. In addition you
+must also know the response of each antenna (amplitude and phase) in the appropriate direction. This
+motivates the use of peeling, which allows the antenna response to be a free parameter.
+
+Therefore model visibilities for the RFI can be obtained by peeling the sources after smearing the
+visibilities over $>$24 hours. These model visibilities are then scaled and subtracted from each
+integration in the data set.
+
+\todo{show an example smeared image before and after peeling}
+
+%\begin{figure*}[ht]
+%    \centering
+%    \begin{tabular}{cccc}
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw04-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw06-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw08-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw10-small} \\
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw12-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw14-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw16-small} &
+%        \includegraphics[width=0.22\textwidth]{figures/smeared-snapshots/spw18-small} \\
+%    \end{tabular}
+%    \caption{
+%        Dirty snapshot images after smearing the visiblities over the entire 100 hour observation
+%        window.  The two bright source tracks correspond to Cas A (top track) and Cyg A (bottom
+%        track) smeared along a ring of constant declination. The sources dotting the horizon are
+%        faulty power line insulators.
+%    }
+%\end{figure*}
+
+\section{Error Analysis}
 
 \subsection{Terrestrial Interference}
 
@@ -756,6 +756,8 @@ Simulate images of point sources with this
 \subsection{Ionospheric Refraction}
 
 
+\subsection{Thermal Noise}
+
 
 
 \section{Results}
@@ -819,11 +821,12 @@ Simulate images of point sources with this
 \subsection{Error Maps}
 
 
-\todo{Cite Abhilash, Eastwood 2017}
 
 \section{Discussion}
 
 These maps are pretty cool.
+
+\todo{Cite Abhilash, Eastwood 2017}
 
 \bibliographystyle{apj}
 \bibliography{paper}
