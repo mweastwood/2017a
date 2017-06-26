@@ -45,7 +45,7 @@
 % FIGURES
 % =======
 %
-% * Antenna layout of the OVRO LWA
+% * Antenna layout of the OVRO-LWA
 % * Before/after snapshot image of the RFI removal
 % * Image of the empirical beam (with source tracks)
 % * Plot of ionospheric scintillation and refraction of an A-team source
@@ -179,7 +179,7 @@ higher frequencies need corrections at lower frequencies.
     \centering
     \includegraphics[width=\columnwidth]{figures/antenna-layout}
     \caption{
-        This figure shows the antenna layout for the OVRO LWA. Black dots correspond to antennas
+        This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
         within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
         built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
         antennas equipped with noise-switched front ends.
@@ -187,12 +187,12 @@ higher frequencies need corrections at lower frequencies.
     \label{fig:antenna-layout}
 \end{figure}
 
-The Owens Valley Long Wavelength Array (OVRO LWA) is a 288-element interferometer located at the
-Owens Valley Radio Observatory (OVRO) near Big Pine, California.  The OVRO LWA is a low-frequency
+The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
+Owens Valley Radio Observatory (OVRO) near Big Pine, California.  The OVRO-LWA is a low-frequency
 instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz and 24 kHz channelization.
 Each antenna stand hosts two perpendicular broadband dipoles so that there are $288\times2$ signal
 paths in total. These signal paths feed into the 512-input LEDA correlator
-\citep{2015JAI.....450003K}, which allows the OVRO LWA to capture the entire visible hemisphere in a
+\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
 single snapshot image.  In the current configuration 32 antennas (64 signal paths) are unused.
 
 The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
@@ -207,7 +207,7 @@ Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
 
 Beginning at 2017-02-17 12:00:00 UTC time, 28 consecutive hours of data was collected. This time was
 chosen based on the fact that it was raining at OVRO and rain tends to improve the low-frequency RFI
-environment considerably. During this time the OVRO LWA operated as a zenith-pointing drift scanning
+environment considerably. During this time the OVRO-LWA operated as a zenith-pointing drift scanning
 interferometer.  The correlator dump time was selected to be 13 seconds such that the correlator
 output evenly divides a sidereal day.
 
@@ -221,12 +221,13 @@ the Julia programming language \citep{doi:10.1137/141000671}, and is publicly av
 online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
 
 The antenna complex gains are updated once per day from a 9 hour track of data when Cas A and Cyg A
-are at high elevations.  These two sources are -- by an order of magnitude -- the brightest radio
-sources in the northern hemisphere.  Therefore the optimal time to solve for the interferometer's
-gain calibration is when Cas A and Cyg A are at high elevations. A calibration obtained in this
-manner is good consistent with the following day's calibration to within a 1\% error in the flux
-scale and 1$'$ error in the astrometry \todo{double check these numbers}. These residual errors are
-likely driven by differing ionospheric conditions.
+are at high elevations \todo{the rainy day dataset actually uses a shorter track of data, we should
+try using the 9 hour track again}.  These two sources are -- by an order of magnitude -- the
+brightest radio sources in the northern hemisphere.  Therefore the optimal time to solve for the
+interferometer's gain calibration is when Cas A and Cyg A are at high elevations. A calibration
+obtained in this manner is good consistent with the following day's calibration to within a 1\%
+error in the flux scale and 1$'$ error in the astrometry \todo{double check these numbers}. These
+residual errors are likely driven by differing ionospheric conditions.
 
 The flux scale is tied to the work of \citet{2016arXiv160905940P}.
 
@@ -239,7 +240,7 @@ per-antenna amplitude correction that is then applied to the cross-correlations.
 \subsection{Primary Beam Measurements}
 
 In order to generate wide-field images of the sky, the response of the antenna to the sky must be
-known. Fortunately drift-scanning interferometers like the OVRO LWA can empirically measure their
+known. Fortunately drift-scanning interferometers like the OVRO-LWA can empirically measure their
 primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
 assume that the primary beam is invariant under north-south and east-west flips, and additionally
 that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
@@ -266,7 +267,7 @@ observed. Therefore the direction dependent calibration changes on these timesca
 solve for one set of complex gains per source per integration.
 
 The largest angular scale of Cas A is $\sim$8 arcminutes, while the largest angular scale of Cyg A
-is $\sim$2 arcminutes. With a 10 arcminute resolution, the OVRO LWA marginally resolves both
+is $\sim$2 arcminutes. With a 10 arcminute resolution, the OVRO-LWA marginally resolves both
 sources. A resolved source model is needed for both sources. We fit a self-consistent resolved
 source model to eachs ource. This is performed by minimizing the minimizing the variance within an
 aperture located on each source after peeling. By phasing up a large number of integrations before
@@ -282,7 +283,7 @@ until the variance within the aperture is minimized.
 
 The Sun can be trivially removed from any map of the sky by constructing the map using only data
 taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
-However the OVRO LWA 100 hour dataset consists of 100 consecutive hours of data, and hence roughly
+However the OVRO-LWA 100 hour dataset consists of 100 consecutive hours of data, and hence roughly
 half of the data is from the day.
 
 The Sun is a time variable source in radio.
@@ -292,7 +293,7 @@ The Sun is a time variable source in radio.
 \subsubsection{Sparking Power Lines}
 
 The Owens Valley is an important source of water and power for the city of Los Angeles.
-Unfortunately this means that high voltage power lines run along the valley to the west of the OVRO
+Unfortunately this means that high voltage power lines run along the valley to the west of the OVRO-
 LWA. Some of these power line poles have faulty insulators that arc and produce pulsed, broadband
 RFI. Because these poles exist in the near-field of the array, we have been able to localize some of
 them by using the curvature of the incoming wavefront. Efforts are currently underway to work with
@@ -385,7 +386,7 @@ entire sky is imaged in one coherent synthesis imaging step.
 
 In this context we will define a transit telescope as any interferometer where the response pattern
 of the individual elements does not change with respect to time. This may be an interferometer like
-the OVRO LWA where the correlation elements are fixed dipoles, but it may also be an interferometer
+the OVRO-LWA where the correlation elements are fixed dipoles, but it may also be an interferometer
 like the MWA if the steerable beams are held in a fixed position (not necessarily at zenith).
 
 We will briefly summarize $m$-mode analysis below, but the interested reader should consult
@@ -458,7 +459,7 @@ block-diagonal structure in $\b B$, $\b v$ and $\b a$ must be sorted by the valu
 \end{equation}
 
 In practice we now need to pick the set of spherical harmonics we will use to represent the sky. For
-an interferometer like the OVRO LWA with lots of short baselines, a sensible choice is to use all
+an interferometer like the OVRO-LWA with lots of short baselines, a sensible choice is to use all
 spherical harmonics with $l\le l_\text{max}$ for some $l_\text{max}$. The parameter $l_\text{max}$
 is determined by the maximum baseline length of the interferometer.  For an interferometer without
 short spacings, a minimum value for $l$ might also be used. This $l_\text{min}$ parameter should be
@@ -476,11 +477,11 @@ because we do not have a measurement of cross-talk or common-mode noise.
 The size of a typical block in the transfer matrix is
 $(2N_\text{base}N_\text{freq})\times(l_\text{max})$. If each element of the matrix is stored as a
 64-bit complex floating point number, a single block is 500 MB for the case of single-channel
-imaging with the OVRO LWA. Compare this number with the 5 PB required for the naive approach.  The
+imaging with the OVRO-LWA. Compare this number with the 5 PB required for the naive approach.  The
 power of $m$-mode analysis is the block-diagonal structure of
 equation~\ref{eq:m-mode-matrix-equation}.  By breaking up the problem into $N$ independent blocks,
 the computational complexity involved in inverting the equation is reduced by a factor $N^3$. For
-the case of the OVRO LWA the equation breaks up into $\sim10^3$ blocks and so we save a factor of
+the case of the OVRO-LWA the equation breaks up into $\sim10^3$ blocks and so we save a factor of
 $\sim10^9$ in processing time by using $m$-mode analysis.
 
 \subsection{$m$-Mode Analysis Imaging}
@@ -594,7 +595,7 @@ on to off. Modes are either set to zero or included in the map at their full amp
 hand Tikhonov regularization smoothly interpolates between these behaviors. Because of this,
 Tikhonov regularization tends to produce better results in practical applications.
 
-\subsection{$m$-Mode Analysis with the OVRO LWA}
+\subsection{$m$-Mode Analysis with the OVRO-LWA}
 
 
 
