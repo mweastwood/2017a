@@ -407,9 +407,9 @@ poorly regularized and the resulting sky map may not represent the true sky. Pic
 $\varepsilon$ therefore requires understanding the trade-off between the two norms.
 
 This trade-off can be analyzed quantitatively by trialing several values of $\varepsilon$ and
-computing $\|\b v - \b B\b a\|^2$ and $\|\b a\|^2$ for each trial. An example is shown in Figure
-\todo{create a figure}. The shape of this curve has a characteristic L-shape, and as a result this
-type of plot is called an L-curve \todo{reference}. The ideal value of $\varepsilon$ lies near the
+computing $\|\b v - \b B\b a\|^2$ and $\|\b a\|^2$ for each trial. An example is shown in
+Figure~\ref{fig:lcurve}. The shape of this curve has a characteristic L-shape, and as a result this
+type of plot is called an L-curve \todo{reference?}. The ideal value of $\varepsilon$ lies near the
 turning point of the plot. At this point a small decrease in $\varepsilon$ will lead to an undesired
 rapid increase in $\|\b a\|^2$, and a small increase in $\varepsilon$ will lead to an undesired
 rapid increase in $\|\b v - \b B\b a\|^2$.
@@ -520,14 +520,15 @@ Antenna gain calibration is accomplished using an iterative method independently
 the Julia programming language \citep{doi:10.1137/141000671}, and is publicly available
 online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
 
-The antenna complex gains are updated once per day from a 9 hour track of data when Cas A and Cyg A
-are at high elevations \todo{the rainy day dataset actually uses a shorter track of data, we should
-try using the 9 hour track again}.  These two sources are -- by an order of magnitude -- the
-brightest radio sources in the northern hemisphere.  Therefore the optimal time to solve for the
-interferometer's gain calibration is when Cas A and Cyg A are at high elevations. A calibration
-obtained in this manner is good consistent with the following day's calibration to within a 1\%
-error in the flux scale and 1$'$ error in the astrometry \todo{double check these numbers}. These
-residual errors are likely driven by differing ionospheric conditions.
+The antenna complex gains are measured from a 7.2 hour track of data from when Cyg A and Cas are at
+high elevations. The gains measured in this way are then used to calibrate the entire 28 hour
+dataset. Cyg A and Cas A are -- by an order of magnitude -- the brightest point-like radio sources
+in the northern hemisphere. Therefore the optimal time to solve for the interferometer's gain
+calibration is when these sources are at high elevations. \todo{cite some statistics on how good
+this calibration is? what do I quantify?}
+
+\todo{at the moment we calibrated with the Baars spectrum for Cas. we should actually iterate once
+and use the new spectrum that comes out of the beam fitting routine}
 
 The flux scale is tied to the work of \citet{1977A&A....61...99B, 2012MNRAS.423L..30S,
 2017ApJS..230....7P}.
@@ -540,14 +541,34 @@ per-antenna amplitude correction that is then applied to the cross-correlations.
 
 \subsection{Primary Beam Measurements}
 
+\begin{figure*}[ht]
+    \gridline{
+        \fig{figures/beam/source-tracks}{0.45\textwidth}{(a)}
+        \fig{figures/beam/stokes-I-beam}{0.45\textwidth}{(b)}
+    }
+    \caption{
+        Example beam model (from spw04).
+    }
+    \label{fig:beam}
+\end{figure*}
+
 In order to generate wide-field images of the sky, the response of the antenna to the sky must be
 known. Fortunately drift-scanning interferometers like the OVRO-LWA can empirically measure their
 primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
 assume that the primary beam is invariant under north-south and east-west flips, and additionally
 that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
-We measure the flux of several point sources \todo{which ones??} as they pass through the sky and
-then fit a beam model composed of Zernike polynomials to those flux measurements. We select the
-basis functions to have the desired symmetry.
+These symmetries are apparent in the antenna design, but real-world defects and coupling with nearby
+antennas will contribute towards breaking these symmetries at some level. However some amount of
+symmetry must be assumed in order to break the degeneracy between source flux and beam amplitude
+when the flux of a source is unknown.
+
+We measure the flux of several bright sources (Cyg A, Cas A, Tau A, Vir A, Her A, Hya A, Per B, and
+3C 353) as they pass through the sky and then fit a beam model composed of Zernike polynomials to
+those flux measurements. We select the basis functions to have the desired symmetry ($Z_0^0$,
+$Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, $Z_8^8$) and the beam amplitude at
+zenith is constrained to be unity.
+
+\todo{plot that shows the tracks after symmetries applied and the resulting beam fit?}
 
 \subsection{Source Removal}
 
