@@ -62,9 +62,6 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{natbib}
 
 \renewcommand{\b}{\pmb}
 \renewcommand{\d}{{\rm d}}
@@ -170,7 +167,7 @@ higher frequencies need corrections at lower frequencies.
 \section{All-Sky Imaging}
 
 \begin{figure*}[ht]
-    \includegraphics[width=\textwidth]{maps/rgb-map-small}
+    \plotone{maps/rgb-map-small}
     \caption{three color map}
     \label{fig:rgb}
 \end{figure*}
@@ -392,8 +389,7 @@ a_\text{prior}\|^2$.
 \subsubsection{L-Curves}
 
 \begin{figure}[t]
-    \centering
-    \includegraphics[width=\columnwidth]{figures/lcurve/lcurve}
+    \plotone{figures/lcurve/lcurve}
     \caption{
         Example l-curve (from spw04)
     }
@@ -476,8 +472,7 @@ by
 \subsection{The Owens Valley Long Wavelength Array}
 
 \begin{figure}[t]
-    \centering
-    \includegraphics[width=\columnwidth]{figures/antenna-layout/antenna-layout}
+    \plotone{figures/antenna-layout/antenna-layout}
     \caption{
         This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
         within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
@@ -542,12 +537,9 @@ per-antenna amplitude correction that is then applied to the cross-correlations.
 \subsection{Primary Beam Measurements}
 
 \begin{figure*}[ht]
-    \gridline{
-        \fig{figures/beam/source-tracks}{0.45\textwidth}{(a)}
-        \fig{figures/beam/stokes-I-beam}{0.45\textwidth}{(b)}
-    }
+    \plottwo{figures/beam/source-tracks}{figures/beam/stokes-I-beam}
     \caption{
-        Example beam model (from spw04).
+        Example Stokes-I beam model (from spw04).
     }
     \label{fig:beam}
 \end{figure*}
@@ -566,9 +558,8 @@ We measure the flux of several bright sources (Cyg A, Cas A, Tau A, Vir A, Her A
 3C 353) as they pass through the sky and then fit a beam model composed of Zernike polynomials to
 those flux measurements. We select the basis functions to have the desired symmetry ($Z_0^0$,
 $Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, $Z_8^8$) and the beam amplitude at
-zenith is constrained to be unity.
-
-\todo{plot that shows the tracks after symmetries applied and the resulting beam fit?}
+zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustration of the fitted beam
+model.
 
 \subsection{Source Removal}
 
@@ -617,14 +608,12 @@ frequencies than at lower frequencies.
 \subsection{Terrestrial Interference and Pickup}
 
 \begin{figure*}[ht]
-    \centering
-    \begin{tabular}{cccc}
-        \includegraphics[width=0.22\textwidth]{figures/smeared-images/before-component-removal-spw14} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-images/after-component-removal-spw14} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-images/rfi-like-component-spw14} &
-        \includegraphics[width=0.22\textwidth]{figures/smeared-images/pickup-like-component-spw14} \\
-        \textbf{(a)} & \textbf{(b)} & \textbf{(c)} & \textbf{(d)} \\
-    \end{tabular}
+    \gridline{
+        \fig{figures/smeared-images/before-component-removal-spw14}{0.22\textwidth}{(a)}
+        \fig{figures/smeared-images/after-component-removal-spw14}{0.22\textwidth}{(b)}
+        \fig{figures/smeared-images/rfi-like-component-spw14}{0.22\textwidth}{(c)}
+        \fig{figures/smeared-images/pickup-like-component-spw14}{0.22\textwidth}{(d)}
+    }
     \caption{
         This figure illustrates the process of fitting for terrestrial sources of correlated noise.
         Each image is of the entire visible hemisphere above the OVRO-LWA but the data has been
@@ -795,42 +784,14 @@ averages that unless the scintillation is Cauchy distributed it is not that bad.
 
 \subsection{Sky Maps}
 
-%\begin{figure*}[ht]
-%    \centering
-%    \begin{tabular}{cc}
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%    \end{tabular}
-%    \caption{single channel maps}
-%\end{figure*}
-%
-%\begin{figure*}[ht]
-%    \centering
-%    \begin{tabular}{cc}
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} &
-%        \includegraphics[width=\columnwidth, draft]{maps/rgb-map} \\
-%    \end{tabular}
-%    \caption{jackknifed error maps}
-%\end{figure*}
-
-\begin{table*}[t]
-    \centering
-    \begin{tabular}{ccccc}
-        \hline\hline
-        \# & $\nu$ / MHz & $\Delta\nu$ / MHz
-           & $\theta$ / arcmin  & noise / Jy \\ \hline
+\floattable
+\begin{deluxetable}{ccccc}
+    \tablecaption{Summary of the produced maps\label{tab:summary}}
+    \tablehead{
+        \colhead{\#} & \colhead{$\nu$ / MHz} & \colhead{$\Delta\nu$ / MHz} &
+        \colhead{$\theta$ / arcmin} & \colhead{noise / Jy}
+    }
+    \startdata
         1 & 36.528 & 0.024 & & \\
         2 & 41.760 & 0.024 & & \\
         3 & 46.992 & 0.024 & & \\
@@ -839,10 +800,8 @@ averages that unless the scintillation is Cauchy distributed it is not that bad.
         6 & 62.688 & 0.024 & & \\
         7 & 67.920 & 0.024 & & \\
         8 & 73.152 & 0.024 & & \\
-        \hline\hline
-    \end{tabular}
-    \caption{Summary of the produced maps}
-\end{table*}
+    \enddata
+\end{deluxetable}
 
 \subsection{Error Maps}
 
