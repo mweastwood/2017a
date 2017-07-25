@@ -57,11 +57,12 @@
 % * (Model) image of the systematic errors in the map created from beam errors
 % * (Model) image of the errors created from sporadic peeling failures
 
-\documentclass[twocolumn]{aastex6}
+\documentclass[twocolumn]{aastex61}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage[]{algorithm2e}
 
 \renewcommand{\b}{\pmb}
 \renewcommand{\d}{{\rm d}}
@@ -72,17 +73,33 @@
 
 \title{The Radio Sky at Meter Wavelengths: $m$-Mode Analysis Imaging with the Owens Valley Long Wavelength Array}
 
-\author{
-    Michael W. Eastwood,
-    Gregg Hallinan,
-    Twilight Sparkle,
-    Rainbow Dash
-}
+\author{Michael W. Eastwood}
+\affiliation{Department of Astronomy, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+
+\author{Marin M. Anderson}
+\affiliation{Department of Astronomy, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+
+\author{Ryan Monroe}
+\affiliation{Department of Electrical Engineering, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+
+\author{Gregg Hallinan}
+\affiliation{Department of Astronomy, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+
+\author{Esayas B. Shume} % contributed ionosphere text
+\affiliation{Jet Propulsion Laboratory, 4800 Oak Grove Dr, Pasadena, CA 91109}
+
 
 \begin{abstract}
     I present all-sky maps of the sky from the Owens Valley Long Wavelength Array.
-    These maps are created from the application of $m$-mode analysis.
+    These maps are created from the application of $m$-mode analysis. \todo{Wednesday}
 \end{abstract}
+
+\keywords{
+    cosmology: observations --
+    dark ages, reionization, first stars --
+    radio continuum: galaxies --
+    radio continuum: ISM
+}
 
 \section{Introduction}
 
@@ -123,10 +140,10 @@ that are aiming to detect the spectral signature of the cosmologically redshifte
 after averaging over the entire sky, and power spectrum experiments that incorporate angular
 information to attempt to measure the spatial power spectrum of cosmological 21 cm perturbations.
 Ongoing global experiments include EDGES \citep{2010Natur.468..796B, 2017ApJ...835...49M}, LEDA
-\todo{cite Price et al. 2017}, BIGHORNS \citep{2015PASA...32....4S}, SCI-HI
-\citep{2014ApJ...782L...9V}, and SARAS 2 \citep{2017arXiv170306647S}.  Ongoing power spectrum
-experiments include PAPER/HERA \citep{2015ApJ...809...61A, 2016arXiv160607473D}, LOFAR
-\citep{2017ApJ...838...65P}, and the MWA \citep{2016ApJ...833..102B}.
+\citep{todo_price_2017}, BIGHORNS \citep{2015PASA...32....4S}, SCI-HI \citep{2014ApJ...782L...9V},
+and SARAS 2 \citep{2017arXiv170306647S}.  Ongoing power spectrum experiments include PAPER/HERA
+\citep{2015ApJ...809...61A, 2016arXiv160607473D}, LOFAR \citep{2017ApJ...838...65P}, and the MWA
+\citep{2016ApJ...833..102B}.
 
 Just as for CMB experiments, foreground removal or suppression is an essential component of both
 classes of 21 cm cosmology experiments. The brightness temperature of the galactic synchrotron
@@ -170,7 +187,15 @@ imaging technique for transit telescopes.
 
 \begin{figure*}[ht]
     \plotone{maps/2017-04-20-rgb-map-smaller}
-    \caption{three color map}
+    \caption{
+        This Mollweide-projected map is constructed from 3 maps of the sky at 41.760 MHz (red),
+        57.456 MHz (green), and 73.152 MHz (blue) using data from the Owens Valley Long Wavelength
+        Array. These maps were constructed using $m$-mode analysis imaging. 8 bright radio sources
+        have been subtracted from the sky (Cyg A, Cas A, Vir A, Tau A, Hya A, Her A, Per B, and 3C
+        353). The hole corresponds to declinations less than $-30^\circ$. Most of the diffuse
+        emission is synchrotron, but the blue regions mottling the galactic plane are due to
+        free-free absorption from \ion{H}{2} regions.
+    }
     \label{fig:rgb}
 \end{figure*}
 
@@ -186,6 +211,13 @@ incident radiation, then
 \end{equation}
 Imaging the output of a radio interferometer therefore consists of estimating $I_\nu(\hat r)$ given
 the available measurements $V^{ij}_\nu$.
+
+For later convenience we will define the baseline transfer function $B^{ij}_\nu(\hat r)$ such that
+\begin{equation}\label{eq:baseline-transfer-function}
+    V^{ij}_\nu = \int_\text{sky} B^{ij}_\nu(\hat r) I_\nu(\hat r) \,\d\Omega \, .
+\end{equation}
+The baseline transfer function defines the response of a single baseline to the sky, and is a
+function of the antenna primary beam and baseline orientation.
 
 Naively one might attempt to solve equation~\ref{eq:basic-imaging} by discretizing, and subsequently
 solving the resulting matrix equation. If the interferometer is composed of $N_\text{base}$
@@ -224,11 +256,11 @@ We will briefly summarize $m$-mode analysis below, but the interested reader sho
 \citet{2014ApJ...781...57S, 2015PhRvD..91h3514S} for a complete derivation.
 
 For a transit telescope, the visibilities $V^{ij}_\nu$ are a periodic function of sidereal
-time\footnote{
+time.\footnote{
     This is not strictly true. Ionospheric fluctuations and non-sidereal sources (such as the sun)
     will violate this assumption. This paper will, however, demonstrate that the impact on the final
     maps is mild.
-}.
+}
 Therefore it is a very natural operation to compute the Fourier transform of the visibilities with
 respect to sidereal time $\phi\in[0,2\pi)$.
 \begin{equation}
@@ -239,8 +271,6 @@ $m=0,\,\pm1,\,\pm2,\,\ldots$ is the Fourier conjugate variable to the sidereal t
 corresponding to $m=0$ is a simple average of the visibilities over sidereal time. Similarly $m=1$
 corresponds to the component of the visibilities that varies over half-day timescales. Larger values
 of $m$ correspond to components that vary on quicker timescales.
-
-\todo{introduce the baseline transfer function because I will want to use it in later sections}
 
 It can be shown that there is a discrete linear relationship between the $m$-modes $V^{ij}_{m,\nu}$
 and the spherical harmonic coefficients of the sky brightness $a_{lm,\nu}$.
@@ -393,7 +423,13 @@ a_\text{prior}\|^2$.
 \begin{figure}[t]
     \plotone{figures/lcurve/lcurve}
     \caption{
-        Example l-curve (from spw04)
+        An example L-curve using OVRO-LWA data at 36.528 MHz. The $x$-axis is the norm of the
+        solution (in this case the spherical harmonic coefficients) given in arbitrary units. The
+        $y$-axis is the least-squares norm given in arbitrary units. $\varepsilon$ is the
+        regularization parameter. When the regularization parameter is small, the norm of the
+        solution grows rapidly. When the regularization parameter is large, the least-squares norm
+        grows rapidly. The optimal value for the regularization parameter is near
+        $\varepsilon=0.01$.
     }
     \label{fig:lcurve}
 \end{figure}
@@ -407,10 +443,10 @@ $\varepsilon$ therefore requires understanding the trade-off between the two nor
 This trade-off can be analyzed quantitatively by trialing several values of $\varepsilon$ and
 computing $\|\b v - \b B\b a\|^2$ and $\|\b a\|^2$ for each trial. An example is shown in
 Figure~\ref{fig:lcurve}. The shape of this curve has a characteristic L-shape, and as a result this
-type of plot is called an L-curve \todo{reference?}. The ideal value of $\varepsilon$ lies near the
-turning point of the plot. At this point a small decrease in $\varepsilon$ will lead to an undesired
-rapid increase in $\|\b a\|^2$, and a small increase in $\varepsilon$ will lead to an undesired
-rapid increase in $\|\b v - \b B\b a\|^2$.
+type of plot is called an L-curve. The ideal value of $\varepsilon$ lies near the turning point of
+the plot. At this point a small decrease in $\varepsilon$ will lead to an undesired rapid increase
+in $\|\b a\|^2$, and a small increase in $\varepsilon$ will lead to an undesired rapid increase in
+$\|\b v - \b B\b a\|^2$.
 
 In practice, the L-curve should be used as a guide to estimate a reasonable value of $\varepsilon$.
 However better results can often be obtained by tuning the value of $\varepsilon$. For instance
@@ -439,28 +475,62 @@ Tikhonov regularization tends to produce better results in practical application
 
 \subsection{$m$-Mode Analysis Image Deconvolution}
 
-While $m$-mode analysis imaging automatically deconvolves large angular scales, point sources do not
-get deconvolved by the imaging process. This is a limitation of the set of basis functions we have
-chosen to represent the sky -- the spherical harmonics. Point sources carry power to large values of
-$l$, but the regularization will eventually begin to downweight spherical harmonics with $l$ larger
-than what the interferometer is sensitive to. This consequence of this is that point sources will
-appear in the maps with some characteristic point spread function. This point spread function may be
-computed with
+$m$-mode analysis imaging automatically deconvolves angular scales described by modes for which the
+singular values of $\b B$ are $\gg \sqrt{\varepsilon}$. For example, structures on angular scales
+smaller than $\lambda/b_\text{min}$ and larger than $\lambda/b_\text{max}$ (where $b_\text{min}$ and
+$b_\text{max}$ are the minimum and maximum baseline lengths) are generally well-measured by the
+interferometer and will be automatically deconvolved during the imaging process. However, as the
+total integration time of the data set increases, the noise in the data decreases. One consequence
+of this is that the regularization parameter $\varepsilon$ can be decreased. This increases the
+number of modes for which $\sigma_i \gg \sqrt{\varepsilon}$, and as a consequence the automatic
+deconvolution can extend to scales larger than $\lambda/b_\text{min}$ and smaller than
+$\lambda/b_\text{max}$.
+
+However point sources do not get deconvolved by the imaging process even in the limit of infinite
+SNR and $\varepsilon \rightarrow 0$. This is because point sources carry power to large values of
+$l$ and by computational necessity we truncated the spherical harmonic representation of the sky at
+some $l_\text{max}$. A consequence of this is that point sources will appear in the maps with a
+characteristic point spread function (PSF). The PSF may be computed with:
 \begin{equation}
     \b a_\text{PSF}(\theta, \phi)
         = (\b B^*\b B + \varepsilon\b I)^{-1}\b B^*\b B\b a_\text{PS}(\theta, \phi)\,,
 \end{equation}
 where $\b a_\text{PSF}(\theta, \phi)$ is the vector of spherical harmonic coefficients representing
-the point spread function at the spherical coordinates $(\theta, \phi)$, and $\b a_\text{PS}(\theta,
-\phi)$ is the vector of spherical harmonic coefficients for a point source at $(\theta, \phi)$ given
-by
+the PSF at the spherical coordinates $(\theta, \phi)$, and $\b a_\text{PS}(\theta, \phi)$ is the
+vector of spherical harmonic coefficients for a point source at $(\theta, \phi)$ given by
 \begin{equation}
     a_{lm, \text{PS}}(\theta, \phi) = Y_{lm}^*(\theta, \phi)\,.
 \end{equation}
 
-\todo{include a few images of the computed PSF for my maps}
+In general the PSF can be a function of the right ascension and declination. However point sources
+at the same declination take the same track through the sky and therefore (barring any ionospheric
+effects) will have the same PSF. The PSF is actually only a function of the declination. For
+example, sources at low elevations will tend to have an extended PSF along the north-south axis due
+to baseline foreshortening. An example computed PSF is shown in Figure~\ref{fig:psf}.
 
-\todo{describe how we incorporate this into major and minor iterations}
+The computed PSF as a function of frequency and declination can be used to adapt the CLEAN algorithm
+\citep{1974A&AS...15..417H} to $m$-mode analysis.
+
+\begin{algorithm}
+    \KwData{dirty maps generated from the output of Equation~\ref{eq:tikhonov-solution};}
+    \KwResult{clean maps with point sources deconvolved;}
+    pre-compute $\b M = (\b B^*\b B + \varepsilon\b I)^{-1}\b B^*\b B$\;
+    \While{noise in map $>$ threshold}{
+        identify the pixel with the largest amplitude\;
+        compute $\b a_\text{PSF} = \b M \b a_\text{PS}$\;
+        update $\b a \leftarrow \b a - (\textit{gain})\times\b a_\text{PSF}$\;
+    }
+    convolve removed components with a CLEAN-beam and restore to the map\;
+\end{algorithm}
+
+It should be noted that for interferometers with more baselines than the number of spherical
+harmonics used in the maps, $\b M$ is a much smaller matrix than the full transfer matrix $\b B$.
+Therefore the cost of multiplying by $\b M$ can actually be dominated by the cost of computing the
+spherical harmonics describing a point source at the identified pixel.
+
+
+
+
 
 
 
@@ -484,23 +554,31 @@ by
     \label{fig:antenna-layout}
 \end{figure}
 
+\begin{figure}[t]
+    \plotone{figures/psf/spw04-psf-45-degrees}
+    \caption{
+        The computed PSF for the OVRO-LWA for a point source at a declination of $+45^\circ$ and
+        frequency of $36.528$ MHz.
+    }
+    \label{fig:psf}
+\end{figure}
+
 The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
-Owens Valley Radio Observatory (OVRO) near Big Pine, California.  The OVRO-LWA is a low-frequency
-instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz and 24 kHz channelization.
-Each antenna stand hosts two perpendicular broadband dipoles so that there are $288\times2$ signal
-paths in total. These signal paths feed into the 512-input LEDA correlator
-\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
-single snapshot image.  In the current configuration 32 antennas (64 signal paths) are unused.
+Owens Valley Radio Observatory (OVRO) near Big Pine, California \citep{todo_hallinan_2017}.  The
+OVRO-LWA is a low-frequency instrument with instantaneous bandwidth covering 27.384 MHz to 84.912
+MHz and 24 kHz channelization.  Each antenna stand hosts two perpendicular broadband dipoles so that
+there are $288\times2$ signal paths in total. These signal paths feed into the 512-input LEDA
+correlator \citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible
+hemisphere in a single snapshot image.  In the current configuration 32 antennas (64 signal paths)
+are unused.
 
 The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
 snapshot imaging.  251 of the antennas are contained within a 200 m diameter core. 32 antennas are
 placed outside of the core in order to extend the maximum baseline length out to $\sim$1.5 km. The
 final 5 antennas are equipped with noise-switched front ends for calibrated total power measurements
-of the global sky brightness.  These antennas are used as part of the LEDA experiment \todo{cite
-Price et al. 2017} to measure the global signal of 21 cm absorption from the cosmic dawn.
+of the global sky brightness.  These antennas are used as part of the LEDA experiment
+\citep{todo_price_2017} to measure the global signal of 21 cm absorption from the cosmic dawn.
 Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
-
-\todo{cite Gregg's instrument paper}
 
 Beginning at 2017-02-17 12:00:00 UTC time, 28 consecutive hours of data was collected. This time was
 chosen based on the fact that it was raining at OVRO and rain tends to improve the low-frequency RFI
@@ -508,7 +586,14 @@ environment considerably. During this time the OVRO-LWA operated as a zenith-poi
 interferometer.  The correlator dump time was selected to be 13 seconds such that the correlator
 output evenly divides a sidereal day.
 
-\todo{describe the ionospheric conditions at the time}
+The geomagnetic conditions during this time were mild. The Disturbance storm time (Dst) index was
+$>-30$ nT during the entirety of the observing period.\footnote{
+    The Dst index was obtained from the World Data Center for Geomagnetism, Kyoto University
+    (\url{http://swdcwww.kugi.kyoto-u.ac.jp/}).
+}
+Following the classification scheme of \citet{2008GMS...181.....K}, a weak geomagnetic storm has
+$\text{Dst} < -30$ nT. Therefore there were no geomagnetic storms during the time of these
+observations.
 
 \subsection{Gain Calibration}
 
@@ -535,6 +620,8 @@ analog gain. These oscillations occur with a variable 15 to 17 minute period. Th
 gain fluctuations is calibrated by smoothing the autocorrelation amplitudes on 45 minute timescales.
 The ratio of the measured auto-correlation power to the smoothed auto-correlation power defines a
 per-antenna amplitude correction that is then applied to the cross-correlations.
+
+\todo{tuesday}
 
 \subsection{Primary Beam Measurements}
 
@@ -808,14 +895,11 @@ averages that unless the scintillation is Cauchy distributed it is not that bad.
 \subsection{Error Maps}
 
 
-\section{A Nearby Supernova Remnant????}
-
-
 \section{Discussion}
 
-These maps are pretty cool. Any questions?
+\citet{todo_mishra_2017}
 
-\todo{Cite Abhilash, Eastwood 2017}
+\todo{Wednesday}
 
 \bibliographystyle{apj}
 \bibliography{paper}
