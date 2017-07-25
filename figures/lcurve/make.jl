@@ -1,7 +1,8 @@
 using JLD, PyPlot
 
 path = dirname(@__FILE__)
-trials, regnorm, lsnorm = load(joinpath(path, "lcurve.jld"), "trials", "regnorm", "lsnorm")
+#trials, regnorm, lsnorm = load(joinpath(path, "lcurve.jld"), "trials", "regnorm", "lsnorm")
+trials, regnorm, lsnorm = load(joinpath(path, "18.jld"), "trials", "regnorm", "lsnorm")
 
 close("all")
 figure(1, figsize=(6, 4))
