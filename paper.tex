@@ -69,38 +69,50 @@
 \newcommand{\atikh}{\b{\hat a}_\text{Tikhonov}}
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 
+\newcommand{\astrocaltech}{
+    \affiliation{
+        Department of Astronomy,
+        California Institute of Technology,
+        1200 E California Blvd,
+        Pasadena, CA 91125
+    }
+}
+
 \begin{document}
 
-\title{The Radio Sky at Meter Wavelengths: $m$-Mode Analysis Imaging with the Owens Valley Long Wavelength Array}
+\title{
+    The Radio Sky at Meter Wavelengths: $m$-Mode Analysis Imaging\\
+    with the Owens Valley Long Wavelength Array
+}
 
 \author{Michael W. Eastwood}
-\affiliation{Department of Astronomy, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+\astrocaltech
 
-\author{Marin M. Anderson}
-\affiliation{Department of Astronomy, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
-
-\author{Ryan Monroe}
-\affiliation{Department of Electrical Engineering, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+%\author{Marin M. Anderson}
+%\affiliation{Department of Astronomy, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+%
+%\author{Ryan Monroe}
+%\affiliation{Department of Electrical Engineering, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
 
 \author{Gregg Hallinan}
-\affiliation{Department of Astronomy, California Institute of Technology, 1200 E California Blvd, Pasadena, CA 91125}
+\astrocaltech
 
-\author{Lincoln Greenhill}
-\affiliation{Harvard}
-
-\author{Hugh Garsden}
-\affiliation{Harvard}
-
-\author{Stephen Bourke}
-\affiliation{Chalmers}
-
-\author{Esayas B. Shume} % contributed ionosphere text
-\affiliation{Jet Propulsion Laboratory, 4800 Oak Grove Dr, Pasadena, CA 91109}
+%\author{Lincoln Greenhill}
+%\affiliation{Harvard}
+%
+%\author{Hugh Garsden}
+%\affiliation{Harvard}
+%
+%\author{Stephen Bourke}
+%\affiliation{Chalmers}
+%
+%\author{Esayas B. Shume} % contributed ionosphere text
+%\affiliation{Jet Propulsion Laboratory, 4800 Oak Grove Dr, Pasadena, CA 91109}
 
 
 \begin{abstract}
     I present all-sky maps of the sky from the Owens Valley Long Wavelength Array.
-    These maps are created from the application of $m$-mode analysis. \todo{Wednesday}
+    These maps are created from the application of $m$-mode analysis.
 \end{abstract}
 
 \keywords{
@@ -110,6 +122,7 @@
     radio continuum: ISM
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
 Studies of the cosmic microwave background (CMB) have given us an unprecedented understanding of the
@@ -192,280 +205,7 @@ In this paper we will present a series of new low-frequency maps of the sky betw
 angular resolution of roughly 10'. These maps are generated using $m$-mode analysis imaging -- a new
 imaging technique for transit telescopes.
 
-\section{Observations}
-
-\begin{figure*}[ht]
-    \plotone{maps/2017-04-20-rgb-map-smaller}
-    \caption{
-        This Mollweide-projected map is constructed from 3 maps of the sky at 41.760 MHz (red),
-        57.456 MHz (green), and 73.152 MHz (blue) using data from the Owens Valley Long Wavelength
-        Array. These maps were constructed using $m$-mode analysis imaging. 8 bright radio sources
-        have been subtracted from the sky (Cyg A, Cas A, Vir A, Tau A, Hya A, Her A, Per B, and 3C
-        353). The hole corresponds to declinations less than $-30^\circ$. Most of the diffuse
-        emission is synchrotron, but the blue regions mottling the galactic plane are due to
-        free-free absorption from \ion{H}{2} regions.
-    }
-    \label{fig:rgb}
-\end{figure*}
-
-\subsection{The Owens Valley Long Wavelength Array}
-
-\begin{figure}[t]
-    \plotone{figures/antenna-layout/antenna-layout}
-    \caption{
-        This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
-        within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
-        built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
-        antennas equipped with noise-switched front ends.
-    }
-    \label{fig:antenna-layout}
-\end{figure}
-
-\begin{deluxetable}{cCCCC}
-    \tablecaption{Summary of the generated all-sky maps\label{tab:summary}}
-    \tablewidth{0pt}
-    \tablehead{
-        \colhead{} & \colhead{Frequency} & \colhead{Bandwidth} & \colhead{FWHM} \\
-        \colhead{\#} & \colhead{(MHz)} & \colhead{(MHz)} & \colhead{(arcmin)}
-    }
-    \startdata
-        1 & 36.528 & 0.024 & 16.2 \\
-        2 & 41.760 & 0.024 & 14.7 \\
-        3 & 46.992 & 0.024 & 14.2 \\
-        4 & 52.224 & 0.024 & 13.6 \\
-        5 & 57.456 & 0.024 & 13.5 \\
-        6 & 62.688 & 0.024 & 13.5 \\
-        7 & 67.920 & 0.024 & 13.5 \\
-        8 & 73.152 & 0.024 & 13.7 \\
-    \enddata
-\end{deluxetable}
-
-The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
-Owens Valley Radio Observatory near Big Pine, California \citep{todo_hallinan_2017}.  The OVRO-LWA
-is a low-frequency instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz with 24
-kHz channelization.  Each antenna stand hosts two perpendicular broadband dipoles so that there are
-$288\times2$ signal paths in total. These signal paths feed into the 512-input LEDA correlator
-\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
-single snapshot image.  In the current configuration 32 antennas (64 signal paths) are unused.
-
-The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
-snapshot imaging.  251 of the antennas are contained within a 200 m diameter core. 32 antennas are
-placed outside of the core in order to extend the maximum baseline length to $\sim$1.5 km. The final
-5 antennas are equipped with noise-switched front ends for calibrated total power measurements of
-the global sky brightness.  These antennas are used as part of the LEDA experiment
-\citep{todo_price_2017} to measure the global signal of 21 cm absorption from the cosmic dawn.
-Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
-
-The dataset used in this paper spans 28 consecutive hours beginning at 2017-02-17 12:00:00 UTC time.
-This time was chosen based on the fact that it was raining at OVRO and rain tends to improve the
-low-frequency RFI environment considerably. During this time the OVRO-LWA operated as a
-zenith-pointing drift scanning interferometer.  The correlator dump time was selected to be 13
-seconds such that the correlator output evenly divides a sidereal day.
-
-The geomagnetic conditions during this time were mild. The Disturbance storm time (Dst) index was
-$>-30$ nT during the entirety of the observing period.\footnote{
-    The Dst index was obtained from the World Data Center for Geomagnetism, Kyoto University
-    (\url{http://swdcwww.kugi.kyoto-u.ac.jp/}).
-}
-Following the classification scheme of \citet{2008GMS...181.....K}, a weak geomagnetic storm has
-$\text{Dst} < -30$ nT. Therefore there were no geomagnetic storms during the time of these
-observations.
-
-Antenna gain calibration is accomplished using an iterative method independently developed by
-\citet{2008ISTSP...2..707M} and \citet{2014A&A...571A..97S}. The calibration routine is written in
-the Julia programming language \citep{doi:10.1137/141000671}, and is publicly available
-online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
-
-Cyg A and Cas A are -- by an order of magnitude -- the brightest point-like radio sources in the
-northern hemisphere. Therefore the optimal time to solve for the interferometer's gain calibration
-is when these sources are at high elevations.  The antenna complex gains are measured from a 22
-minute track of data from when Cyg A and Cas are at high elevations. The gains measured in this way
-are then used to calibrate the entire 28 hour dataset. The calibration sky model consists only of
-Cyg A and Cas A. The model flux of Cyg A is set to the \citet{1977A&A....61...99B} spectrum while
-the flux of Cas A is measured from the data itself (using a preliminary calibration).
-
-Temperature fluctuations within the electronics shelter generate 0.1 dB sawtooth oscillations in the
-analog gain. These oscillations occur with a variable 15 to 17 minute period. The amplitude of these
-gain fluctuations is calibrated by smoothing the autocorrelation amplitudes on 45 minute timescales.
-The ratio of the measured auto-correlation power to the smoothed auto-correlation power defines a
-per-antenna amplitude correction that is then applied to the cross-correlations.
-
-\subsection{Primary Beam Measurements}
-
-\begin{figure*}[ht]
-    \plottwo{figures/beam/source-tracks}{figures/beam/stokes-I-beam}
-    \caption{
-        (left panel) The tracks traced through the sky by the 8 brightest point sources visible to the
-        OVRO-LWA.
-        (right panel) The amplitude of the OVRO-LWA beam at 36.528 MHz as a result of the beam model
-        fit using Zernike polynomials and the symmetry assumptions outlined in the text.
-    }
-    \label{fig:beam}
-\end{figure*}
-
-In order to generate wide-field images of the sky, the response of the antenna to the sky must be
-known. Drift-scanning interferometers like the OVRO-LWA can empirically measure their
-primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
-assume that the primary beam is invariant under north-south and east-west flips, and additionally
-that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
-These symmetries are apparent in the antenna design, but real-world defects and coupling with nearby
-antennas will contribute towards breaking these symmetries at some level. However some amount of
-symmetry must be assumed in order to break the degeneracy between source flux and beam amplitude
-when the flux of a source is unknown.
-
-We measure the flux of several bright sources (Cyg A, Cas A, Tau A, Vir A, Her A, Hya A, Per B, and
-3C 353) as they pass through the sky and then fit a beam model composed of Zernike polynomials to
-those flux measurements. We select the basis functions to have the desired symmetry ($Z_0^0$,
-$Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, $Z_8^8$) and the beam amplitude at
-zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustration of a fitted beam
-model at 36.528 MHz. This process is repeated for each frequency channel.
-
-\subsection{Source Removal}
-
-\subsubsection{Cygnus A and Cassiopeia A}
-
-%\begin{deluxetable*}{ccccDCCD}
-%    \tablecaption{Resolved source models for Cyg A and Cas A\label{tab:resolved-source-models}}
-%    \tablewidth{0pt}
-%    \tablehead{
-%        \colhead{} & \colhead{} &
-%            \colhead{} & \colhead{} &
-%            \multicolumn2c{Amplitude} &
-%            \colhead{Major FWHM} & \colhead{Minor FWHM} &
-%            \multicolumn2c{Position angle} \\
-%        \colhead{Source} & \colhead{\#} &
-%            \colhead{RA} & \colhead{Dec} &
-%            \multicolumn2c{(relative)} &
-%            \colhead{(arcsec)} & \colhead{(arcsec)} &
-%            \multicolumn2c{(deg)}
-%    }
-%    \decimals
-%    \startdata
-%        Cyg A & 1 & & & 1.0 & 128. & 22. & -74.503 \\
-%              & 2 & & & 0.1477 & 183. & 141. & 43.449 \\[0.2cm]
-%        Cas A & 1 & & & 1.0 & 0. & 0. & 0. \\
-%              & 2 & & & 1.0 & 0. & 0. & 0. \\
-%              & 3 & & & 1.0 & 0. & 0. & 0. \\
-%    \enddata
-%\end{deluxetable*}
-
-Without removing bright sources from the data, sidelobes from bright sources will dominate the
-variance in the image.  At 74 MHz Cyg A is a 15,000 Jy source \citep{1977A&A....61...99B}. A
-conservative estimate for the confusion limit at 74 MHz with a 10 arcminute beam is 500 mJy
-\citep{2012RaSc...47.0K04L}. Therefore we require that Cyg A's sidelobes be at least $-45$ dB down
-from its peak flux to prevent Cyg A's sidelobes from dominating the variance in the image.
-
-At low frequencies, propagation effects through the ionosphere must be accounted for in order to
-achieve high dynamic range images. This necessitates the use of direction-dependent calibration and
-peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.  In the dataset used in this paper,
-scintillation and diffraction events on the timescale of a single integration (13 seconds) are
-observed. Therefore the direction dependent calibration changes on these timescales and the we must
-solve for one set of complex gains per source per integration.
-
-The largest angular scale of Cas A is $\sim$8 arcminutes, and the largest angular scale of Cyg A is
-$\sim$2 arcminutes. With a $\sim10$ arcminute resolution, the OVRO-LWA marginally resolves both
-sources. A resolved source model is needed for both sources. We fit a self-consistent resolved
-source model to each source. This is performed by minimizing the variance within an aperture located
-on each source after peeling. By phasing up a large number of integrations before imaging (at least
-1 hour) it is possible to smear out the contribution of the rest of the sky.  We then use NLopt's
-Sbplx routine \citep{nlopt, sbplx} to vary the parameters in a source model until the variance
-within the aperture is minimized.
-
-Armed with resolved source models for both Cyg A and Cas A, these two sources can be peeled from the
-dataset to the required dynamic range.
-
-%\todo{slice through Cyg A and Cas A to illustrate the removal process}
-%\todo{Give a plot with the updated source models}
-
-\subsubsection{Other Bright Sources}
-
-Other bright sources including Vir A, Tau A, Her A, Hya A, Per B, and 3C 353 are also removed from
-the visibilities prior to imaging. Because these sources are much fainter than Cyg A and Cas A, we
-do not need resolved source models to be able to remove these sources from the visibilities without
-residual sidelobes contaminating the image.
-
-However, the ionosphere will cause these sources to scintillate and refract. So the position and
-flux of each source is measured separately in each channel and integration. The sources are then
-subtracted from the visibilities using the updated position and flux of the source. The brightest of
-these sources (Vir A and Tau A) will be peeled using a direction dependent calibration when they are
-at high elevations.
-
-\subsubsection{The Sun}
-
-The sun can be trivially removed from any map of the sky by constructing the map using only data
-taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
-However the dataset used in this paper consists of 28 consecutive hours. Therefore we attempt to
-suppress the contribution of the sun to the maps with the goal of suppressing its sidelobes.  The
-sun is well-resolved by the OVRO-LWA and hence a detailed source model is needed. In fact the
-optical depth $\tau=1$ surface of the sun changes with frequency and as a consequence a new model is
-needed for each of the 8 channel maps produced in this paper. While we could fit a limited number of
-Gaussian components to Cyg A and Cas A, this is insufficient for the Sun.  Additionally while most
-astronomical sources at these frequencies have negative spectral indices, the Sun has a positive
-spectral index. Therefore more care will need to be taken in subtracting the Sun at higher
-frequencies than at lower frequencies.
-
-The strategy used for removing the Sun below 55 MHz involves fitting a shapelet
-\citep{2003MNRAS.338...35R} model to the Sun and subtracting without the use of direction dependent
-gains. The shapelet fitting is performed in the visibility space. Above 55 MHz a model is fit to the
-Sun by minimizing the residuals after peeling (in the same way that models are obtained for Cyg A
-and Cas A). The Sun is then peeled from each integration using direction dependent gains.
-
-\subsection{Flux Scale}
-
-\begin{figure*}[p]
-    \gridline{
-        \fig{figures/flux-scale/flux-cyga}{0.48\textwidth}{}
-        \fig{figures/flux-scale/flux-vira}{0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/flux-scale/flux-hyaa}{0.48\textwidth}{}
-        \fig{figures/flux-scale/flux-perb}{0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/flux-scale/flux-lyna}{0.48\textwidth}{}
-        \fig{figures/flux-scale/flux-3c48}{0.48\textwidth}{}
-    }
-    \caption{
-        This figure shows the measured fluxes (black points) of 11 sources plotted against the
-        published spectra from \citet{2017ApJS..230....7P} (solid line), \citet{2012MNRAS.423L..30S}
-        (dashed line), and \citet{1977A&A....61...99B} (dot-dash line).
-    }
-    \label{fig:flux-scale}
-\end{figure*}
-\begin{figure*}[p]
-    \addtocounter{figure}{-1}
-    \gridline{
-        \fig{figures/flux-scale/flux-3c147}{0.48\textwidth}{}
-        \fig{figures/flux-scale/flux-3c286}{0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/flux-scale/flux-3c295}{0.48\textwidth}{}
-        \fig{figures/flux-scale/flux-3c353}{0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/flux-scale/flux-3c380}{0.48\textwidth}{}
-    }
-    \caption{(continued)}
-\end{figure*}
-
-The flux scale of the data was tied to the \citet{1977A&A....61...99B} spectrum of Cyg A during gain
-calibration. However gain calibration is also a function of the beam model and the spectrum used for
-Cas A. Recent work by \citet{2012MNRAS.423L..30S} using archival date from the literature and
-\citet{2017ApJS..230....7P} using the VLA has expanded the number of low-frequency radio sources
-with calibrated flux measurements from one (just Cyg A) to eleven in total. While the
-\citet{2012MNRAS.423L..30S} flux scale is valid between 30 MHz and 300 MHz, the
-\citet{2017ApJS..230....7P} flux scale is somewhat more limited because the lowest frequency
-observations come from the VLA 4-band system. As a consequence the \citet{2017ApJS..230....7P} flux
-scale is not valid below 50 MHz.
-
-Figure~\ref{fig:flux-scale} shows a comparison between flux measurements made using the all-sky maps
-from this work, and spectra from the aforementioned flux scales. Generally the OVRO-LWA flux
-measurements agree to better than 10\% with the \citet{2012MNRAS.423L..30S} spectra. Below 50 MHz
-there can be substantial departures with respect to the \citet{2017ApJS..230....7P} spectra (for eg.
-3C 286, 3C 295, and 3C 380), but it is usually the case that we have much better agreement with the
-\citet{2012MNRAS.423L..30S} spectra. This indicates that the \citet{2017ApJS..230....7P} spectra can
-diverge from the truth rapidly below 50 MHz.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{All-Sky Imaging}
 
 The goal of all imaging algorithms is to estimate the brightness of the sky $I_\nu(\hat r)$ in the
@@ -742,7 +482,7 @@ on to off. Modes are either set to zero or included in the map at their full amp
 hand Tikhonov regularization smoothly interpolates between these behaviors. Because of this,
 Tikhonov regularization tends to produce better results in practical applications.
 
-\subsection{$m$-Mode Analysis Image Deconvolution}
+\subsection{CLEAN}
 
 $m$-mode analysis imaging automatically deconvolves angular scales described by modes for which the
 singular values of $\b B$ are $\gg \sqrt{\varepsilon}$. For example, structures on angular scales
@@ -780,15 +520,6 @@ to baseline foreshortening. An example computed PSF is shown in Figure~\ref{fig:
 The computed PSF as a function of frequency and declination can be used to adapt the CLEAN algorithm
 \citep{1974A&AS...15..417H} to $m$-mode analysis.
 
-\begin{figure}[t]
-    \plotone{figures/psf/spw04-psf-45-degrees}
-    \caption{
-        The computed PSF for the OVRO-LWA for a point source at a declination of $+45^\circ$ and
-        frequency of $36.528$ MHz.
-    }
-    \label{fig:psf}
-\end{figure}
-
 \begin{algorithm}
     \KwData{dirty maps generated from the output of Equation~\ref{eq:tikhonov-solution};}
     \KwResult{clean maps with point sources deconvolved;}
@@ -807,13 +538,381 @@ Therefore the cost of multiplying by $\b M$ can actually be dominated by the cos
 spherical harmonics describing a point source at the identified pixel.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observations}
 
+\subsection{The Owens Valley Long Wavelength Array}
 
+\begin{figure}[ht]
+    \plotone{figures/antenna-layout/antenna-layout}
+    \caption{
+        This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
+        within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
+        built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
+        antennas equipped with noise-switched front ends.
+    }
+    \label{fig:antenna-layout}
+\end{figure}
+
+\begin{figure}[ht]
+    \plotone{figures/psf/spw04-psf-45-degrees}
+    \caption{
+        The computed $m$-mode analysis imaging PSF for the OVRO-LWA for a point source at a
+        declination of $+45^\circ$ and frequency of $36.528$ MHz.
+    }
+    \label{fig:psf}
+\end{figure}
+
+The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
+Owens Valley Radio Observatory near Big Pine, California \citep{todo_hallinan_2017}.  The OVRO-LWA
+is a low-frequency instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz with 24
+kHz channelization.  Each antenna stand hosts two perpendicular broadband dipoles so that there are
+$288\times2$ signal paths in total. These signal paths feed into the 512-input LEDA correlator
+\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
+single snapshot image.  In the current configuration 32 antennas (64 signal paths) are unused.
+
+The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
+snapshot imaging.  251 of the antennas are contained within a 200 m diameter core. 32 antennas are
+placed outside of the core in order to extend the maximum baseline length to $\sim$1.5 km. The final
+5 antennas are equipped with noise-switched front ends for calibrated total power measurements of
+the global sky brightness.  These antennas are used as part of the LEDA experiment
+\citep{todo_price_2017} to measure the global signal of 21 cm absorption from the cosmic dawn.
+Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
+
+\subsection{The Rainy Day Dataset}
+
+The dataset used in this paper spans 28 consecutive hours beginning at 2017-02-17 12:00:00 UTC time.
+This time was chosen based on the fact that it was raining at OVRO and rain tends to improve the
+low-frequency RFI environment considerably. During this time the OVRO-LWA operated as a
+zenith-pointing drift scanning interferometer.  The correlator dump time was selected to be 13
+seconds such that the correlator output evenly divides a sidereal day.
+
+The geomagnetic conditions during this time were mild. The Disturbance storm time (Dst) index was
+$>-30$ nT during the entirety of the observing period.\footnote{
+    The Dst index was obtained from the World Data Center for Geomagnetism, Kyoto University
+    (\url{http://swdcwww.kugi.kyoto-u.ac.jp/}).
+}
+Following the classification scheme of \citet{2008GMS...181.....K}, a weak geomagnetic storm has
+$\text{Dst} < -30$ nT. Therefore there were no geomagnetic storms during the time of these
+observations.
+
+\subsection{Gain Calibration}
+
+Antenna gain calibration is accomplished using an iterative method independently developed by
+\citet{2008ISTSP...2..707M} and \citet{2014A&A...571A..97S}. The calibration routine is written in
+the Julia programming language \citep{doi:10.1137/141000671}, and is publicly available
+online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3+).
+
+Cyg A and Cas A are -- by an order of magnitude -- the brightest point-like radio sources in the
+northern hemisphere. Therefore the optimal time to solve for the interferometer's gain calibration
+is when these sources are at high elevations.  The antenna complex gains are measured from a 22
+minute track of data from when Cyg A and Cas are at high elevations. The gains measured in this way
+are then used to calibrate the entire 28 hour dataset. The calibration sky model consists only of
+Cyg A and Cas A. The model flux of Cyg A is set to the \citet{1977A&A....61...99B} spectrum while
+the flux of Cas A is measured from the data itself (using a preliminary calibration).
+
+Temperature fluctuations within the electronics shelter generate 0.1 dB sawtooth oscillations in the
+analog gain. These oscillations occur with a variable 15 to 17 minute period. The amplitude of these
+gain fluctuations is calibrated by smoothing the autocorrelation amplitudes on 45 minute timescales.
+The ratio of the measured auto-correlation power to the smoothed auto-correlation power defines a
+per-antenna amplitude correction that is then applied to the cross-correlations.
+
+\subsection{Primary Beam Measurements}
+
+\begin{figure*}[ht]
+    \plottwo{figures/beam/source-tracks}{figures/beam/stokes-I-beam}
+    \caption{
+        (left panel) The tracks traced through the sky by the 8 brightest point sources visible to the
+        OVRO-LWA.
+        (right panel) The amplitude of the OVRO-LWA beam at 36.528 MHz as a result of the beam model
+        fit using Zernike polynomials and the symmetry assumptions outlined in the text.
+    }
+    \label{fig:beam}
+\end{figure*}
+
+In order to generate wide-field images of the sky, the response of the antenna to the sky must be
+known. Drift-scanning interferometers like the OVRO-LWA can empirically measure their
+primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
+assume that the primary beam is invariant under north-south and east-west flips, and additionally
+that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
+These symmetries are apparent in the antenna design, but real-world defects and coupling with nearby
+antennas will contribute towards breaking these symmetries at some level. However some amount of
+symmetry must be assumed in order to break the degeneracy between source flux and beam amplitude
+when the flux of a source is unknown.
+
+We measure the flux of several bright sources (Cyg A, Cas A, Tau A, Vir A, Her A, Hya A, Per B, and
+3C 353) as they pass through the sky and then fit a beam model composed of Zernike polynomials to
+those flux measurements. We select the basis functions to have the desired symmetry ($Z_0^0$,
+$Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, $Z_8^8$) and the beam amplitude at
+zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustration of a fitted beam
+model at 36.528 MHz. This process is repeated for each frequency channel.
+
+\subsection{Source Removal}
+
+\subsubsection{Cygnus A and Cassiopeia A}
+
+%\begin{deluxetable*}{ccccDCCD}
+%    \tablecaption{Resolved source models for Cyg A and Cas A\label{tab:resolved-source-models}}
+%    \tablewidth{0pt}
+%    \tablehead{
+%        \colhead{} & \colhead{} &
+%            \colhead{} & \colhead{} &
+%            \multicolumn2c{Amplitude} &
+%            \colhead{Major FWHM} & \colhead{Minor FWHM} &
+%            \multicolumn2c{Position angle} \\
+%        \colhead{Source} & \colhead{\#} &
+%            \colhead{RA} & \colhead{Dec} &
+%            \multicolumn2c{(relative)} &
+%            \colhead{(arcsec)} & \colhead{(arcsec)} &
+%            \multicolumn2c{(deg)}
+%    }
+%    \decimals
+%    \startdata
+%        Cyg A & 1 & & & 1.0 & 128. & 22. & -74.503 \\
+%              & 2 & & & 0.1477 & 183. & 141. & 43.449 \\[0.2cm]
+%        Cas A & 1 & & & 1.0 & 0. & 0. & 0. \\
+%              & 2 & & & 1.0 & 0. & 0. & 0. \\
+%              & 3 & & & 1.0 & 0. & 0. & 0. \\
+%    \enddata
+%\end{deluxetable*}
+
+Without removing bright sources from the data, sidelobes from bright sources will dominate the
+variance in the image.  At 74 MHz Cyg A is a 15,000 Jy source \citep{1977A&A....61...99B}. A
+conservative estimate for the confusion limit at 74 MHz with a 10 arcminute beam is 500 mJy
+\citep{2012RaSc...47.0K04L}. Therefore we require that Cyg A's sidelobes be at least $-45$ dB down
+from its peak flux to prevent Cyg A's sidelobes from dominating the variance in the image.
+
+At low frequencies, propagation effects through the ionosphere must be accounted for in order to
+achieve high dynamic range images. This necessitates the use of direction-dependent calibration and
+peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.  In the dataset used in this paper,
+scintillation and diffraction events on the timescale of a single integration (13 seconds) are
+observed. Therefore the direction dependent calibration changes on these timescales and the we must
+solve for one set of complex gains per source per integration.
+
+The largest angular scale of Cas A is $\sim$8 arcminutes, and the largest angular scale of Cyg A is
+$\sim$2 arcminutes. With a $\sim10$ arcminute resolution, the OVRO-LWA marginally resolves both
+sources. A resolved source model is needed for both sources. We fit a self-consistent resolved
+source model to each source. This is performed by minimizing the variance within an aperture located
+on each source after peeling. By phasing up a large number of integrations before imaging (at least
+1 hour) it is possible to smear out the contribution of the rest of the sky.  We then use NLopt's
+Sbplx routine \citep{nlopt, sbplx} to vary the parameters in a source model until the variance
+within the aperture is minimized.
+
+Armed with resolved source models for both Cyg A and Cas A, these two sources can be peeled from the
+dataset to the required dynamic range.
+
+%\todo{slice through Cyg A and Cas A to illustrate the removal process}
+%\todo{Give a plot with the updated source models}
+
+\subsubsection{Other Bright Sources}
+
+Other bright sources including Vir A, Tau A, Her A, Hya A, Per B, and 3C 353 are also removed from
+the visibilities prior to imaging. Because these sources are much fainter than Cyg A and Cas A, we
+do not need resolved source models to be able to remove these sources from the visibilities without
+residual sidelobes contaminating the image.
+
+However, the ionosphere will cause these sources to scintillate and refract. So the position and
+flux of each source is measured separately in each channel and integration. The sources are then
+subtracted from the visibilities using the updated position and flux of the source. The brightest of
+these sources (Vir A and Tau A) will be peeled using a direction dependent calibration when they are
+at high elevations.
+
+\subsubsection{The Sun}
+
+The sun can be trivially removed from any map of the sky by constructing the map using only data
+taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
+However the dataset used in this paper consists of 28 consecutive hours. Therefore we attempt to
+suppress the contribution of the sun to the maps with the goal of suppressing its sidelobes.  The
+sun is well-resolved by the OVRO-LWA and hence a detailed source model is needed. In fact the
+optical depth $\tau=1$ surface of the sun changes with frequency and as a consequence a new model is
+needed for each of the 8 channel maps produced in this paper. While we could fit a limited number of
+Gaussian components to Cyg A and Cas A, this is insufficient for the Sun.  Additionally while most
+astronomical sources at these frequencies have negative spectral indices, the Sun has a positive
+spectral index. Therefore more care will need to be taken in subtracting the Sun at higher
+frequencies than at lower frequencies.
+
+The strategy used for removing the Sun below 55 MHz involves fitting a shapelet
+\citep{2003MNRAS.338...35R} model to the Sun and subtracting without the use of direction dependent
+gains. The shapelet fitting is performed in the visibility space. Above 55 MHz a model is fit to the
+Sun by minimizing the residuals after peeling (in the same way that models are obtained for Cyg A
+and Cas A). The Sun is then peeled from each integration using direction dependent gains.
+
+\subsection{Flux Scale}
+
+\begin{figure*}[p]
+    \gridline{
+        \fig{figures/flux-scale/flux-cyga}{0.48\textwidth}{}
+        \fig{figures/flux-scale/flux-vira}{0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/flux-scale/flux-hyaa}{0.48\textwidth}{}
+        \fig{figures/flux-scale/flux-perb}{0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/flux-scale/flux-lyna}{0.48\textwidth}{}
+        \fig{figures/flux-scale/flux-3c48}{0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/flux-scale/flux-3c147}{0.48\textwidth}{}
+        \fig{figures/flux-scale/flux-3c286}{0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/flux-scale/flux-3c295}{0.48\textwidth}{}
+        \fig{figures/flux-scale/flux-3c353}{0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/flux-scale/flux-3c380}{0.48\textwidth}{}
+    }
+    \caption{
+        This figure shows the measured fluxes (black points) of 11 sources plotted against the
+        published spectra from \citet{2017ApJS..230....7P} (solid line), \citet{2012MNRAS.423L..30S}
+        (dashed line), and \citet{1977A&A....61...99B} (dot-dash line).
+    }
+    \label{fig:flux-scale}
+\end{figure*}
+
+The flux scale of the data was tied to the \citet{1977A&A....61...99B} spectrum of Cyg A during gain
+calibration. However gain calibration is also a function of the beam model and the spectrum used for
+Cas A. Recent work by \citet{2012MNRAS.423L..30S} using archival date from the literature and
+\citet{2017ApJS..230....7P} using the VLA has expanded the number of low-frequency radio sources
+with calibrated flux measurements from one (just Cyg A) to eleven in total. While the
+\citet{2012MNRAS.423L..30S} flux scale is valid between 30 MHz and 300 MHz, the
+\citet{2017ApJS..230....7P} flux scale is somewhat more limited because the lowest frequency
+observations come from the VLA 4-band system. As a consequence the \citet{2017ApJS..230....7P} flux
+scale is not valid below 50 MHz.
+
+Figure~\ref{fig:flux-scale} shows a comparison between flux measurements made using the all-sky maps
+from this work, and spectra from the aforementioned flux scales. Generally the OVRO-LWA flux
+measurements agree to better than 10\% with the \citet{2012MNRAS.423L..30S} spectra. Below 50 MHz
+there can be substantial departures with respect to the \citet{2017ApJS..230....7P} spectra (for eg.
+3C 286, 3C 295, and 3C 380), but it is usually the case that we have much better agreement with the
+\citet{2012MNRAS.423L..30S} spectra. This indicates that the \citet{2017ApJS..230....7P} spectra can
+diverge from the truth rapidly below 50 MHz.
+
+%\subsection{Dedistortion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+
+\begin{deluxetable*}{CCCCCC}
+    \tablecaption{Summary of the generated all-sky maps\label{tab:summary}}
+    \tablewidth{0pt}
+    \tablehead{
+        \colhead{} & \colhead{Frequency} & \colhead{Bandwidth} & \colhead{FWHM} &
+            \colhead{Noise} & \colhead{Noise} \\
+        \colhead{\#} & \colhead{(MHz)} & \colhead{(MHz)} & \colhead{(arcmin)} &
+            \colhead{(K)} & \colhead{(Jy)}
+    }
+    \startdata
+    1 & 36.528 & 0.024 & 16.2 & 372.8 \\
+    2 & 41.760 & 0.024 & 14.7 & 321.2 \\
+    3 & 46.992 & 0.024 & 14.2 & 247.0 \\
+    4 & 52.224 & 0.024 & 13.6 & 205.7 \\
+    5 & 57.456 & 0.024 & 13.5 & 167.7 \\
+    6 & 62.688 & 0.024 & 13.5 & 137.6 \\
+    7 & 67.920 & 0.024 & 13.5 & 114.9 \\
+    8 & 73.152 & 0.024 & 13.7 &  93.4 \\
+    \enddata
+\end{deluxetable*}
+
+\begin{figure*}[ht]
+    \plotone{maps/2017-04-20-rgb-map-smaller}
+    \caption{
+        This Mollweide-projected map is constructed from 3 maps of the sky at 41.760 MHz (red),
+        57.456 MHz (green), and 73.152 MHz (blue) using data from the Owens Valley Long Wavelength
+        Array. These maps were constructed using $m$-mode analysis imaging. 8 bright radio sources
+        have been subtracted from the sky (Cyg A, Cas A, Vir A, Tau A, Hya A, Her A, Per B, and 3C
+        353). The hole corresponds to declinations less than $-30^\circ$. Most of the diffuse
+        emission is synchrotron, but the blue regions mottling the galactic plane are due to
+        free-free absorption from \ion{H}{2} regions.
+    }
+    \label{fig:rgb}
+\end{figure*}
+
+\begin{figure*}[p]
+    \gridline{
+        \fig{figures/channel-maps/spw04-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/channel-maps/spw06-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/channel-maps/spw08-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/channel-maps/spw10-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/channel-maps/spw12-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/channel-maps/spw14-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/channel-maps/spw16-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/channel-maps/spw18-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
+            {0.48\textwidth}{}
+    }
+    \caption{
+        Mollweide-projected maps of the VHF sky north of $-30^\circ$ generated using the OVRO-LWA
+        and $m$-mode analysis imaging. The properties of each map are summarized in
+        Table~\ref{tab:summary}. The color scale is logarithmic and has units of Kelvin. As
+        described in the text, 8 bright sources have been subtracted. The small blank region near
+        the bottom of each map corresponds to the region of sky within 2 degrees of the Sun at the
+        time of the observations.
+    }
+    \label{fig:channel-maps}
+\end{figure*}
+
+\begin{figure*}[p]
+    \gridline{
+        \fig{figures/jackknife-maps/4.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/jackknife-maps/6.pdf}
+            {0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/jackknife-maps/8.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/jackknife-maps/10.pdf}
+            {0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/jackknife-maps/12.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/jackknife-maps/14.pdf}
+            {0.48\textwidth}{}
+    }
+    \gridline{
+        \fig{figures/jackknife-maps/16.pdf}
+            {0.48\textwidth}{}
+        \fig{figures/jackknife-maps/18.pdf}
+            {0.48\textwidth}{}
+    }
+    \caption{
+        The jackknife estimated standard deviation corresponding to the maps presented in
+        Figure~\ref{fig:channel-maps}. The color scale is logarithmic and has units of Kelvin.
+    }
+    \label{fig:jackknife-maps}
+\end{figure*}
+
+Eight sky maps are presented in Figure~\ref{fig:channel-maps}. Their properties are briefly
+summarized in Table~\ref{tab:summary}. In this section we will describe the new imaging technique
+used to generate these maps.
+
+%\todo{text}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Error Analysis}
+
+\subsection{Jackknife Resampling}
+
+%\todo{text}
 
 \subsection{Terrestrial Interference and Pickup}
 
-\begin{figure*}[ht]
+\begin{figure*}[p]
     \gridline{
         \fig{figures/smeared-images/before-component-removal-spw14}{0.22\textwidth}{(a)}
         \fig{figures/smeared-images/after-component-removal-spw14}{0.22\textwidth}{(b)}
@@ -993,53 +1092,70 @@ This will tend to scatter power between $m$-modes \citep{richard_ionosphere_thou
 %
 %\todo{describe jack-knife tests}
 
-\section{Results}
-
 %\subsection{Sky Maps}
-
-\begin{figure*}[p]
-    \gridline{
-        \fig{figures/channel-maps/spw04-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw06-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/channel-maps/spw08-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw10-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/channel-maps/spw12-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw14-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/channel-maps/spw16-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw18-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
-    \caption{
-        Maps of the VHF sky north of $-30^\circ$ generated using the OVRO-LWA and $m$-mode analysis
-        imaging. The properties of each map are summarized in Table~\ref{tab:summary}. The color
-        scale is logarithmic and has units of Kelvin. As described in the text, 8 bright sources
-        have been subtracted. The small blank region near the bottom of each map corresponds to the
-        region of sky within 2 degrees of the Sun at the time of the observations.
-    }
-    \label{fig:channel-maps}
-\end{figure*}
 
 %\subsection{Error Maps}
 
+%\citet{todo_mishra_2017}
 
-\section{Discussion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Comparisons with Other Sky Maps}
 
-\citet{todo_mishra_2017}
+%\subsection{The Global Sky Model}
+%
+%The Global Sky Model (GSM) \citep{2008MNRAS.388..247D, 2017MNRAS.464.3486Z}
 
-\todo{Wednesday}
+\subsection{Haslam 408 MHz Map}
+
+\begin{figure}[t]
+    \plotone{figures/haslam/haslam-spectral-index}
+    \caption{
+        The spectral index between the reprocessed Haslam 408 MHz map and the OVRO-LWA maps
+        (degraded to 56 arcmin resolution).  The larger blue patch around the south celestial pole
+        corresponds to where the OVRO-LWA map has a blank region.
+    }
+    \label{fig:haslam-spectral-index}
+\end{figure}
+
+
+The Haslam 408 MHz map \citep{1981A&A...100..209H, 1982A&AS...47....1H} was reprocessed by
+\citet{2015MNRAS.451.4311R} to remove artifacts associated with $1/f$ noise and bright sources. In
+order to compare the OVRO-LWA maps with the lower resolution Haslam map, the OVRO-LWA maps were
+degraded to 56 arcmin resolution. A spectral index map computed between the OVRO-LWA maps and the
+Haslam map is shown in Figure~\ref{fig:haslam-spectral-index}.
+
+\subsection{Guzm\'{a}n 45 MHz Map}
+
+\begin{figure}[t]
+    \plotone{figures/guzman/guzman-comparison}
+    \caption{
+        This Mollweide projection map compares the fractional difference between the Guzm\'{a}n 45
+        MHz map, and the OVRO-LWA map at 46.992 MHz (degraded to $5^\circ$ resolution). A positive
+        value indicates regions where the OVRO-LWA map has more emission that the Guzm\'{a}n map,
+        and a negative value indicates regions where the Guzm\'{a}n map has more emission than the
+        OVRO-LWA map. The red patch around the north celestial pole corresponds to where the
+        Guzm\'{a}n map has a blank region.  The larger blue patch around the south celestial pole
+        corresponds to where the OVRO-LWA map has a blank region. Note also that the OVRO-LWA map
+        has several bright point sources subtracted that are not subtracted from the Guzm\'{a}n map.
+    }
+    \label{fig:guzman-comparison}
+\end{figure}
+
+A direct comparison between the OVRO-LWA at 46.992 MHz and the Guzm\'{a}n 45 MHz map
+\citep{2011A&A...525A.138G} can be seen in Figure~\ref{fig:guzman-comparison}. In order to make this
+comparison the OVRO-LWA map was degraded to a 5$^\circ$ resolution by convolving with a Gaussian
+kernel.  This figure shows that the majority of the galactic synchrotron emission is consistent
+between the two maps to better than 5\% however there are patches (particularly near the north
+celestial pole) where there is a discrepancy on the order of 20\%.  Off of the galactic plane, the
+OVRO-LWA map underestimates the flux compared to the Guzm\'{a}n map by a factor of 20\%. This can be
+attributed to the absence of zero-spacing data.
+
+%\subsection{LWA1 Sky Survey}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+
+%\todo{text}
 
 \bibliographystyle{apj}
 \bibliography{paper}

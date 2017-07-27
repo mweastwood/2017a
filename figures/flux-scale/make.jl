@@ -23,7 +23,7 @@ for (idx, name) in enumerate(names)
         measured = measured_fluxes[name]
     end
 
-    figure(idx); clf()
+    figure(idx, figsize=(6, 3)); clf()
     gca()[:tick_params](axis="both", which="major", labelsize=16)
 
     plot(frequencies/1e6, measured, "ko")

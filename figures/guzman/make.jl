@@ -1,7 +1,7 @@
 using JLD, PyPlot
 
 path = dirname(@__FILE__)
-#close("all")
+close("all")
 
 guzman, lwa = load(joinpath(path, "comparison-with-guzman.jld"), "guzman", "lwa")
 
