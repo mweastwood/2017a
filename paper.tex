@@ -64,10 +64,12 @@
 \usepackage{amsmath}
 \usepackage[]{algorithm2e}
 
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
+
 \renewcommand{\b}{\pmb}
+\newcommand{\tbf}{\textbf}
 \renewcommand{\d}{{\rm d}}
 \newcommand{\atikh}{\b{\hat a}_\text{Tikhonov}}
-\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 
 \newcommand{\astrocaltech}{
     \affiliation{
@@ -79,6 +81,8 @@
 }
 
 \begin{document}
+
+\watermark{draft}
 
 \title{
     The Radio Sky at Meter Wavelengths: $m$-Mode Analysis Imaging\\
@@ -739,7 +743,7 @@ and Cas A). The Sun is then peeled from each integration using direction depende
 
 \subsection{Flux Scale}
 
-\begin{figure*}[p]
+\begin{figure*}[ht]
     \includegraphics[width=\textwidth]{figures/flux-scale/flux-scale}
     \caption{
         This figure shows the measured fluxes (black points) of 11 sources plotted against the
@@ -773,66 +777,45 @@ diverge from the truth rapidly below 50 MHz.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}
 
-\begin{deluxetable*}{CCCCCC}
-    \tablecaption{Summary of the generated all-sky maps\label{tab:summary}}
-    \tablewidth{0pt}
-    \tablehead{
-        \colhead{} & \colhead{Frequency} & \colhead{Bandwidth} & \colhead{FWHM} &
-            \colhead{Noise} & \colhead{Noise} \\
-        \colhead{\#} & \colhead{(MHz)} & \colhead{(MHz)} & \colhead{(arcmin)} &
-            \colhead{(K)} & \colhead{(Jy)}
-    }
-    \startdata
-    1 & 36.528 & 0.024 & 16.2 & 372.8 \\
-    2 & 41.760 & 0.024 & 14.7 & 321.2 \\
-    3 & 46.992 & 0.024 & 14.2 & 247.0 \\
-    4 & 52.224 & 0.024 & 13.6 & 205.7 \\
-    5 & 57.456 & 0.024 & 13.5 & 167.7 \\
-    6 & 62.688 & 0.024 & 13.5 & 137.6 \\
-    7 & 67.920 & 0.024 & 13.5 & 114.9 \\
-    8 & 73.152 & 0.024 & 13.7 &  93.4 \\
-    \enddata
-\end{deluxetable*}
+\begin{table*}[ht]
+    \centering
+    \begin{tabular}{cccccc}
+        \hline
+        \hline
+        & \tbf{Frequency} & \tbf{Bandwidth} & \tbf{FWHM} & \multicolumn2c{\tbf{Thermal Noise}} \\
+        \cline{5-6}
+        \tbf{\#} & (MHz)  & (MHz)          & (arcmin)  & (K) & (Jy) \\
+        \hline
+        1 & 36.528 & 0.024 & 16.2 & 372.8 & \\
+        2 & 41.760 & 0.024 & 14.7 & 321.2 & \\
+        3 & 46.992 & 0.024 & 14.2 & 247.0 & \\
+        4 & 52.224 & 0.024 & 13.6 & 205.7 & \\
+        5 & 57.456 & 0.024 & 13.5 & 167.7 & \\
+        6 & 62.688 & 0.024 & 13.5 & 137.6 & \\
+        7 & 67.920 & 0.024 & 13.5 & 114.9 & \\
+        8 & 73.152 & 0.024 & 13.7 &  93.4 & \\
+        \hline \hline
+    \end{tabular}
+    \caption{Summary of the generated all-sky maps\label{tab:summary}}
+\end{table*}
+
+%\begin{figure*}[p]
+%    \centering
+%    \includegraphics[width=0.9\textheight, angle=90]{maps/2017-04-20-rgb-map-smaller}
+%    \caption{
+%        This Mollweide-projected map is constructed from 3 maps of the sky at 41.760 MHz (red),
+%        57.456 MHz (green), and 73.152 MHz (blue) using data from the Owens Valley Long Wavelength
+%        Array. These maps were constructed using $m$-mode analysis imaging. 8 bright radio sources
+%        have been subtracted from the sky (Cyg A, Cas A, Vir A, Tau A, Hya A, Her A, Per B, and 3C
+%        353). The hole corresponds to declinations less than $-30^\circ$. Most of the diffuse
+%        emission is synchrotron, but the blue regions mottling the galactic plane are due to
+%        free-free absorption from \ion{H}{2} regions.
+%    }
+%    \label{fig:rgb}
+%\end{figure*}
 
 \begin{figure*}[ht]
-    \plotone{maps/2017-04-20-rgb-map-smaller}
-    \caption{
-        This Mollweide-projected map is constructed from 3 maps of the sky at 41.760 MHz (red),
-        57.456 MHz (green), and 73.152 MHz (blue) using data from the Owens Valley Long Wavelength
-        Array. These maps were constructed using $m$-mode analysis imaging. 8 bright radio sources
-        have been subtracted from the sky (Cyg A, Cas A, Vir A, Tau A, Hya A, Her A, Per B, and 3C
-        353). The hole corresponds to declinations less than $-30^\circ$. Most of the diffuse
-        emission is synchrotron, but the blue regions mottling the galactic plane are due to
-        free-free absorption from \ion{H}{2} regions.
-    }
-    \label{fig:rgb}
-\end{figure*}
-
-\begin{figure*}[p]
-    \gridline{
-        \fig{figures/channel-maps/spw04-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw06-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/channel-maps/spw08-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw10-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/channel-maps/spw12-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw14-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/channel-maps/spw16-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/channel-maps/spw18-glamour-shot-map-wiener-filtered-rainy-2048-galactic.pdf}
-            {0.48\textwidth}{}
-    }
+    \includegraphics[width=\textwidth]{figures/channel-maps/channel-maps}
     \caption{
         Mollweide-projected maps of the VHF sky north of $-30^\circ$ generated using the OVRO-LWA
         and $m$-mode analysis imaging. The properties of each map are summarized in

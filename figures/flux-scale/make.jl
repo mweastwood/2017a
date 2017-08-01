@@ -59,7 +59,7 @@ for (idx, name) in enumerate(names)
     idx < 9 && plt[:setp](gca()[:get_xticklabels](), visible=false)
     idx ≥ 9 && xlabel("Frequency (MHz)", fontsize=14)
     mod(idx, 3) == 1 && ylabel("Flux (Jy)", fontsize=14)
-    mod(idx, 3) == 1 && gca()[:get_yaxis]()[:set_label_coords](-0.30,0.5)
+    mod(idx, 3) == 1 && gca()[:get_yaxis]()[:set_label_coords](-0.30, 0.5)
     grid("on")
 end
 tight_layout()

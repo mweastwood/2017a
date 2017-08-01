@@ -1,20 +1,24 @@
+#!/usr/bin/env julia
+
 using JLD, PyPlot, PyCall
 
 unshift!(PyVector(pyimport("sys")["path"]), "")
 @pyimport my_log_scale as mls
-
-path = dirname(@__FILE__)
 close("all")
 
-function plot(filename)
+path = dirname(@__FILE__)
+
+figure(1, figsize=(10, 8)); clf()
+for (idx, spw) in enumerate(4:2:18)
+    str = @sprintf("spw%02d", spw)
+    filename = "$str-glamour-shot-map-wiener-filtered-rainy-2048-galactic"
     img, ν = load(joinpath(path, filename*".jld"), "image", "frequency")
 
     max = maximum(img)/5
     min = minimum(img)
     base = max - min
     
-    figure(); clf()
-    gca()[:tick_params](axis="both", which="major", labelsize=16)
+    subplot(4, 2, idx)
     θ = linspace(0, 2π, 512)
     x = 2cos.(θ)
     y = sin.(θ)
@@ -23,24 +27,23 @@ function plot(filename)
     imshow(img, interpolation="nearest", cmap=get_cmap("magma"),
            norm = mls.MyLogNormalize(min, max, base),
            extent=(-2, 2, -1, 1),
-           clip_path=ellipse)
+           clip_path=ellipse, zorder=10)
+    xlim(-2, 2)
+    ylim(-1, 1)
     gca()[:set_aspect]("equal")
-    title(@sprintf("%.3f MHz", ν/1e6), fontsize=16)
+    gca()[:get_xaxis]()[:set_visible](false)
+    gca()[:get_yaxis]()[:set_visible](false)
+    title(@sprintf("%.3f MHz", ν/1e6), fontsize=10)
     axis("off")
-    cbar = colorbar(fraction=0.02)
-    cbar[:ax][:tick_params](labelsize=16)
-    tight_layout()
+    cbar = colorbar(fraction=0.07, orientation="vertical")
+    cbar[:ax][:tick_params](labelsize=12)
+    cbar[:set_label]("Temperature (K)", fontsize=10, rotation=270)
+    cbar[:ax][:get_yaxis]()[:set_label_coords](12.0, 0.5)
 
-    savefig(joinpath(path, filename*".pdf"),
-            bbox_inches="tight", pad_inches=0, transparent=true)
 end
+tight_layout()
+gcf()[:subplots_adjust](hspace=0.25, wspace=-0.05)
 
-plot("spw04-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
-plot("spw06-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
-plot("spw08-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
-plot("spw10-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
-plot("spw12-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
-plot("spw14-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
-plot("spw16-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
-plot("spw18-glamour-shot-map-wiener-filtered-rainy-2048-galactic")
+savefig(joinpath(path, "channel-maps.pdf"),
+        bbox_inches="tight", pad_inches=0, transparent=true)
 
