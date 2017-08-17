@@ -46,4 +46,6 @@ gcf()[:subplots_adjust](hspace=0.25, wspace=-0.05)
 
 savefig(joinpath(path, "channel-maps.pdf"),
         bbox_inches="tight", pad_inches=0, transparent=true)
+savefig(joinpath(path, "channel-maps.png"),
+        bbox_inches="tight", pad_inches=0, transparent=true)
 
