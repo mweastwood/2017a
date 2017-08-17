@@ -1,7 +1,11 @@
+#!/usr/bin/env julia
+
 using JLD, PyPlot, CasaCore.Measures
 
 path = dirname(@__FILE__)
-Iimg = load(joinpath(path, "beam.jld"), "I-image")
+figure(1, figsize=(15, 5)); clf()
+
+# Create the source track panel
 
 sources = Dict("Cyg A" => Direction(dir"J2000", "19h59m28.35663s", "+40d44m02.0970s"),
                "Cas A" => Direction(dir"J2000", "23h23m24.000s", "+58d48m54.00s"),
@@ -16,26 +20,10 @@ ovro_lwa = Position(pos"ITRF", -2.40927462614919e6, -4.477838733582964e6, 3.8393
 
 times = linspace(4.994049600941745e9, 4.994150416022397e9, 7756)
 
-close("all")
-figure(1, figsize=(6, 4))
-circle = plt[:Circle]((0, 0), 1, alpha=0)
-gca()[:add_patch](circle)
-imshow(Iimg, extent=(-1, 1, -1, 1), interpolation="nearest", vmin=0, vmax=1,
-       cmap=get_cmap("magma"), clip_path=circle)
-gca()[:set_aspect]("equal")
-colorbar()
-xlim(-1, 1)
-ylim(-1, 1)
-xlabel("l / direction cosine", fontsize=12)
-ylabel("m / direction cosine", fontsize=12)
-tight_layout()
-savefig(joinpath(path, "stokes-I-beam.pdf"), bbox_inches="tight", pad_inches=0.1, transparent=true)
-
-figure(2, figsize=(6, 4)); clf()
+subplot(1, 3, 1)
 frame = ReferenceFrame()
 set!(frame, ovro_lwa)
 for name in keys(sources)
-    @show name
     direction = sources[name]
     l = Float64[]
     m = Float64[]
@@ -53,24 +41,64 @@ for name in keys(sources)
         end
     end
     mmin = minimum(m[.!isnan.(m)])
-    annotate(name, xy=(0, mmin+0.01), horizontalalignment="center")
+    if name == "3C 353"
+        annotate(name, xy=(0, mmin+0.01), horizontalalignment="center",
+                 fontsize=12)
+    else
+        annotate(name, xy=(0, mmin+0.02), horizontalalignment="center",
+                 fontsize=12)
+    end
     plot(l, m, "k-")
 end
 θ = linspace(0, 2π, 1000)
-annotate("Horizon", xy=(0, -0.98), horizontalalignment="center")
+annotate("Horizon", xy=(0, -0.98), horizontalalignment="center",
+         fontsize=12)
+gca()[:tick_params](axis="both", which="major", labelsize=15)
 plot(cos.(θ), sin.(θ), "k--")
 gca()[:set_aspect]("equal")
-xlim(-1, 1)
+xlim(1, -1)
 ylim(-1, 1)
-xlabel("l / direction cosine", fontsize=12)
-ylabel("m / direction cosine", fontsize=12)
-tight_layout()
-savefig(joinpath(path, "source-tracks.pdf"), bbox_inches="tight", pad_inches=0.1, transparent=true)
+xlabel("l (direction cosine)", fontsize=15)
+ylabel("m (direction cosine)", fontsize=15)
 
-# We need to add some extra width to this figure to make it match the previous one.
-# Note: use `pdfinfo filename.pdf` to get the size of each file before modifying this.
+# Create the beam panels
 
-run(`pdfcrop stokes-I-beam.pdf stokes-I-beam.pdf`) # remove extra whitespace
-run(`pdfcrop source-tracks.pdf source-tracks.pdf`) # remove extra whitespace
-run(`pdfcrop --margins '0 0 46 0' source-tracks.pdf source-tracks.pdf`) # add margin on the right
+frequencies = [3.6528e7, 7.3152e7]
+filenames = ["spw04-beam", "spw18-beam"]
+
+global _im
+for idx = 1:length(filenames)
+    subplot(1, 3, idx+1)
+    filename = filenames[idx]
+
+    img = load(joinpath(path, filename*".jld"), "I-image")
+    
+    gca()[:tick_params](axis="both", which="major", labelsize=15)
+    
+    circle = plt[:Circle]((0, 0), 1, alpha=0)
+    gca()[:add_patch](circle)
+    _im = imshow(img, extent=(-1, 1, -1, 1), interpolation="nearest", vmin=0, vmax=1,
+                 cmap=get_cmap("magma"), clip_path=circle)
+    gca()[:set_aspect]("equal")
+    xlim(1, -1)
+    ylim(-1, 1)
+    plt[:setp](gca()[:get_yticklabels](), visible=false)
+    xlabel("l (direction cosine)", fontsize=15)
+    txt = text(0.95, 0.95, @sprintf("%.3f MHz", frequencies[idx]/1e6),
+               transform=gca()[:transAxes], fontsize=18, fontweight="bold",
+               horizontalalignment="right", verticalalignment="top",
+               color="black", zorder=2)
+    txt[:set_bbox](Dict(:facecolor=>"white", :alpha=>0.5, :edgecolor=>"none"))
+end
+
+gcf()[:subplots_adjust](wspace=0.10)
+
+cax = gcf()[:add_axes]([0.92, 0.13, 0.023, 0.73])
+cbar = colorbar(_im, cax=cax)
+cbar[:ax][:tick_params](labelsize=15)
+cbar[:set_label]("normalized amplitude", fontsize=15, rotation=270)
+cbar[:ax][:get_yaxis]()[:set_label_coords](3.3, 0.5)
+
+savefig(joinpath(path, "beam.pdf"),
+        bbox_inches="tight", pad_inches=0, transparent=true)
 
