@@ -557,7 +557,7 @@ Additionally we can pre-compute the Cholesky decomposition of $\b B^*\b B + \var
 U^*\b U$, where $\b U$ is an upper-triangular matrix. Inverting an upper triangular matrix is an
 $\mathcal{O}(N^2)$ operation (instead of $\mathcal{O}(N^3)$ for a general matrix inverse).\footnote{
     Inverting a matrix is numerically unstable and should be avoided. Instead of computing $\b
-    U^{-1}$, the linear equation $\b U\b x = \b y$ is solved each time the matrix inverse is needed.
+    A^{-1}$, the linear equation $\b A\b x = \b b$ is solved each time the matrix inverse is needed.
 }
 Equation~\ref{eq:psf} can then be rapidly evaluated from right to left as:
 \begin{equation}\label{eq:rapid-psf}
@@ -595,25 +595,23 @@ Altogether the adaptation of CLEAN applied to the maps presented in this paper i
 
 \subsection{The Owens Valley Long Wavelength Array}
 
-\begin{figure}[t]
-    \plotone{figures/antenna-layout/antenna-layout}
+\begin{figure*}[t]
+    \includegraphics[width=\textwidth]{figures/psf/psf}
     \caption{
+        \textbf{(left panel)}
         This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
         within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
         built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
         antennas equipped with noise-switched front ends.
-    }
-    \label{fig:antenna-layout}
-\end{figure}
-
-\begin{figure}[t]
-    \plotone{figures/psf/spw04-psf-45-degrees}
-    \caption{
+        \textbf{(middle panel)}
         The computed $m$-mode analysis imaging PSF for the OVRO-LWA for a point source at a
         declination of $+45^\circ$ and frequency of $36.528$ MHz.
+        \textbf{(right panel)}
+        The computed $m$-mode analysis imaging PSF for the OVRO-LWA for a point source at a
+        declination of $+45^\circ$ and frequency of $73.152$ MHz.
     }
     \label{fig:psf}
-\end{figure}
+\end{figure*}
 
 The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
 Owens Valley Radio Observatory near Big Pine, California \citep{todo_hallinan_2017}.  The OVRO-LWA
@@ -628,8 +626,8 @@ snapshot imaging.  251 of the antennas are contained within a 200 m diameter cor
 placed outside of the core in order to extend the maximum baseline length to $\sim$1.5 km. The final
 5 antennas are equipped with noise-switched front ends for calibrated total power measurements of
 the global sky brightness.  These antennas are used as part of the LEDA experiment
-\citep{todo_price_2017} to measure the global signal of 21 cm absorption from the cosmic dawn.
-Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
+\citep{todo_price_2017} to measure the global signal of 21 cm absorption from the cosmic dawn.  The
+left panel of Figure~\ref{fig:psf} is a diagram of the antenna configuration.
 
 \subsection{The Rainy Day Dataset}
 
