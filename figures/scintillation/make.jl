@@ -34,17 +34,22 @@ end
 subplot(1, 2, 1)
 gca()[:tick_params](axis="both", which="major", labelsize=12)
 plot_light_curve( 4, 1, ".", "#d62728", "36.528 MHz")
+#plot_light_curve(10, 1, ".", "#2ca02c", "52.224 MHz")
 plot_light_curve(18, 1, ".", "#1f77b4", "73.152 MHz")
 text(0.95, 0.95, names[4][1],
      transform=gca()[:transAxes], fontsize=14, fontweight="bold",
      horizontalalignment="right", verticalalignment="top",
      color="black", zorder=2)
 #legend("upper right")
-text(0.95, 0.86, "36.528 MHz",
+text(0.95, 0.87, "36.528 MHz",
      transform=gca()[:transAxes], fontsize=12, fontweight="bold",
      horizontalalignment="right", verticalalignment="top",
      color="#d62728", zorder=2)
-text(0.95, 0.77, "73.152 MHz",
+#text(0.95, 0.79, "52.224 MHz",
+#     transform=gca()[:transAxes], fontsize=12, fontweight="bold",
+#     horizontalalignment="right", verticalalignment="top",
+#     color="#2ca02c", zorder=2)
+text(0.95, 0.79, "73.152 MHz",
      transform=gca()[:transAxes], fontsize=12, fontweight="bold",
      horizontalalignment="right", verticalalignment="top",
      color="#1f77b4", zorder=2)
@@ -62,17 +67,22 @@ annotate("occulted by\nmountains", xy=(22, 1000), xytext=(21, 3000),
 subplot(1, 2, 2)
 gca()[:tick_params](axis="both", which="major", labelsize=12)
 plot_light_curve( 4, 2, ".", "#d62728", "36.528 MHz")
+#plot_light_curve(10, 2, ".", "#2ca02c", "52.224 MHz")
 plot_light_curve(18, 2, ".", "#1f77b4", "73.152 MHz")
 text(0.95, 0.95, names[4][2],
      transform=gca()[:transAxes], fontsize=14, fontweight="bold",
      horizontalalignment="right", verticalalignment="top",
      color="black", zorder=2)
 #legend("upper right")
-text(0.95, 0.86, "36.528 MHz",
+text(0.95, 0.87, "36.528 MHz",
      transform=gca()[:transAxes], fontsize=12, fontweight="bold",
      horizontalalignment="right", verticalalignment="top",
      color="#d62728", zorder=2)
-text(0.95, 0.77, "73.152 MHz",
+#text(0.95, 0.79, "52.224 MHz",
+#     transform=gca()[:transAxes], fontsize=12, fontweight="bold",
+#     horizontalalignment="right", verticalalignment="top",
+#     color="#2ca02c", zorder=2)
+text(0.95, 0.79, "73.152 MHz",
      transform=gca()[:transAxes], fontsize=12, fontweight="bold",
      horizontalalignment="right", verticalalignment="top",
      color="#1f77b4", zorder=2)
