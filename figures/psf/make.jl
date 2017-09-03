@@ -30,8 +30,6 @@ function label(idx)
          color="white", zorder=2)
 end
 
-g = gs.GridSpec(1, 3, height_ratios=[1])
-
 ax = gca()
 divider = tk.make_axes_locatable(ax)
 
