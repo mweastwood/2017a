@@ -134,26 +134,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 
-Studies of the cosmic microwave background (CMB) have given us an unprecedented understanding of the
-universe during the epoch of recombination \citep{2013ApJS..208...19H, 2014A&A...571A..16P,
-2016A&A...594A..13P}. Before arriving at the Earth, the light from the CMB propagates through the
-intergalactic medium (IGM), intervening galaxies and galaxy clusters, and the Milky Way's
-interstellar medium (ISM). As photons from the CMB propagate through this intervening material,
-scattering, absorption, or additional emission can perturb or corrupt the thermal CMB spectrum. In
-order to measure the pristine CMB, these foreground components (eg. synchrotron emission, free-free
-emission, thermal dust emission) are a nuisance and careful modeling and removal of these components
-is essential \citep{2016A&A...594A..10P, 2016A&A...594A..25P}.
+\todo{this entire section needs a rewrite, it is way too rambling}
 
-However in many cases the study of CMB foregrounds is scientifically interesting in its own right.
-Measurements of dust-correlated anomalous microwave emission \citep{1997ApJ...486L..23L} led to the
-discovery of spinning dust emission \citep{1998ApJ...508..157D}. Thomson scattering in the IGM
-attenuates the CMB spectrum, but the optical depth implies a mean redshift to the Epoch of
-Reionization (EoR) of $z_r = 8.8^{+1.7}_{-1.4}$ \citep{2016A&A...594A..13P}.  The thermal
-Sunyaev-Zel'dovich effect \citep{1970CoASP...2...66S, 1972CoASP...4..173S} has been used to discover
-new galaxy clusters \citep{2010ApJ...722.1180V} and measure the distance to galaxy clusters when
-combined with X-ray measurements \citep{2006ApJ...647...25B}. The kinetic Sunyaev-Zel'dovich effect
-has been used to constrain the duration of reionization $\Delta z_r \le 4.4$
-\citep{2012ApJ...756...65Z}.
+%Studies of the cosmic microwave background (CMB) have given us an unprecedented understanding of the
+%universe during the epoch of recombination \citep{2013ApJS..208...19H, 2014A&A...571A..16P,
+%2016A&A...594A..13P}. Before arriving at the Earth, the light from the CMB propagates through the
+%intergalactic medium (IGM), intervening galaxies and galaxy clusters, and the Milky Way's
+%interstellar medium (ISM). As photons from the CMB propagate through this intervening material,
+%scattering, absorption, or additional emission can perturb or corrupt the thermal CMB spectrum. In
+%order to measure the pristine CMB, these foreground components (eg. synchrotron emission, free-free
+%emission, thermal dust emission) are a nuisance and careful modeling and removal of these components
+%is essential \citep{2016A&A...594A..10P, 2016A&A...594A..25P}.
+%
+%However in many cases the study of CMB foregrounds is scientifically interesting in its own right.
+%Measurements of dust-correlated anomalous microwave emission \citep{1997ApJ...486L..23L} led to the
+%discovery of spinning dust emission \citep{1998ApJ...508..157D}. Thomson scattering in the IGM
+%attenuates the CMB spectrum, but the optical depth implies a mean redshift to the Epoch of
+%Reionization (EoR) of $z_r = 8.8^{+1.7}_{-1.4}$ \citep{2016A&A...594A..13P}.  The thermal
+%Sunyaev-Zel'dovich effect \citep{1970CoASP...2...66S, 1972CoASP...4..173S} has been used to discover
+%new galaxy clusters \citep{2010ApJ...722.1180V} and measure the distance to galaxy clusters when
+%combined with X-ray measurements \citep{2006ApJ...647...25B}. The kinetic Sunyaev-Zel'dovich effect
+%has been used to constrain the duration of reionization $\Delta z_r \le 4.4$
+%\citep{2012ApJ...756...65Z}.
 
 At redshifts $20 \gtrsim z \gtrsim 7$ the 21 cm hyperfine structure line of neutral hydrogen is
 expected to produce a 10 to 100 mK perturbation in the CMB spectrum \citep{2006PhR...433..181F,
@@ -441,7 +443,7 @@ a_\text{prior}\|^2$.
 \subsubsection{L-Curves}
 
 \begin{figure}[t]
-    \plotone{figures/lcurve/lcurve}
+    \includegraphics[width=\columnwidth]{figures/lcurve/lcurve}
     \caption{
         An example L-curve using OVRO-LWA data at 36.528 MHz. The $x$-axis is the norm of the
         solution (in this case the spherical harmonic coefficients) given in arbitrary units. The
@@ -576,8 +578,8 @@ Altogether the adaptation of CLEAN applied to the maps presented in this paper i
 \begin{algorithmic}[1]
     \Require{$\b a$ is the solution to Equation~\ref{eq:tikhonov-solution}}
     \Function{CLEAN}{$\b a$}
-    \Let{$\b M$}{$\b B^*\b B^*$}
-    \Let{$\b U$}{${\rm chol}(\b B)$} \Comment{Cholesky decomposition}
+    \Let{$\b M$}{$\b B^*\b B$}
+    \Let{$\b U$}{${\rm chol}(\b M + \varepsilon\b I)$} \Comment{Cholesky decomposition}
     \While{noise in map $>$ threshold}
     \State find $N$ pixels with the largest residual flux
     \Let{$\b x$}{$\sum_{i=1}^N \,(\text{pixel flux}) \times \b a_\text{PS}(\theta_i, \phi_i)$}
@@ -595,18 +597,29 @@ Altogether the adaptation of CLEAN applied to the maps presented in this paper i
 
 \subsection{The Owens Valley Long Wavelength Array}
 
-\begin{figure*}[t]
-    \includegraphics[width=\textwidth]{figures/psf/psf}
+\begin{figure}[t]
+    \includegraphics[width=\columnwidth]{figures/antenna-layout/antenna-layout}
     \caption{
-        \textbf{(left panel)}
         This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
         within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
         built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
         antennas equipped with noise-switched front ends.
-        \textbf{(middle panel)}
+    }
+    \label{fig:antenna-layout}
+\end{figure}
+
+\begin{figure*}[t]
+    \includegraphics[width=\textwidth]{figures/psf/psf}
+    \caption{
+        \textit{(left panel)}
+        This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
+        within the 200 m diameter core of the array. The 32 open circles are the expansion antennas
+        built in early 2016 in order to increase the longest baseline to 1.5 km. The 5 crosses are
+        antennas equipped with noise-switched front ends.
+        \textit{(middle panel)}
         The computed $m$-mode analysis imaging PSF for the OVRO-LWA for a point source at a
         declination of $+45^\circ$ and frequency of $36.528$ MHz.
-        \textbf{(right panel)}
+        \textit{(right panel)}
         The computed $m$-mode analysis imaging PSF for the OVRO-LWA for a point source at a
         declination of $+45^\circ$ and frequency of $73.152$ MHz.
     }
@@ -629,22 +642,11 @@ the global sky brightness.  These antennas are used as part of the LEDA experime
 \citep{todo_price_2017} to measure the global signal of 21 cm absorption from the cosmic dawn.  The
 left panel of Figure~\ref{fig:psf} is a diagram of the antenna configuration.
 
-\subsection{The Rainy Day Dataset}
-
 The dataset used in this paper spans 28 consecutive hours beginning at 2017-02-17 12:00:00 UTC time.
-This time was chosen based on the fact that it was raining at OVRO and rain tends to improve the
-low-frequency RFI environment considerably. During this time the OVRO-LWA operated as a
-zenith-pointing drift scanning interferometer.  The correlator dump time was selected to be 13
-seconds such that the correlator output evenly divides a sidereal day.
+During this time the OVRO-LWA operated as a zenith-pointing drift scanning interferometer.  The
+correlator dump time was selected to be 13 seconds such that the correlator output evenly divides a
+sidereal day.
 
-The geomagnetic conditions during this time were mild. The Disturbance storm time (Dst) index was
-$>-30$ nT during the entirety of the observing period.\footnote{
-    The Dst index was obtained from the World Data Center for Geomagnetism, Kyoto University
-    (\url{http://swdcwww.kugi.kyoto-u.ac.jp/}).
-}
-Following the classification scheme of \citet{2008GMS...181.....K}, a weak geomagnetic storm has
-$\text{Dst} < -30$ nT. Therefore there were no geomagnetic storms during the time of these
-observations.
 
 \subsection{Gain Calibration}
 
@@ -672,13 +674,13 @@ per-antenna amplitude correction that is then applied to the cross-correlations.
 \begin{figure*}[t]
     \includegraphics[width=\textwidth]{figures/beam/beam}
     \caption{
-        \textbf{(left panel)}
+        \textit{(left panel)}
         The tracks traced through the sky by the 8 brightest point sources visible to the
         OVRO-LWA.
-        \textbf{(middle panel)}
+        \textit{(middle panel)}
         The amplitude of the OVRO-LWA beam at 36.528 MHz as a result of the beam model
         fit using Zernike polynomials and the symmetry assumptions outlined in the text.
-        \textbf{(right panel)}
+        \textit{(right panel)}
         The amplitude of the OVRO-LWA beam at 73.152 MHz as a result of the beam model
         fit using Zernike polynomials and the symmetry assumptions outlined in the text.
     }
@@ -701,6 +703,40 @@ those flux measurements. We select the basis functions to have the desired symme
 $Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, $Z_8^8$) and the beam amplitude at
 zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustration of a fitted beam
 model at 36.528 MHz. This process is repeated for each frequency channel.
+
+\subsection{Ionospheric Conditions}
+
+\begin{figure}[t]
+    \includegraphics[width=\columnwidth]{figures/vtec/vtec}
+    \caption{
+        The median vertical TEC within 200 km of OVRO during the time of the observation. The gray
+        shaded regions indicate times outside of the observing period. The gray vertical lines
+        indicate sunrise and sunset (as labeled).
+    }
+    \label{fig:vtec}
+\end{figure}
+
+\begin{figure*}[t]
+    \includegraphics[width=\textwidth]{figures/scintillation-refraction/scintillation-refraction}
+    \caption{
+        Light curves for Cyg A and Cas A.
+    }
+    \label{fig:scintillation}
+\end{figure*}
+
+The geomagnetic conditions during this time were mild. The Disturbance storm time (Dst) index was
+$>-30$ nT during the entirety of the observing period.\footnote{
+    The Dst index was obtained from the World Data Center for Geomagnetism, Kyoto University
+    (\url{http://swdcwww.kugi.kyoto-u.ac.jp/}). Accessed 2017-07-25.
+}
+Following the classification scheme of \citet{2008GMS...181.....K}, a weak geomagnetic storm has
+$\text{Dst} < -30$ nT. Stronger geomagnetic storms have $\text{Dst} \ll -30$ nT.
+
+Figure~\ref{fig:vtec} shows the median vertical total electron content (TEC) above OVRO measured
+with the GIM \todo{citation}. The median is computed over all GPS measurements within 200 km of the
+observatory. Over the observing period the TEC smoothly varies from 20 TECU at midday to 5 TECU
+during the night. However, this measurement is sensitive to large scale fluctuations in the
+ionosphere and doesn't capture small scale fluctuations.
 
 \subsection{Source Removal}
 
@@ -831,28 +867,27 @@ diverge from the truth rapidly below 50 MHz.
 
 \begin{table*}[t]
     \centering
-    \begin{tabular}{cccccccccc}
+    \begin{tabular}{ccccccccc}
         \hline
         \hline
         & \tbf{Frequency} & \tbf{Bandwidth} & \tbf{FWHM} &
             \multicolumn2c{\tbf{Thermal Noise}} &&
-            \multicolumn2c{\tbf{Spherical Harmonics}} &
-            \tbf{Singular Values} \\
+            \multicolumn2c{\tbf{Singular Values}} \\
         \cline{5-6}
         \cline{8-9}
         \tbf{\#} & MHz & MHz & arcmin &
             K & Jy &&
-            $l=0$ & $m=0$ &
-            fraction $>\sqrt{\varepsilon}$ \\
+            fraction $>\sqrt{\varepsilon}$ &
+            fraction $>10\sqrt{\varepsilon}$ \\
         \hline
-        1 & 36.528 & 0.024 & 16.2 & 372.8 & & & no & yes \\
-        2 & 41.760 & 0.024 & 14.7 & 321.2 & & & no & yes \\
-        3 & 46.992 & 0.024 & 14.2 & 247.0 & & & no & no \\
-        4 & 52.224 & 0.024 & 13.6 & 205.7 & & & no & no \\
-        5 & 57.456 & 0.024 & 13.5 & 167.7 & & & no & no \\
-        6 & 62.688 & 0.024 & 13.5 & 137.6 & & & no & no \\
-        7 & 67.920 & 0.024 & 13.5 & 114.9 & & & no & no \\
-        8 & 73.152 & 0.024 & 13.7 &  93.4 & & & no & no \\
+        1 & 36.528 & 0.024 &  &  & & & \\
+        2 & 41.760 & 0.024 &  &  & & & \\
+        3 & 46.992 & 0.024 &  &  & & & \\
+        4 & 52.224 & 0.024 &  &  & & & \\
+        5 & 57.456 & 0.024 &  &  & & & \\
+        6 & 62.688 & 0.024 &  &  & & & \\
+        7 & 67.920 & 0.024 &  &  & & & \\
+        8 & 73.152 & 0.024 &  &  & & & \\
         \hline \hline
     \end{tabular}
     \caption{Summary of the generated all-sky maps\label{tab:summary}}
@@ -873,50 +908,88 @@ diverge from the truth rapidly below 50 MHz.
 %    \label{fig:rgb}
 %\end{figure*}
 
-\begin{figure*}[t]
-    \includegraphics[width=\textwidth]{figures/channel-maps/channel-maps}
+\begin{figure*}[p]
+    \centering
+    \begin{tabular}{c}
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw04} \\
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw06} \\
+    \end{tabular}
     \caption{
-        Mollweide-projected maps of the VHF sky north of $-30^\circ$ generated using the OVRO-LWA
-        and $m$-mode analysis imaging. The properties of each map are summarized in
-        Table~\ref{tab:summary}. The color scale is logarithmic and has units of Kelvin. As
-        described in the text, 8 bright sources have been subtracted. The small blank region near
-        the bottom of each map corresponds to the region of sky within 2 degrees of the Sun at the
-        time of the observations.
+        channel maps r kewl
     }
     \label{fig:channel-maps}
 \end{figure*}
 
+\addtocounter{figure}{-1}
 \begin{figure*}[p]
-    \gridline{
-        \fig{figures/jackknife-maps/4.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/jackknife-maps/6.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/jackknife-maps/8.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/jackknife-maps/10.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/jackknife-maps/12.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/jackknife-maps/14.pdf}
-            {0.48\textwidth}{}
-    }
-    \gridline{
-        \fig{figures/jackknife-maps/16.pdf}
-            {0.48\textwidth}{}
-        \fig{figures/jackknife-maps/18.pdf}
-            {0.48\textwidth}{}
-    }
+    \centering
+    \begin{tabular}{c}
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw08} \\
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw10} \\
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw12} \\
+    \end{tabular}
     \caption{
-        The jackknife estimated standard deviation corresponding to the maps presented in
-        Figure~\ref{fig:channel-maps}. The color scale is logarithmic and has units of Kelvin.
+        continued
     }
-    \label{fig:jackknife-maps}
 \end{figure*}
+
+\addtocounter{figure}{-1}
+\begin{figure*}[p]
+    \centering
+    \begin{tabular}{c}
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw14} \\
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw16} \\
+        \includegraphics[height=0.32\textheight]{figures/channel-maps/spw18} \\
+    \end{tabular}
+    \caption{
+        continued
+    }
+\end{figure*}
+
+%\begin{figure*}[t]
+%    \includegraphics[width=\textwidth]{figures/channel-maps/channel-maps}
+%    \caption{
+%        Mollweide-projected maps of the VHF sky north of $-30^\circ$ generated using the OVRO-LWA
+%        and $m$-mode analysis imaging. The properties of each map are summarized in
+%        Table~\ref{tab:summary}. The color scale is logarithmic and has units of Kelvin. As
+%        described in the text, 8 bright sources have been subtracted. The small blank region near
+%        the bottom of each map corresponds to the region of sky within 2 degrees of the Sun at the
+%        time of the observations.
+%    }
+%    \label{fig:channel-maps}
+%\end{figure*}
+%
+%\begin{figure*}[p]
+%    \gridline{
+%        \fig{figures/jackknife-maps/4.pdf}
+%            {0.48\textwidth}{}
+%        \fig{figures/jackknife-maps/6.pdf}
+%            {0.48\textwidth}{}
+%    }
+%    \gridline{
+%        \fig{figures/jackknife-maps/8.pdf}
+%            {0.48\textwidth}{}
+%        \fig{figures/jackknife-maps/10.pdf}
+%            {0.48\textwidth}{}
+%    }
+%    \gridline{
+%        \fig{figures/jackknife-maps/12.pdf}
+%            {0.48\textwidth}{}
+%        \fig{figures/jackknife-maps/14.pdf}
+%            {0.48\textwidth}{}
+%    }
+%    \gridline{
+%        \fig{figures/jackknife-maps/16.pdf}
+%            {0.48\textwidth}{}
+%        \fig{figures/jackknife-maps/18.pdf}
+%            {0.48\textwidth}{}
+%    }
+%    \caption{
+%        The jackknife estimated standard deviation corresponding to the maps presented in
+%        Figure~\ref{fig:channel-maps}. The color scale is logarithmic and has units of Kelvin.
+%    }
+%    \label{fig:jackknife-maps}
+%\end{figure*}
 
 Eight sky maps are presented in Figure~\ref{fig:channel-maps}. Their properties are briefly
 summarized in Table~\ref{tab:summary}. In this section we will describe the new imaging technique
