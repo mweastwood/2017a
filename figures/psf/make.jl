@@ -16,7 +16,7 @@ function plot_image(filename)
     gca()[:tick_params](axis="both", which="major", labelsize=12)
     gca()[:set_aspect]("equal")
     out = imshow(img.', interpolation="nearest", cmap=get_cmap("magma"),
-                 vmin=-0.2, vmax=1.0,
+                 vmin=-0.1, vmax=0.3,
                  extent=(150, -150, -150, 150))
     xlim(140, -140)
     ylim(-140, 140)
@@ -54,7 +54,7 @@ cax = divider[:append_axes]("right", size="5%", pad=0.10)
 cbar = colorbar(_im, cax=cax)
 cbar[:ax][:tick_params](labelsize=12)
 cbar[:set_label]("normalized amplitude", fontsize=12, rotation=270)
-cbar[:ax][:get_yaxis]()[:set_label_coords](4.5, 0.5)
+cbar[:ax][:get_yaxis]()[:set_label_coords](5.5, 0.5)
 
 tight_layout()
 
