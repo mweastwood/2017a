@@ -1,6 +1,6 @@
 #!/usr/bin/env julia
 
-using JLD, PyPlot, LibHealpix
+using JLD, PyPlot, LibHealpix, PerceptualColourMaps
 
 path = dirname(@__FILE__)
 
@@ -16,6 +16,7 @@ y = sin.(θ)
 ellipse = plt[:Polygon]([x y], alpha=0)
 gca()[:add_patch](ellipse)
 imshow(img, interpolation="nearest", cmap=get_cmap("RdBu_r"),
+                                    #cmap=ColorMap(cmap("D4")),
        vmin=-0.5, vmax=+0.5,
        extent=(-2, 2, -1, 1),
        clip_path=ellipse, zorder=10)
