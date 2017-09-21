@@ -8,12 +8,25 @@ using Colors, PerceptualColourMaps
 path = dirname(@__FILE__)
 
 function go()
-    slope, residual = load(joinpath(path, "haslam-spectral-index.jld"), "slope", "residual")
+    slope, residual, mask = load(joinpath(path, "haslam-spectral-index.jld"),
+                                 "slope", "residual", "mask")
 
-    ν1 = 73.152
-    ν2 = 408
+    ν1 = 36.528
+    ν2 = 52.224
+    ν3 = 73.152
+    ν4 = 408
+    brightness1 = load(joinpath(path, "spw04.jld"), "image")
+    brightness2 = load(joinpath(path, "spw10.jld"), "image")
+    brightness3 = load(joinpath(path, "spw18.jld"), "image")
     
     cmap_samples = cmap("D4", reverse=true)
+
+    img = zeros(size(brightness1)..., 3)
+    for y = 1:size(img, 2), x = 1:size(img, 1)
+        img[x, y, 1] = brightness1[x, y] * (ν1/ν3)^2.5
+        img[x, y, 2] = brightness2[x, y] * (ν2/ν3)^2.5
+        img[x, y, 3] = brightness3[x, y]
+    end
 
     figure(1, figsize=(12, 5)); clf()
 
@@ -23,20 +36,23 @@ function go()
     ellipse = plt[:Polygon]([x y], alpha=0)
     gca()[:add_patch](ellipse)
 
-    map = RingHealpixMap(solve_for_spectral_index(slope, ν1, ν2))
-    img = mollweide(map, (4096, 2048))
-    img[img .== 0] = NaN # this deletes contours around the edge of the map
-    cs = contourf(img, -3.5:0.1:-1.5,
-                  extent=(-2, 2, 1, -1), origin="lower",
-                  cmap=ColorMap(cmap_samples),
-                  #linewidths=1,
-                  clip_path=ellipse)
+    function decide_on_color_scale(img)
+        pixels = vec(img)
+        pixels = pixels[pixels .!= 0]
+        sort!(pixels)
+        N = length(pixels)
+        min = pixels[round(Int, 0.00001N+1)]
+        max = pixels[round(Int, 0.999N+1)]
+        min, max, (max-min)/10
+    end
 
-    cbar = colorbar()
-    #cbar[:lines][1][:set](linewidth=55)
-    cbar[:ax][:tick_params](labelsize=12)
-    cbar[:set_label]("local spectral index", fontsize=12, rotation=270)
-    cbar[:ax][:get_yaxis]()[:set_label_coords](4.5, 0.5)
+    img_min, img_max, img_base = decide_on_color_scale(img)
+    img = clamp.(img, img_min, img_max)
+    img = (log10.(img - img_min + img_base) - log10.(img_base)) ./
+            (log10.(img_max - img_min + img_base) - log10.(img_base))
+    imshow(img, interpolation="nearest",
+           extent=(-2, 2, -1, 1),
+           clip_path=ellipse)
 
     xlim(-2, 2)
     ylim(-1, 1)
@@ -44,8 +60,25 @@ function go()
     gca()[:get_xaxis]()[:set_visible](false)
     gca()[:get_yaxis]()[:set_visible](false)
     axis("off")
-
     tight_layout()
+
+    map = RingHealpixMap(clamp.(solve_for_spectral_index(slope, ν3, ν4), -3.5, -1.5))
+    img = mollweide(map, (4096, 2048))
+    mask_img = mollweide(RingHealpixMap(mask), (4096, 2048))
+    img[mask_img] = NaN
+    img[img .== 0] = NaN # this deletes contours around the edge of the map
+    cs = contour(img, -3.5:0.1:-1.5,
+                 extent=(-2, 2, 1, -1), origin="lower",
+                 #cmap=ColorMap(cmap_samples),
+                 cmap=ColorMap("RdBu"),
+                 linewidths=0.5,
+                 clip_path=ellipse)
+
+    cbar = colorbar()
+    cbar[:lines][1][:set](linewidth=20)
+    cbar[:ax][:tick_params](labelsize=12)
+    cbar[:set_label]("local spectral index", fontsize=12, rotation=270)
+    cbar[:ax][:get_yaxis]()[:set_label_coords](4.5, 0.5)
 
     savefig(joinpath(path, "haslam-spectral-index.pdf"),
             bbox_inches="tight", pad_inches=0, transparent=true)
@@ -62,9 +95,9 @@ end
 
 function _solve_for_spectral_index(m, ν1, ν2)
     if m > 0
-        return log(m)/log(ν2/ν1)
+        index = log(m)/log(ν2/ν1)
     else
-        return NaN
+        return -10
     end
 end
 

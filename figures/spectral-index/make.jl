@@ -8,8 +8,9 @@ using Colors, PerceptualColourMaps
 path = dirname(@__FILE__)
 
 function go()
-    slope, jackknives, residual = load(joinpath(path, "internal-spectral-index-adaptive.jld"),
-                                       "slope", "jackknives", "delta_residual")
+    slope, jackknives, residual, masks = load(joinpath(path, "internal-spectral-index.jld"),
+                                              "slope", "jackknives", "residual", "masks")
+    mask = Vector{Bool}(masks[1] .== 1)
 
     ν1 = 36.528
     ν2 = 52.224
@@ -46,8 +47,6 @@ function go()
     end
 
     img_min, img_max, img_base = decide_on_color_scale(img)
-    @show img_min img_max img_base
-    @show minimum(img) maximum(img)
     img = clamp.(img, img_min, img_max)
     img = (log10.(img - img_min + img_base) - log10.(img_base)) ./
             (log10.(img_max - img_min + img_base) - log10.(img_base))
@@ -55,30 +54,35 @@ function go()
            extent=(-2, 2, -1, 1),
            clip_path=ellipse)
 
-    map = RingHealpixMap(solve_for_spectral_index(slope[20.0], ν1, ν3))
-    img = mollweide(map, (4096, 2048))
-    img[img .== 0] = NaN # this deletes contours around the edge of the map
-    cs = contour(img, -3.5:0.25:-2.0,
-                 extent=(-2, 2, 1, -1), origin="lower",
-                 cmap=ColorMap(cmap_samples),
-                 linewidths=1,
-                 clip_path=ellipse)
-    #clabel(cs, inline=true, fontsize=8, fontweight="bold", fmt="%1.2f")
-
-    cbar = colorbar()
-    cbar[:lines][1][:set](linewidth=55)
-    cbar[:ax][:tick_params](labelsize=12)
-    cbar[:set_label]("local spectral index", fontsize=12, rotation=270)
-    cbar[:ax][:get_yaxis]()[:set_label_coords](4.5, 0.5)
-
     xlim(-2, 2)
     ylim(-1, 1)
     gca()[:set_aspect]("equal")
     gca()[:get_xaxis]()[:set_visible](false)
     gca()[:get_yaxis]()[:set_visible](false)
     axis("off")
-
     tight_layout()
+
+    #savefig(joinpath(path, "ovro-lwa-sky-map.png"),
+    #        bbox_inches="tight", pad_inches=0, transparent=true)
+
+    map = RingHealpixMap(solve_for_spectral_index(slope, ν1, ν3))
+    img = mollweide(map, (4096, 2048))
+    mask_img = mollweide(RingHealpixMap(mask), (4096, 2048))
+    img[mask_img] = NaN
+    img[img .== 0] = NaN # this deletes contours around the edge of the map
+    cs = contour(img, -3.5:0.1:-1.5,
+                 extent=(-2, 2, 1, -1), origin="lower",
+                 #cmap=ColorMap(cmap_samples),
+                 cmap=get_cmap("RdBu"),
+                 linewidths=0.5,
+                 clip_path=ellipse)
+    #clabel(cs, inline=true, fontsize=8, fontweight="bold", fmt="%1.2f")
+
+    cbar = colorbar()
+    cbar[:lines][1][:set](linewidth=20)
+    cbar[:ax][:tick_params](labelsize=12)
+    cbar[:set_label]("local spectral index", fontsize=12, rotation=270)
+    cbar[:ax][:get_yaxis]()[:set_label_coords](4.5, 0.5)
 
     savefig(joinpath(path, "internal-spectral-index.pdf"),
             bbox_inches="tight", pad_inches=0, transparent=true)

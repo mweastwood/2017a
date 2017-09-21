@@ -156,14 +156,14 @@
 \section{Introduction}
 
 At redshifts $20 \gtrsim z \gtrsim 7$ the 21~cm hyperfine structure line of neutral hydrogen is
-expected to produce a 10 to 100 mK perturbation in the CMB spectrum \citep{2006PhR...433..181F,
-2012RPPh...75h6901P}. The amplitude of this perturbation on a given line-of-sight is a function of
-the neutral fraction of hydrogen, the baryon overdensity, the spin temperature relative to the CMB
-temperature at the given redshift, and the line-of-sight peculiar velocity of the gas.  The spatial
-power spectrum of this perturbation is thought to be dominated by inhomogeneous heating of the IGM
-at $z\sim 20$ \citep{2014MNRAS.437L..36F}, and by growing ionized bubbles during the EoR at $z\sim
-7$ where a detection can constrain the ionizing efficiency of early galaxies, the UV photon
-mean-free-path, and the minimum halo mass that can support star formation
+expected to produce a 10 to 100 mK perturbation in the Cosmic Microwave Background (CMB) spectrum
+\citep{2006PhR...433..181F, 2012RPPh...75h6901P}. The amplitude of this perturbation on a given
+line-of-sight is a function of the neutral fraction of hydrogen, the baryon overdensity, the spin
+temperature relative to the CMB temperature at the given redshift, and the line-of-sight peculiar
+velocity of the gas.  The spatial power spectrum of this perturbation is thought to be dominated by
+inhomogeneous heating of the IGM at $z\sim 20$ \citep{2014MNRAS.437L..36F}, and by growing ionized
+bubbles during the EoR at $z\sim 7$ where a detection can constrain the ionizing efficiency of early
+galaxies, the UV photon mean-free-path, and the minimum halo mass that can support star formation
 \citep{2015MNRAS.449.4246G}.
 
 Current 21~cm cosmology experiments can be broadly separated into two classes: global experiments
@@ -303,8 +303,9 @@ corresponding to $m=0$ is a simple average of the visibilities over sidereal tim
 corresponds to the component of the visibilities that varies over half-day timescales. Larger values
 of $m$ correspond to components that vary on quicker timescales.
 
-It can be shown that there is a discrete linear relationship between the measured $m$-modes
-$V^{ij}_{m,\nu}$ and the spherical harmonic coefficients of the sky brightness $a_{lm,\nu}$.
+\citet{2014ApJ...781...57S, 2015PhRvD..91h3514S} show that there is a discrete linear relationship
+between the measured $m$-modes $V^{ij}_{m,\nu}$ and the spherical harmonic coefficients of the sky
+brightness $a_{lm,\nu}$.
 \begin{equation}\label{eq:m-mode-sum-equation}
     V^{ij}_{m,\nu} = \sum_l B^{ij}_{lm,\nu} a_{lm,\nu}\,,
 \end{equation}
@@ -632,19 +633,20 @@ Altogether the adaptation of CLEAN applied to the maps presented in this paper i
 
 The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
 Owens Valley Radio Observatory near Big Pine, California \citep{todo_hallinan_2017}.  The OVRO-LWA
-is a low-frequency instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz with 24
-kHz channelization.  Each antenna stand hosts two perpendicular broadband dipoles so that there are
-$288\times2$ signal paths in total. These signal paths feed into the 512-input LEDA correlator
-\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
-single snapshot image.  In the current configuration 32 antennas (64 signal paths) are unused.
+is a low-frequency instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz and
+with 24 kHz channelization.  Each antenna stand hosts two perpendicular broadband dipoles so that
+there are $288\times2$ signal paths in total. These signal paths feed into the 512-input LEDA
+correlator \citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible
+hemisphere in a single snapshot image.  In the current configuration 32 antennas (64 signal paths)
+are unused.
 
 The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
-snapshot imaging.  251 of the antennas are contained within a 200 m diameter core. 32 antennas are
-placed outside of the core in order to extend the maximum baseline length to $\sim$1.5~km. The final
-5 antennas are equipped with noise-switched front ends for calibrated total power measurements of
-the global sky brightness.  These antennas are used as part of the LEDA experiment
-\citep{todo_price_2017} to measure the global signal of 21~cm absorption from the cosmic dawn.
-Figure~\ref{fig:antenna-layout} is a diagram of the antenna configuration.
+snapshot imaging (see Figure~\ref{fig:antenna-layout}).  251 of the antennas are contained within a
+200 m diameter core. 32 antennas are placed outside of the core in order to extend the maximum
+baseline length to $\sim$1.5~km. The final 5 antennas are equipped with noise-switched front ends
+for calibrated total power measurements of the global sky brightness.  These antennas are used as
+part of the LEDA experiment \citep{todo_price_2017} to measure the global signal of 21~cm absorption
+from the cosmic dawn.
 
 The dataset used in this paper spans 28 consecutive hours beginning at 2017-02-17 12:00:00 UTC time.
 During this time the OVRO-LWA operated as a zenith-pointing drift scanning interferometer.  The
@@ -762,7 +764,7 @@ This varies on slower 10 minute timescales refracting each source by as much as 
 MHz) from their true astronomical positions as waves in the ionosphere pass through the line of
 sight. The impact of these effects on the sky maps is simulated in \S\ref{sec:ionosphere}.
 
-\subsection{Source Removal}
+\subsection{Source Removal}\label{sec:source-removal}
 
 \subsubsection{Cygnus A and Cassiopeia A}
 
@@ -906,11 +908,6 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
         52.224~MHz (green), and 73.152~MHz (blue). The maps are scaled by $\nu^{2.5}$ before
         combining and the color scale is logarithmic (as in Figure~\ref{fig:channel-maps}). The
         local spectral index (estimated by means of a local T-T plot) is overlaid as a contour plot.
-        \todo{
-            The spectral index near the galactic plane is very wrong because the local T-T plot is
-            contaminated with multiple types of emission. I need to redo this plot by replacing the
-            galactic plane with hand-picked regions for estimating the spectral index.
-        }
     }
     \label{fig:internal-spectral-index}
 \end{figure*}
@@ -958,10 +955,10 @@ Eight sky maps were constructed using Tikhonov-regularized $m$-mode analysis ima
 with observations from the OVRO-LWA. These maps are shown in Figure~\ref{fig:channel-maps}. Each map
 covers the sky north of $\delta=-30^\circ$ with $\sim 15$ arcmin angular resolution resolution. The
 8 brightest northern hemisphere point sources are removed from each map (Cyg~A, Cas~A, Vir~A, Tau~A,
-Her~A, Hya~A, Per~B, and 3C~353). There is a small blank region near $l=+45.7^\circ$,
-$b=-47.9^\circ$ corresponding to the position of the Sun during the observing window. The properties
-of each map, including frequency, bandwidth, angular resolution, and thermal noise are presented in
-Table~\ref{tab:summary}.
+Her~A, Hya~A, Per~B, and 3C~353) as describe in \S\ref{sec:source-removal}. There is a small blank
+region near $l=+45.7^\circ$, $b=-47.9^\circ$ corresponding to the position of the Sun during the
+observing window. The properties of each map, including frequency, bandwidth, angular resolution,
+and thermal noise are presented in Table~\ref{tab:summary}.
 
 Due to the considerations presented by \citet{2016ApJ...826..116V}, each of these maps is monopole
 subtracted. Consequently a simple pixel-by-pixel powerlaw fit will be unduly effected by the choice
@@ -979,7 +976,7 @@ yellow that is also evident in the spectral index contours).
 In order to suppress sources of terrestrial interference, all spherical harmonics with $m=0$, or
 $m=1$ and $l>100$ are filtered from the map (where the spherical harmonics are defined in the J2017
 coordinate system). As will be discussed in \S\ref{sec:rfi}, these spherical harmonics are
-particularly susceptible to contamination by RFI and common-mode problems. As a consequence,
+particularly susceptible to contamination by RFI and common-mode pickup. As a consequence,
 astronomical emission that circles the J2017 north celestial pole (NCP) is filtered from the maps.
 This tends to create rings around the NCP at the declination of bright point sources. These rings
 are naturally removed from the map during CLEANing as long as this filtering step is including in
@@ -1163,8 +1160,8 @@ ionospheric effects discussed in \S\ref{sec:ionosphere}.
 One of the key assumptions made by $m$-mode analysis is that the sky is completely static.  We
 assume that the only time-dependent behavior is the rotation of the Earth, which slowly rotates the
 sky through the fringe patterns of the interferometer. At low frequencies the ionosphere violates
-this assumption. In particular, ionospheric scintillation will cause even static sources to exhibit
-significant variability (see Figure~\ref{fig:scintillation}).
+this assumption. In particular, ionospheric scintillation and refractive offsets will cause even
+static sources to exhibit significant variability (see Figure~\ref{fig:scintillation}).
 
 The correlation observed on a given baseline for a single point source is
 \begin{equation}
@@ -1241,18 +1238,11 @@ as much as $-20\%$.
     \centering
     \includegraphics[height=0.32\textheight]{figures/haslam/haslam-spectral-index}
     \caption{
-        The spectral index between the reprocessed Haslam 408 MHz map and the 73.152 MHz map
-        (degraded to 56 arcmin resolution). The white regions of the plot correspond to areas where
-        there was a negative correlation between the brightness temperature at 73.152 MHz and at 408
-        MHz. This can either be due to the presence of multiple emission mechanisms in close
-        proximity to each other or due to insufficient dynamic range in temperature leading to
-        effectively no correlation between the two temperatures. Regardless, a single power law is
-        insufficient to describe the data in these areas.
-        \todo{
-            Cas A is the extremely blue feature in this plot. It needs to be blotted out because
-            it's not present in my maps, but it is present in the Haslam maps. For whatever reason
-            this isn't a problem with Cyg A.
-        }
+        The contours show the spectral index between the reprocessed Haslam 408 MHz map and the
+        73.152 MHz map (degraded to 56 arcmin resolution). These contours are overlaid on the same
+        3-color map as in Figure~\ref{fig:internal-spectral-index}. The regions with shallow
+        spectral index between 73.152 MHz and 408 MHz coincide with regions with large free-free
+        absorption that is evident between 36.528 MHz and 73.152 MHz.
     }
     \label{fig:haslam-spectral-index}
 \end{figure*}
@@ -1261,12 +1251,12 @@ The Haslam 408 MHz map \citep{1981A&A...100..209H, 1982A&AS...47....1H} was repr
 \citet{2015MNRAS.451.4311R} to remove artifacts associated with $1/f$ noise and bright sources. In
 order to compare the OVRO-LWA maps with the lower resolution Haslam map, the OVRO-LWA maps were
 degraded to 56 arcmin resolution and the spectral index between the 73.152 MHz map and the 408 MHz
-Haslam map was computed by means of a T-T plot at each pixel in the maps (in order to obviate the
-need for a zero-level correction to the 73.152 MHz map). The results of this computation are shown
-in Figure~\ref{fig:haslam-spectral-index}. Because this comparison uses a local T-T plot to estimate
-the spectral index, the angular resolution of this computation is somewhat degraded relative to
-other comparisons in the literature but the spectral indices in
-Figure~\ref{fig:haslam-spectral-index} are robust to errors in the zero-level in either map.
+Haslam map was computed by means of a local T-T plot at each pixel in the maps (in order to obviate
+the need for a zero-level correction to the 73.152 MHz map). The results of this computation are
+shown in Figure~\ref{fig:haslam-spectral-index}. Because this comparison uses a local T-T plot to
+estimate the spectral index, the angular resolution of this computation is somewhat degraded
+relative to other comparisons in the literature but the spectral indices in
+Figure~\ref{fig:haslam-spectral-index} are robust to zero-level errors in either map.
 
 The primary difference between the spectral index derived between 73.152 MHz and 408 MHz
 (Figure~\ref{fig:haslam-spectral-index}), and the spectral index derived between 36.528 MHz and
@@ -1295,11 +1285,11 @@ subtraction routine for 21~cm cosmology experiments.
 At frequencies above $\sim55$~MHz, the angular resolution of these maps is limited by the selection
 of $l_\text{max}=1000$. Future work will increase $l_\text{max}$ to remove this restriction, as well
 as include more time and bandwidth to improve the thermal noise. The usage of nighttime only data
-can help mitigate dynamic range limitations from the ionosphere and also prevent the Sun from
-showing up in the maps. Observations could also be extended to slightly higher and lower frequencies
-($\sim27$ to $85$~MHz) to take advantage of the full frequency range of the OVRO-LWA. The higher
-frequencies are particularly interesting in order to maximize the overlap with the MWA in the
-southern hemisphere, which could be used to fill-in the hole around the southern celestial pole.
+can help mitigate dynamic range limitations from the ionosphere and also eliminate solar sidelobe
+residuals. Observations could also be extended to slightly higher and lower frequencies ($\sim27$ to
+$85$~MHz) to take advantage of the full frequency range of the OVRO-LWA. The higher frequencies are
+particularly interesting in order to maximize the overlap with the MWA in the southern hemisphere,
+which could be used to fill-in the hole around the southern celestial pole.
 
 \bibliographystyle{apj}
 \bibliography{paper}
