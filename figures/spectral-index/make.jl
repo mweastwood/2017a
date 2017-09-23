@@ -62,8 +62,11 @@ function go()
     axis("off")
     tight_layout()
 
-    #savefig(joinpath(path, "ovro-lwa-sky-map.png"),
-    #        bbox_inches="tight", pad_inches=0, transparent=true)
+    savefig(joinpath(path, "ovro-lwa-sky-map.png"),
+            bbox_inches="tight", pad_inches=0, transparent=true)
+
+    savefig(joinpath(path, "ovro-lwa-sky-map.pdf"),
+            bbox_inches="tight", pad_inches=0, transparent=true)
 
     map = RingHealpixMap(solve_for_spectral_index(slope, ν1, ν3))
     img = mollweide(map, (4096, 2048))

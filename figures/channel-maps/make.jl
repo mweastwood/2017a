@@ -1,6 +1,6 @@
 #!/usr/bin/env julia
 
-using JLD, PyPlot, PyCall
+using JLD, PyPlot, PyCall, LibHealpix
 
 unshift!(PyVector(pyimport("sys")["path"]), "")
 @pyimport my_log_scale as mls
@@ -22,12 +22,15 @@ for (idx, spw) in enumerate(4:2:18)
     figure(idx, figsize=(12, 5)); clf()
 
     str = @sprintf("spw%02d", spw)
-    img, ν   = load(joinpath(path, "$str.jld"), "image", "frequency")
+    img, ν, map = load(joinpath(path, "$str.jld"), "image", "frequency", "map")
     img_odd  = load(joinpath(path, "$str-odd.jld"),  "image")
     img_even = load(joinpath(path, "$str-even.jld"), "image")
 
     #variance = 0.5 .* ((img_odd - img).^2 .+ (img_even .- img).^2)
     #standard_deviation = sqrt.(variance)
+
+    writehealpix(@sprintf("ovro-lwa-sky-map-%6.3fMHz.fits", ν/1e6), RingHealpixMap(map),
+                 replace=true, coordsys="G")
 
     θ = linspace(0, 2π, 512)
     x = 2cos.(θ)
