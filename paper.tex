@@ -394,7 +394,7 @@ relative to a dense matrix. However we must invert $N$ blocks, so the overall co
 is proportional to $N^2$.  For the case of the OVRO-LWA the equation breaks up into $\sim10^3$
 blocks and so we save a factor of $\sim10^6$ in processing time by using $m$-mode analysis.
 
-\subsection{$m$-Mode Analysis Imaging}
+\subsection{$m$-Mode Analysis Imaging}\label{sec:mmode-imaging}
 
 Imaging in $m$-mode analysis essentially amounts to inverting
 Equation~\ref{eq:m-mode-matrix-equation} to solve for the spherical harmonic coefficients $\b a$.
@@ -675,10 +675,9 @@ sidereal day.
 
 \subsection{Gain Calibration}\label{sec:gaincal}
 
-Antenna gain calibration is accomplished using alternating least squares otherwise known as
-``stefcal'' \citep{2008ISTSP...2..707M, 2014A&A...571A..97S}.  \citet{2008ISTSP...2..707M} and
-\citet{2014A&A...571A..97S}. The calibration routine is written in the Julia programming language
-\citep{doi:10.1137/141000671}, and is publicly available
+Antenna gain calibration is accomplished using a variant of alternating least squares colloquially
+known as ``stefcal'' \citep{2008ISTSP...2..707M, 2014A&A...571A..97S}. The calibration routine is
+written in the Julia programming language \citep{doi:10.1137/141000671}, and is publicly available
 online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3 or
 any later version).
 
@@ -1173,6 +1172,32 @@ estimated flux.  However in general the amplitude and phase of the antenna respo
 known and so beam model errors can lead to observations being combined with incorrect phase as well.
 This will lead to a degraded PSF in the final map. This effect is negligible compared to the
 ionospheric effects discussed in \S\ref{sec:ionosphere}.
+
+\subsection{Polarization Leakage}
+
+\citet{2015PhRvD..91h3514S} describe how to generalize $m$-mode analysis to account for a polarized
+sky observed with a polarized antenna beam. Heretofore this generalization has been neglected in the
+discussion of $m$-mode analysis imaging.  At low frequencies, increasingly rapid Faraday rotation
+leads to depolarization. Therefore polarization fractions are generally expected to decrease at low
+frequencies (varying with ionospheric conditions). \citet{2016ApJ...830...38L} detected the presence
+of diffuse polarized emission on degree angular scales with the MWA, also finding typical
+depolarization ratios of $\sim0.3$ for pulsars at 154~MHz relative to 1.4~GHz, although there was a
+large variance between pulsars. Even more depolarization is expected at frequencies $\le
+73.152$~MHz, but crossed-dipole antennas with extremely large primary beams will naturally introduce
+large polarization leakage terms at low elevations.  It is instructive to compute what impact this
+will have on the unpolarized imaging process.
+
+In order to understand the effect of polarization leakage, a point source with 10\% polarization in
+Stokes-$Q$ was simulated at the location of Cas A.  The simulated visibilities were computed using
+the measured beams for $x$- and $y$-dipoles. Because the amplitude of the two beams are not equal in
+every direction on the sky, this introduces a direction-dependent leakage of Stokes-$Q$ into
+Stokes-$I$. At 73.152~MHz, this leakage is $\lesssim5\%$ above $15^\circ$ elevation, but rapidly
+rises to $\gtrsim50\%$ at lower elevations. Cas A is a circumpolar source and spends about 7 hours
+every day skirting the horizon where the polarization leakage is large, so by placing the simulated
+source at the location of Cas A, we are engineering a situation where the polarization leakage from
+Stokes-$Q$ into Stokes-$I$ will be large. However, the impact on the unpolarized $m$-mode analysis
+maps is mild, amounting to a 0.5\% error in the flux of the source with no measurable effect on the
+PSF.
 
 \subsection{The Ionosphere}\label{sec:ionosphere}
 
