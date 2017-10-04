@@ -16,10 +16,13 @@ east -= 2
 core = 1:251
 leda = 252:256
 expansion = 257:288
+off = [collect(57:64); collect(121:128); collect(185:192); collect(239:246)]
+core = setdiff(core, off)
 
 gca()[:tick_params](axis="both", which="major", labelsize=12)
 
 scatter(east[core], north[core], marker=".", c="k", s=20, lw=0)
+scatter(east[off], north[off], marker=".", c="r", s=20, lw=0)
 scatter(east[leda], north[leda], marker="+", c="k", s=50)
 scatter(east[expansion], north[expansion], marker="^", c="k", s=20)
 gca()[:set_aspect]("equal")

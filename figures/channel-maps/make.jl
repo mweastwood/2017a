@@ -50,6 +50,11 @@ for (idx, spw) in enumerate(4:2:18)
     gca()[:get_yaxis]()[:set_visible](false)
     axis("off")
 
+    tight_layout()
+
+    savefig(joinpath(path, "$str-notext.pdf"),
+            bbox_inches="tight", pad_inches=0, transparent=true)
+
     txt = text(0.01, 0.98, @sprintf("%.3f MHz", ν/1e6),
                transform=gca()[:transAxes], fontsize=14, fontweight="bold",
                horizontalalignment="left", verticalalignment="top",
@@ -79,8 +84,6 @@ for (idx, spw) in enumerate(4:2:18)
     #cbar[:ax][:tick_params](labelsize=12)
     #cbar[:set_label]("brightness temperature (K)", fontsize=12, rotation=270)
     #cbar[:ax][:get_yaxis]()[:set_label_coords](4.5, 0.5)
-
-    tight_layout()
 
     savefig(joinpath(path, "$str.pdf"),
             bbox_inches="tight", pad_inches=0, transparent=true)

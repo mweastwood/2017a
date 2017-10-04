@@ -176,7 +176,7 @@ that are aiming to detect the spectral signature of the cosmologically redshifte
 after averaging over the entire sky (otherwise known as the monopole), and power spectrum
 experiments that incorporate angular information to attempt to measure the 3D spatial power spectrum
 of cosmological 21~cm perturbations.  Ongoing global experiments include EDGES
-\citep{2010Natur.468..796B, 2017ApJ...835...49M}, LEDA \citep{price_2017}, BIGHORNS
+\citep{2010Natur.468..796B, 2017ApJ...835...49M}, LEDA \citep{2017arXiv170909313P}, BIGHORNS
 \citep{2015PASA...32....4S}, SCI-HI \citep{2014ApJ...782L...9V}, and SARAS 2
 \citep{2017arXiv170306647S}.  Ongoing power spectrum experiments include PAPER/HERA
 \citep{2015ApJ...809...61A, 2016arXiv160607473D}, LOFAR \citep{2017ApJ...838...65P}, and the MWA
@@ -239,10 +239,13 @@ other low-frequency sky maps, and in \S\ref{sec:conclusion} we present our concl
 \section{All-Sky Imaging}\label{sec:imaging}
 
 The goal of all imaging algorithms is to estimate the brightness of the sky $I_\nu(\hat r)$ in the
-direction $\hat r$ and frequency $\nu$. A radio interferometer measures the visibilities
-$V^{ij}_{\nu}$ between pairs of antennas -- here numbered $i$ and $j$ respectively. If the antennas
-are separated by the baseline $\vec b_{ij}$, and $A_\nu(\hat r)$ describes their response to the
-incident radiation, then
+direction $\hat r$ and frequency $\nu$.  A radio interferometer measures the visibilities
+$V^{ij,pq}_{\nu}$ between pairs of antennas numbered $i$ and $j$ respectively, and between
+polarizations labeled $p$ and $q$ respectively. We will neglect subtleties associated with polarized
+imaging, so the Stokes-$I$ visibilities are constructed from the sum of the $xx$ and $yy$
+correlations such that $V^{ij}_{\nu} = (V^{ij,xx}_{\nu}+V^{ij,yy}_{\nu})/2$.  If the antennas are
+separated by the baseline $\vec b_{ij}$, and $A_\nu(\hat r)$ describes an antenna's response to the
+incident Stokes-$I$ radiation (here assumed to be the same for each antenna), then
 \begin{equation}\label{eq:basic-imaging}
     V^{ij}_\nu = \int_\text{sky}
                  A_\nu(\hat r) I_\nu(\hat r)
@@ -277,22 +280,23 @@ restriction on baseline co-planarity and field-of-view can be relaxed by using W
 \citep{2008ISTSP...2..647C}. Known primary beam effects can also be accounted for during imaging by
 using A-projection \citep{2013ApJ...770...91B}.
 
-\subsection{$m$-Mode Analysis}
+\subsection{$m$-Mode Analysis}\label{sec:mmode-analysis}
 
 On the other hand, transit telescopes can take advantage of a symmetry in
 Equation~\ref{eq:basic-imaging} that greatly reduces the amount of computer time required to image
 the full-sky with exact incorporation of widefield imaging effects. This technique, called $m$-mode
 analysis, also obviates the need for gridding and mosaicing. Instead the entire sky is imaged in one
-coherent synthesis imaging step.
+coherent synthesis imaging step.  We will briefly summarize $m$-mode analysis below, but the
+interested reader should consult \citet{2014ApJ...781...57S, 2015PhRvD..91h3514S} for a complete
+derivation.
 
-In this context we will define a transit telescope as any interferometer where the response pattern
-of the individual elements does not change with respect to time. This may be an interferometer like
-the OVRO-LWA where the correlation elements are fixed dipoles, but it may also be an interferometer
-like LOFAR or the MWA if the steerable beams are held in a fixed position (not necessarily at
-zenith).
-
-We will briefly summarize $m$-mode analysis below, but the interested reader should consult
-\citet{2014ApJ...781...57S, 2015PhRvD..91h3514S} for a complete derivation.
+In the context of $m$-mode analysis a transit telescope is any interferometer for which the response
+pattern of the individual elements does not change with respect to time. This may be an
+interferometer like the OVRO-LWA where the correlation elements are fixed dipoles, but it may also
+be an interferometer like LOFAR or the MWA if the steerable beams are held in a fixed position (not
+necessarily at zenith). The interferometer also does not necessarily have to be homogeneous.
+Heterogeneous arrays composed of several different types of antennas are allowed as long as care is
+taken to generalize Equation~\ref{eq:basic-imaging} for a heterogeneous array.
 
 For a transit telescope, the visibilities $V^{ij}_\nu$ are a periodic function of sidereal
 time.\footnote{
@@ -317,9 +321,10 @@ brightness $a_{lm,\nu}$.
 \begin{equation}\label{eq:m-mode-sum-equation}
     V^{ij}_{m,\nu} = \sum_l B^{ij}_{lm,\nu} a_{lm,\nu}\,,
 \end{equation}
-where the transfer coefficients $B^{ij}_{lm,\nu}$ define the interferometer's response to the sky.
-These transfer coefficients are computed from the spherical harmonic transform of the baseline
-transfer function defined by Equation~\ref{eq:baseline-transfer-function}.
+where the transfer coefficients $B^{ij}_{lm,\nu}$ are computed from the spherical harmonic transform
+of the baseline transfer function defined by Equation~\ref{eq:baseline-transfer-function}. These
+transfer coefficients define the interferometers response to the corresponding spherical harmonic
+coefficients.
 
 Equation~\ref{eq:m-mode-sum-equation} can be recognized as a matrix equation where the transfer
 matrix $\b B$ is block-diagonal.
@@ -363,15 +368,15 @@ real-valued, and the spherical harmonic transform of a real-valued function has 
 a_{lm}^*$.
 
 In practice we now need to pick the set of spherical harmonics we will use to represent the sky. For
-an interferometer like the OVRO-LWA with lots of short baselines, a sensible choice is to use all
+an interferometer like the OVRO-LWA with many short baselines, a sensible choice is to use all
 spherical harmonics with $l\le l_\text{max}$ for some $l_\text{max}$. The parameter $l_\text{max}$
 is determined by the maximum baseline length of the interferometer.  For an interferometer without
 short spacings, a minimum value for $l$ might also be used. This $l_\text{min}$ parameter should be
 determined by the minimum baseline length. A rough estimate of $l$ for a baseline of length $b$ at
-frequency $\nu$ is $l \sim \pi b\nu/c$. For the OVRO-LWA we therefore adapt $l_\text{min}=0$ and
-$l_\text{max}=1000$ across all frequencies. However this choice of $l_\text{max}$ actually limits
-the angular resolution above 55~MHz, and therefore future work will increase $l_\text{max}$ to
-obtain better angular resolution.
+frequency $\nu$ is $l \sim \pi b\nu/c$. Based on this estimate for the OVRO-LWA and other
+computational considerations we therefore adapt $l_\text{min}=1$ and $l_\text{max}=1000$ across all
+frequencies. However this choice of $l_\text{max}$ actually limits the angular resolution above
+55~MHz, and therefore future work will increase $l_\text{max}$ to obtain better angular resolution.
 
 The interferometer's sensitivity to the monopole ($a_{00}$) deserves special consideration.
 \citet{2016ApJ...826..116V} prove -- under fairly general assumptions -- that a baseline with
@@ -380,19 +385,24 @@ fact the sensitivity to $a_{00}$ is proportional to a sum of these effects. For 
 baseline can have nonzero sensitivity to $a_{00}$ is if the baseline is extremely short. In this
 case the antennas are so close together that voltage fluctuations in one antenna can couple into the
 other antenna. In order to make an interferometric measurement of $a_{00}$, this coupling must be
-measured and calibrated. Consequently we set $a_{00}=0$ in our analysis. In the future this will be
-addressed with the inclusion of calibrated total power radiometry.
+measured and calibrated. Consequently we set $a_{00}=0$ in our analysis. In the future this
+limitation will be addressed with the inclusion of calibrated total power radiometry.
 
 The size of a typical block in the transfer matrix is
 $(2N_\text{base}N_\text{freq})\times(l_\text{max})$. If each element of the matrix is stored as a
 64-bit complex floating point number, a single block is 500 MB for the case of single-channel
-imaging with the OVRO-LWA, which a modern computer can easily store and manipulate in memory.  The
-power of $m$-mode analysis is the block-diagonal structure of
-Equation~\ref{eq:m-mode-matrix-equation}.  By breaking up the problem into $N$ independent blocks,
-the computational complexity involved in inverting a single block is reduced by a factor of $N^3$
-relative to a dense matrix. However we must invert $N$ blocks, so the overall computational savings
-is proportional to $N^2$.  For the case of the OVRO-LWA the equation breaks up into $\sim10^3$
-blocks and so we save a factor of $\sim10^6$ in processing time by using $m$-mode analysis.
+imaging with the OVRO-LWA, which a modern computer can easily store and manipulate in memory.
+However, with additional bandwidth these blocks quickly become unwieldy and so as a first pass the
+analysis in this paper is restricted to single-channel imaging. Note also that for the OVRO-LWA
+$N_\text{base} \gg l_\text{max}$, so there are more measurements than unknowns in
+Equation~\ref{eq:m-mode-matrix-equation}.
+
+The power of $m$-mode analysis is the block-diagonal structure of
+Equation~\ref{eq:m-mode-matrix-equation}. The computational complexity of many common matrix
+operations (eg. solving a linear system of equations) is $\mathcal{O}(N^3)$.  By splitting the
+equation into $N$ independent blocks, the number of floating point operations required to operate on
+the full matrix is reduced by a factor of $N^2$. This computational savings is what makes this
+matrix algebra approach to interferometric imaging feasible.
 
 \subsection{$m$-Mode Analysis Imaging}\label{sec:mmode-imaging}
 
@@ -402,21 +412,22 @@ The linear-least squares solution, which minimizes $\|\b v - \b B\b a\|^2$, is g
 \begin{equation}
     \b{\hat a}_\text{LLS} = (\b B^*\b B)^{-1}\b B^*\b v\,,
 \end{equation}
-where $^*$ indicates the conjugate-transpose. However, usually one will find that $\b B$ is not
-full-rank and hence $\b B^*\b B$ is not an invertible matrix. For example, an interferometer located
-in the northern hemisphere will never see a region of the southern sky centered on the southern
-celestial pole. The $m$-modes contained in the vector $\b v$ must contain no information
-about the sky around the southern celestial pole, and therefore the act of multiplying by $\b B$
-must destroy some information about the sky. The consequence of this fact is that $\b B$ must have
-at least one singular value that is equal to zero. It is then trivial to show that $\b B^*\b B$ must
-have at least one eigenvalue that is equal to zero, which means it is not an invertible matrix.
+where $^*$ indicates the conjugate-transpose.
+
+However, usually one will find that $\b B$ is not full-rank and hence $\b B^*\b B$ is not an
+invertible matrix. For example, an interferometer located in the northern hemisphere will never see
+a region of the southern sky centered on the southern celestial pole. The $m$-modes contained in the
+vector $\b v$ must contain no information about the sky around the southern celestial pole, and
+therefore the act of multiplying by $\b B$ must destroy some information about the sky. The
+consequence of this fact is that $\b B$ must have at least one singular value that is equal to zero.
+It is then trivial to show that $\b B^*\b B$ must have at least one eigenvalue that is equal to
+zero, which means it is not an invertible matrix.
 
 Another way of looking at the problem is that because the interferometer is not sensitive to part of
 the southern hemisphere, there are infinitely many possible solutions to
-Equation~\ref{eq:m-mode-matrix-equation} that will fit the measured data equally well. So we need to
-regularize the problem and apply an additional constraint that prefers a unique solution. For
-example, you may prefer that in the absence of any information the sky should be set to zero or you
-may prefer that the sky should be set to some prior expectation.
+Equation~\ref{eq:m-mode-matrix-equation} that will fit the measured data equally well.  We will
+regularize the problem and apply an additional constraint that prefers a unique yet physically
+reasonable solution.
 
 \subsubsection{Tikhonov Regularization}
 
@@ -427,8 +438,8 @@ expression is given by
     \atikh = (\b B^*\b B + \varepsilon\b I)^{-1}\b B^*\b v\,.
 \end{equation}
 Tikhonov regularization adds a small value $\varepsilon$ to the diagonal of $\b B^*\b B$, fixing the
-matrix's singularity. We can see this by using the singular value decomposition (SVD) of the matrix
-$\b B = \b U \b \Sigma \b V^*$. Equation~\ref{eq:tikhonov-solution} becomes
+matrix's singularity. By using the singular value decomposition (SVD) of the matrix $\b B = \b U \b
+\Sigma \b V^*$. Equation~\ref{eq:tikhonov-solution} becomes
 \begin{equation}
     \atikh = \b V (\b\Sigma^2 + \varepsilon \b I)^{-1}\b\Sigma \b U^*\b v\,,
 \end{equation}
@@ -442,8 +453,8 @@ where
         \end{array}
     \right)\,.
 \]
-The diagonal elements of $\b\Sigma$ are the singular values of $\b B$ and so the contribution of
-each singular component to the Tikhonov-regularized solution is scaled by $\sigma_i / (\sigma_i^2 +
+The diagonal elements of $\b\Sigma$ are the singular values of $\b B$. The contribution of each
+singular component to the Tikhonov-regularized solution is scaled by $\sigma_i / (\sigma_i^2 +
 \varepsilon)$, where $\sigma_i$ is the singular value for the $i$th singular component. Tikhonov
 regularization therefore acts to suppress any component for which
 $\sigma_i\lesssim\sqrt{\varepsilon}$.  If $\sigma_i = 0$, the component is set to zero.
@@ -461,7 +472,7 @@ the covariance of the measured spherical harmonic coefficients. Tikhonov regular
 this situation by downweighting these components.
 
 While Tikhonov regularization will force unmeasured modes to zero, if a prior map of the sky already
-exists, it will be preferrable to instead minimize $\|\b v - \b B\b a\|^2 + \varepsilon \|\b a-\b
+exists, it would be preferrable to instead minimize $\|\b v - \b B\b a\|^2 + \varepsilon \|\b a-\b
 a_\text{prior}\|^2$.
 
 \subsubsection{L-Curves}
@@ -469,12 +480,12 @@ a_\text{prior}\|^2$.
 \begin{figure}[t]
     \includegraphics[width=\columnwidth]{figures/lcurve/lcurve}
     \caption{
-        An example L-curve using OVRO-LWA data at 36.528 MHz. The $x$-axis is the norm of the
-        solution (in this case the spherical harmonic coefficients) given in arbitrary units. The
-        $y$-axis is the least-squares norm given in arbitrary units. $\varepsilon$ is the
-        regularization parameter. When the regularization parameter is small, the norm of the
-        solution grows rapidly. When the regularization parameter is large, the least-squares norm
-        grows rapidly.
+        An example L-curve computed from OVRO-LWA data at 36.528~MHz by trialing 200 different
+        values of the regularization parameter $\varepsilon$. The $x$-axis is the norm of the
+        solution (in this case the spherical harmonic coefficients) given in arbitrary units, and
+        the $y$-axis is the least-squares norm given in arbitrary units Where the regularization
+        parameter is small, the norm of the solution grows rapidly. Where the regularization
+        parameter is large, the least-squares norm grows rapidly.
     }
     \label{fig:lcurve}
 \end{figure}
@@ -499,7 +510,10 @@ increasing the value of $\varepsilon$ can improve the noise properties of the ma
 noisy modes. Decreasing the value of $\varepsilon$ can improve the resolution in the map by
 up-weighting the contribution of longer baselines, which are likely fewer in number. In this respect
 choosing the value of $\varepsilon$ is analagous to picking the weighting scheme in traditional
-imaging where robust weighting schemes can be tuned to similar effect \citep{briggs}.
+imaging where robust weighting schemes can be tuned to similar effect \citep{briggs}.  For the
+OVRO-LWA we selected $\varepsilon = 0.01$ across all frequency channels. The distribution of
+singular values of the transfer matrix with respect to $\sqrt{\varepsilon}$ is summarized in
+Table~\ref{tab:summary}.
 
 \subsubsection{The Moore-Penrose Pseudoinverse}
 
@@ -518,14 +532,29 @@ on to off. Modes are either set to zero or included in the map at their full amp
 hand Tikhonov regularization smoothly interpolates between these behaviors. Because of this,
 Tikhonov regularization tends to produce better results in practical applications.
 
+\subsubsection{Other Regularization Schemes}
+
+In compressed-sensing applications, the $L^1$-norm is used in place of the $L^2$-norm in order to
+encourage sparsity in the reconstructed signal. By expressing the sky in terms of spherical
+harmonics there is no such expectation of sparsity in the solution, and so the $L^1$-norm is
+inappropriate for this application.
+
+Wiener filtering can also be used in place of Tikhonov regularization in the event that the observer
+has a prior expectation on the covariance of the spherical harmonic coefficients in order to
+interpolate missing information. This technique is demonstrated for simulated measurements by
+\citet{2016arXiv161203255B}.
+
+In this work we elect to pursue Tikhonv regularization due to its computational simplicity, smooth
+down-weighting of noisy modes, and independence of prior information.
+
 \subsection{CLEAN}\label{sec:clean}
 
-In traditional radio astronomy imaging, the CLEAN algorithm \citep{1974A&AS...15..417H} is used to
-interpolate between measured visibilities on the $uv$-plane. In the absence of this interpolation,
-gaps in the interferometer's $uv$-coverage are assumed to be zero, and -- in the image plane --
-sources are convolved with a point spread function (PSF) that is characteristic of the
-$uv$-coverage.  Fundamentally, the interferometer's PSF is determined by which modes were assumed to
-be zero in the initial imaging process.
+In traditional radio astronomy imaging, CLEAN \citep{1974A&AS...15..417H} is a physically motivated
+algorithm that interpolates between measured visibilities on the $uv$-plane. In the absence of this
+interpolation, gaps in the interferometer's $uv$-coverage are assumed to be zero, and -- in the
+image plane -- sources are convolved with a point spread function (PSF) that is characteristic of
+the $uv$-coverage.  Fundamentally, the interferometer's PSF is determined by which modes were
+assumed to be zero in the initial imaging process.
 
 In $m$-mode analysis imaging, we assumed modes were zero in two separate ways:
 \begin{enumerate}
@@ -537,12 +566,12 @@ In $m$-mode analysis imaging, we assumed modes were zero in two separate ways:
 \end{enumerate}
 As a consequence the final map of the sky is not assembled from a complete set of spherical
 harmonics. Therefore just as in traditional imaging, $m$-mode analysis imaging produces dirty maps
-where sources are convolved with a PSF.  This PSF can be improved by increasing the number and
-variety of baselines, which increases the number of modes where $\sigma_i \gg \sqrt{\varepsilon}$.
-Alternatively by collecting more data, the signal-noise ratio of the measured $m$-modes increases,
-which allows the observer to lower the value of $\varepsilon$ without increasing the noise in the
-maps.  Finally, the CLEAN algorithm can be applied to interpolate some of the missing information
-that was assumed to be zero.
+in which sources are convolved with a PSF.  This PSF can be improved by increasing the number and
+variety of baselines, which increases the number of modes for which $\sigma_i \gg
+\sqrt{\varepsilon}$.  Alternatively by collecting more data, the signal-noise ratio of the measured
+$m$-modes increases, which allows the observer to lower the value of $\varepsilon$ without
+increasing the noise in the maps.  Finally, the CLEAN algorithm can be applied to interpolate some
+of the missing information that was assumed to be zero.
 
 The PSF of a dirty $m$-mode analysis map may be computed with
 \begin{equation}\label{eq:psf}
@@ -568,9 +597,11 @@ In general the PSF can be a function of the right ascension and declination. How
 at the same declination take the same track through the sky and therefore (barring any ionospheric
 effects) will have the same PSF. The PSF is therefore only a function of the declination. For
 example, sources at low elevations will tend to have an extended PSF along the north-south axis due
-to baseline foreshortening. Some examples PSFs are shown in Figure~\ref{fig:psf}.  Adapting CLEAN
-for $m$-mode analysis requires either pre-computing Equation~\ref{eq:psf} at a grid of declinations,
-or a method for rapidly evaluating Equation~\ref{eq:psf} on the fly.
+to baseline foreshortening. For the OVRO-LWA antenna configuration
+(Figure~\ref{fig:antenna-layout}), example PSFs at three separate frequencies are shown in
+Figure~\ref{fig:psf}.  Adapting CLEAN for $m$-mode analysis requires either pre-computing
+Equation~\ref{eq:psf} at a grid of declinations, or a method for rapidly evaluating
+Equation~\ref{eq:psf} on the fly.
 
 %\citep{2011MNRAS.413..411B} % I think Lincoln wants me to cite this paper
 
@@ -582,8 +613,8 @@ greatly reduces the amount of disk I/O necessary for solving Equation~\ref{eq:ps
 Additionally we can pre-compute the Cholesky decomposition of $\b B^*\b B + \varepsilon\b I = \b
 U^*\b U$, where $\b U$ is an upper-triangular matrix. Inverting an upper triangular matrix is an
 $\mathcal{O}(N^2)$ operation (instead of $\mathcal{O}(N^3)$ for a general matrix inverse).\footnote{
-    Inverting a matrix is numerically unstable and should be avoided. Instead of computing $\b
-    A^{-1}$, the linear equation $\b A\b x = \b b$ is solved each time the matrix inverse is needed.
+    Instead of computing $\b A^{-1}$, we solve the linear equation $\b A\b x = \b b$ each time the
+    matrix inverse is needed so as to avoid numerical instabilities.
 }
 Equation~\ref{eq:psf} can then be rapidly evaluated from right to left as:
 \begin{equation}\label{eq:rapid-psf}
@@ -634,67 +665,88 @@ adopted to deconvolve the PSF and produce the final sky maps.
     \caption{
         This figure shows the antenna layout for the OVRO-LWA. Black dots correspond to antennas
         within the 200 m diameter core of the array. The 32 triangles are the expansion antennas
-        built in early 2016 in order to increase the longest baseline to $\sim1.5$ km. The 5 crosses
-        are antennas equipped with noise-switched front ends.
+        built in early 2016 in order to increase the longest baseline to $\sim1.5$ km. The red dots
+        are core antennas that are disconnected from the correlator in order to accommodate these
+        antennas. The 5 crosses are antennas equipped with noise-switched front ends.
     }
     \label{fig:antenna-layout}
 \end{figure}
 
 \begin{figure*}[t]
-    \includegraphics[width=\textwidth]{figures/psf/psf}
+    \begin{tabular}{c}
+        \includegraphics[width=\textwidth]{figures/psf/psf+75} \\
+        \includegraphics[width=\textwidth]{figures/psf/psf+45} \\
+        \includegraphics[width=\textwidth]{figures/psf/psf+0} \\
+    \end{tabular}
     \caption{
-        This figure shows the $m$-mode analysis imaging PSF at $\delta = +45^\circ$ at 3 separate
-        frequencies: 36.528 MHz (left panel), 52.224 MHz (middle panel), and 73.152 MHz (right
-        panel). The PSF is computed by evaluating Equation~\ref{eq:psf}.
+        The $m$-mode analysis imaging PSF at three declinations (top row: $\delta=+75^\circ$, middle
+        row: $\delta=+45^\circ$, bottom row: $\delta=+0^\circ$) and three frequencies (left column:
+        36.528~MHz, middle column: 52.224~MHz, right column: 73.152~MHz).  The PSF is computed by
+        evaluating Equation~\ref{eq:psf}. Above 55~MHz, the angular extent of the PSF does not
+        follow the expected scaling with frequency because the angular resolution is limited by the
+        selection of $l_\text{max}=1000$. The FWHM at $\delta=+45^\circ$ is listed in
+        Table~\ref{tab:summary}.
     }
     \label{fig:psf}
 \end{figure*}
 
 The Owens Valley Long Wavelength Array (OVRO-LWA) is a 288-element interferometer located at the
-Owens Valley Radio Observatory near Big Pine, California \citep{hallinan_2017}.  The OVRO-LWA
-is a low-frequency instrument with instantaneous bandwidth covering 27.384 MHz to 84.912 MHz and
-with 24 kHz channelization.  Each antenna stand hosts two perpendicular broadband dipoles so that
-there are $288\times2$ signal paths in total. These signal paths feed into the 512-input LEDA
-correlator \citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible
-hemisphere in a single snapshot image.  In the current configuration 32 antennas (64 signal paths)
-are unused.
+Owens Valley Radio Observatory near Big Pine, California \citep{hallinan_2017}.  The OVRO-LWA is a
+low-frequency instrument with instantaneous bandwidth covering 27~MHz to 85~MHz and with 24~kHz
+channelization.  Each antenna stand hosts two perpendicular broadband dipoles so that there are
+$288\times2$ signal paths in total. These signal paths feed into the 512-input LEDA correlator
+\citep{2015JAI.....450003K}, which allows the OVRO-LWA to capture the entire visible hemisphere in a
+single snapshot image.
 
 The 288 antennas are arranged in a pseudo-random configuration optimized to minimize sidelobes in
-snapshot imaging (see Figure~\ref{fig:antenna-layout}).  251 of the antennas are contained within a
-200 m diameter core. 32 antennas are placed outside of the core in order to extend the maximum
-baseline length to $\sim$1.5~km. The final 5 antennas are equipped with noise-switched front ends
-for calibrated total power measurements of the global sky brightness.  These antennas are used as
-part of the LEDA experiment \citep{price_2017} to measure the global signal of 21~cm absorption from
-the cosmic dawn. A final stage of construction will involve 64 antennas installed on long baselines
-out to a maximum length of 2.6~km.
+snapshot imaging (see Figure~\ref{fig:antenna-layout}).  Of these 288 antennas, 251 are contained
+within a 200 m diameter core, 32 are placed outside of the core in order to extend the maximum
+baseline length to $\sim$1.5~km, and the final 5 antennas are equipped with noise-switched front
+ends for calibrated total power measurements of the global sky brightness.  These antennas are used
+as part of the LEDA experiment \citep{2017arXiv170909313P} to measure the global signal of 21~cm
+absorption from the cosmic dawn. In the current configuration 32 antennas (64 signal paths) from the
+core are disconnected from the correlator in order to accommodate the 32 antennas on longer
+baselines. A final stage of construction will involve 64 additional antennas installed on long
+baselines out to a maximum length of 2.6~km.
 
 The dataset used in this paper spans 28 consecutive hours beginning at 2017-02-17 12:00:00 UTC time.
 During this time the OVRO-LWA operated as a zenith-pointing drift scanning interferometer.  The
 correlator dump time was selected to be 13 seconds such that the correlator output evenly divides a
-sidereal day.
+sidereal day. Due to the computational considerations presented in \S\ref{sec:mmode-analysis}, eight
+24~kHz channels are selected for imaging from this dataset: 36.528~MHz, 41.760~MHz, 46.992~MHz,
+52.224~MHz, 57.456~MHz, 62.688~MHz, 67.920~MHz, and 73.152~MHz.
 
-\subsection{Gain Calibration}\label{sec:gaincal}
+\subsection{Complex Gain Calibration}\label{sec:gaincal}
 
-Antenna gain calibration is accomplished using a variant of alternating least squares colloquially
-known as ``stefcal'' \citep{2008ISTSP...2..707M, 2014A&A...571A..97S}. The calibration routine is
-written in the Julia programming language \citep{doi:10.1137/141000671}, and is publicly available
-online\footnote{\url{https://github.com/mweastwood/TTCal.jl}} under an open source license (GPLv3 or
-any later version).
+The complex gain calibration is responsible for correcting per-antenna amplitude and phase errors.
+This is accomplished using a sky model and a variant of alternating least squares colloquially known
+as ``Stefcal''
+\citep{2008ISTSP...2..707M, 2014A&A...571A..97S}\footnote{
+    The calibration routine is written in the Julia programming language
+    \citep{doi:10.1137/141000671}, and is publicly available online
+    (\url{https://github.com/mweastwood/TTCal.jl}) under an open source license (GPLv3 or any later
+    version).
+}.
 
 Cyg~A and Cas~A are -- by an order of magnitude -- the brightest point-like radio sources in the
 northern hemisphere. Therefore the optimal time to solve for the interferometer's gain calibration
 is when these sources are at high elevations.  The antenna complex gains are measured from a 22
-minute track of data from when Cyg~A and Cas are at high elevations. The gains measured in this way
-are then used to calibrate the entire 28 hour dataset. The calibration sky model consists only of
-Cyg~A and Cas~A. The model flux of Cyg~A is set to the \citet{1977A&A....61...99B} spectrum while
-the flux of Cas~A is measured from the data itself (using a preliminary calibration).  Residual
-errors in the astrometry are corrected post-imaging by registering the images with respect to all
-VLSSr \citep{2014MNRAS.440..327L} sources brighter than 30~Jy. Additional cuts are made to ensure
-that sources aren't too close to each other or other bright sources, and that the VLSSr flux density
-matches is consistent with the flux density measured by the OVRO-LWA.
+minute track of data when Cyg~A and Cas are at high elevations. The gains measured in this way are
+then used to calibrate the entire 28 hour dataset. The calibration sky model consists only of Cyg~A
+and Cas~A. The model flux of Cyg~A is set to the \citet{1977A&A....61...99B} spectrum while the flux
+of Cas~A is measured from the data itself (using a preliminary calibration solved for with a
+fiducial Cas~A spectrum).
 
-Temperature fluctuations within the electronics shelter generate 0.1 dB sawtooth oscillations in the
-analog gain. These oscillations occur with a variable 15 to 17 minute period. The amplitude of these
+Calibrating in this manner generates $\sim$ arcminute errors in the astrometry of the final sky maps
+due to ionospheric refractive offsets during the time of calibration.  These residual errors in the
+astrometry are corrected post-imaging by registering the images with respect to all VLSSr
+\citep{2014MNRAS.440..327L} sources that are bright ($>30$~Jy with a consistent flux density
+measured with the OVRO-LWA), and not too close to other bright sources (at least $1^\circ$
+separation).
+
+Temperature fluctuations of the analog electronics generate 0.1~dB sawtooth oscillations in the
+analog gain. These oscillations occur with a variable 15 to 17 minute period associated with HVAC
+cooling cycles within the electronics shelter that houses these electronics.  The amplitude of these
 gain fluctuations is calibrated by smoothing the autocorrelation amplitudes on 45 minute timescales.
 The ratio of the measured auto-correlation power to the smoothed auto-correlation power defines a
 per-antenna amplitude correction that is then applied to the cross-correlations.
@@ -704,28 +756,30 @@ per-antenna amplitude correction that is then applied to the cross-correlations.
 \begin{figure*}[t]
     \includegraphics[width=\textwidth]{figures/beam/beam}
     \caption{
-        This figure shows the empirical fits to the OVRO-LWA Stokes-I primary beam (the response of
-        the $x$- and $y$-dipoles has been summed) at three frequencies: 36.528 MHz (left panel),
-        52.224 MHz (middle panel), and 73.152 MHz (right panel). The source tracks used to measure
-        the beam model are overlaid. From north to south, these tracks correspond to Cas~A, Cyg~A,
-        Per~B, Tau~A, Vir~A, Her~A, 3C~353, and Hya~A.  The fitting process is described in
-        \S\ref{sec:beam}, and residuals for Cyg~A and Cas~A can be seen in
-        Figure~\ref{fig:scintillation}.
+        Empirical fits to the OVRO-LWA Stokes-I primary beam (the response of the $x$- and
+        $y$-dipoles has been summed) at three frequencies: 36.528 MHz (left panel), 52.224 MHz
+        (middle panel), and 73.152 MHz (right panel). The source tracks used to measure the beam
+        model are overlaid. From north to south, these tracks correspond to Cas~A, Cyg~A, Per~B,
+        Tau~A, Vir~A, Her~A, 3C~353, and Hya~A.  The fitting process is described in
+        \S\ref{sec:beam}, and residuals for Cyg~A and Cas~A are in Figure~\ref{fig:scintillation}.
     }
     \label{fig:beam}
 \end{figure*}
 
 In order to generate wide-field images of the sky, the response of the antenna to the sky must be
-known. Drift-scanning interferometers like the OVRO-LWA can empirically measure their
-primary beam under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. In this work we
-assume that the primary beam is invariant under north-south and east-west flips, and additionally
-that the $x$- and $y$-dipoles have the same response to the sky after rotating one by 90$^\circ$.
-These symmetries are apparent in the antenna design, but real-world defects and coupling with nearby
-antennas will contribute towards breaking these symmetries at some level. However some amount of
-symmetry must be assumed in order to break the degeneracy between source flux and beam amplitude
-when the flux of a source is unknown.
+known. Drift-scanning interferometers like the OVRO-LWA can empirically measure their primary beam
+under a mild set of symmetry assumptions \citep{2012AJ....143...53P}. The symmetry assumptions are
+necessary to break the degeneracy between source flux and beam amplitude when the flux of the source
+is unknown. In this work we assume symmetries that are apparent in the antenna design, but
+real-world defects and coupling with nearby antennas will contribute towards breaking these
+symmetries at some level. In particular we assume that the $x$- and $y$-dipoles have the same
+response to the sky after rotating one by 90$^\circ$, and that the beam is invariant under
+north-south and east-west flips.
 
-We measure the flux of several bright sources (Cyg~A, Cas~A, Tau~A, Vir~A, Her~A, Hya~A, Per~B, and
+We measure the flux of several bright sources (Cyg~A, Cas~A, Tau~A, Vir~A, Her~A, Hya~A,
+Per~B\footnote{
+    At 74~MHz, Per~B is about two times brighter than Per~A.
+}, and
 3C~353) as they pass through the sky and then fit a beam model composed of Zernike polynomials to
 those flux measurements. We select the basis functions to have the desired symmetry ($Z_0^0$,
 $Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, and $Z_8^8$) and the beam amplitude
@@ -733,6 +787,20 @@ at zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustrat
 model at several frequencies. This process is repeated for each frequency channel.
 
 \subsection{Ionospheric Conditions}
+
+\begin{figure*}[t]
+    \includegraphics[width=\textwidth]{figures/scintillation-refraction/scintillation-refraction}
+    \caption{
+        (a, b) These panels show the measured apparent flux of Cyg~A and Cas~A at 36.528 MHz (red
+        points) and 73.152 MHz (blue points) as a function of time over the observing period. The
+        solid black curves show the expected flux computed using the empirical beam model fits. The
+        thermal noise contribution to each point is about 50 Jy.  Cyg~A is occulted by the White
+        Mountains when it is low on the horizon to the east.
+        (c, d) These panels show the measured position offset of Cyg~A and Cas~A relative to their
+        true astronomical positions at 36.528 MHz (red line) and 73.152 MHz (blue line).
+    }
+    \label{fig:scintillation}
+\end{figure*}
 
 \begin{figure}[t]
     \includegraphics[width=\columnwidth]{figures/vtec/vtec}
@@ -744,73 +812,67 @@ model at several frequencies. This process is repeated for each frequency channe
     \label{fig:vtec}
 \end{figure}
 
-\begin{figure*}[t]
-    \includegraphics[width=\textwidth]{figures/scintillation-refraction/scintillation-refraction}
-    \caption{
-        \textbf{(a, b)} These panels show the measured apparent flux of Cyg~A and Cas~A at 36.528
-        MHz (red points) and 73.152 MHz (blue points) as a function of time over the observing
-        period. The solid black curves show the expected flux computed using the empirical beam
-        model fits. The thermal noise contribution to each point is about 50 Jy. The majority of the
-        scatter is due to ionospheric scintillation.  Cyg~A is occulted by the White Mountains when
-        it is low on the horizon to the east.
-        \textbf{(c, d)} These panels show the measured position offset of Cyg~A and Cas~A relative
-        to their true astronomical positions at 36.528 MHz (red line) and 73.152 MHz (blue line).
-    }
-    \label{fig:scintillation}
-\end{figure*}
-
-The geomagnetic conditions during this time were mild. The Disturbance storm time (Dst) index was
+The geomagnetic conditions during this time were mild. The Disturbance storm time (Dst) index, which
+measures the $z$-component of the interplanetary magnetic field, was
 $>-30$ nT during the entirety of the observing period.\footnote{
     The Dst index was obtained from the World Data Center for Geomagnetism, Kyoto University
     (\url{http://swdcwww.kugi.kyoto-u.ac.jp/}). Accessed 2017-07-25.
 }
 Following the classification scheme of \citet{2008GMS...181.....K}, a weak geomagnetic storm has
-$\text{Dst} < -30$ nT. Stronger geomagnetic storms have $\text{Dst} \ll -30$ nT.
+$\text{Dst} < -30$ nT. Stronger geomagnetic storms have $\text{Dst} < -50$ nT.
 
 Despite the mild conditions, low frequency interferometric observations are still affected by the
 index of refraction in the ionosphere.  Figure~\ref{fig:vtec} shows the median vertical total
 electron content (TEC) above OVRO measured from GPS \citep{1999JASTP..61.1205I}. The median is
 computed over all GPS measurements within 200 km of the observatory. Over the observing period the
 TEC smoothly varies from 20 TECU at midday to 5 TECU during the night. However, this measurement is
-only sensitive to large scale fluctuations in the ionosphere and doesn't capture small scale
+only sensitive to large scale fluctuations in the ionosphere and does not capture small scale
 fluctuations.
 
 Small scale fluctuations are best characterized by source scintillation and refractive offsets.
 Figure~\ref{fig:scintillation} shows the apparent flux and position offset of Cyg~A and Cas~A as a
 function of time over the entire observing period. Both sources exhibit rapid scintillation on the
 timescale of a single integration (13 seconds). For example at 36.528 MHz, it is not unusual for Cyg
-A to have a measured flux variations of 50\% between adjacent 13 second integrations.  The measured
-position offset of each source is a measurement of the ionospheric phase gradient across the array.
-This varies on slower 10 minute timescales refracting each source by as much as 20 arcmin (at 36.528
-MHz) from their true astronomical positions as waves in the ionosphere pass through the line of
-sight. The impact of these effects on the sky maps is simulated in \S\ref{sec:ionosphere}.
+A to have a measured flux variations of 50\% between adjacent 13 second integrations.  The variance
+at 36.528~MHz compared with the variance at 73.152~MHz is consistent with an ionospheric $\nu^{-2}$
+origin. The measured position offset of each source is a measurement of the ionospheric phase
+gradient across the array.  This varies on slower 10 minute timescales refracting each source by as
+much as 20 arcmin (at 36.528 MHz) from their true astronomical positions as waves in the ionosphere
+pass through the line of sight. At 74~MHz on the VLA, \citet{2007ApJS..172..686K} observe $\sim
+1$~arcmin refractive offsets during the night, and $\sim 4$~arcmin offsets during the day on similar
+$\sim10$ minute timescales.  The impact of these effects on the sky maps is simulated in
+\S\ref{sec:ionosphere}.
 
 \subsection{Source Removal}\label{sec:source-removal}
 
 \subsubsection{Cygnus A and Cassiopeia A}
 
-Without removing bright sources from the data, sidelobes from bright sources will dominate the
-variance in the sky maps.  At 74 MHz Cyg~A is a 15,000~Jy source \citep{1977A&A....61...99B}. A
-conservative estimate for the confusion limit at 74 MHz with a 15~arcmin beam is 1000~mJy
-\citep{2014MNRAS.440..327L}. Therefore we require that Cyg~A's sidelobes be at least $-45$~dB down
-from the main lobe to prevent Cyg~A's sidelobes from dominating the variance in the image.
+Due to the rapid and large ionospheric fluctuations seen in Figure~\ref{fig:scintillation}, CLEAN
+cannot be relied on to accurately deconvolve bright sources.  However, without removing bright
+sources from the data, sidelobes from these sources will dominate the variance in the sky maps.  At
+74~MHz Cyg~A is a 15,000~Jy source \citep{1977A&A....61...99B}. A conservative estimate for the
+confusion limit at 74 MHz with a 15~arcmin beam is 1000~mJy \citep{2014MNRAS.440..327L}. Therefore
+we require that Cyg~A's sidelobes be at least $-45$~dB down from the main lobe to prevent Cyg~A's
+sidelobes from dominating the variance in the image.
 
-At low frequencies, propagation effects through the ionosphere must be accounted for in order to
-achieve high dynamic range images. This necessitates the use of direction-dependent calibration and
-peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.  In the dataset used in this paper,
-scintillation and refractive-offset events on the timescale of a single integration (13 seconds) are
-observed (see Figure~\ref{fig:scintillation}. Therefore the direction dependent calibration changes
-on these timescales and the we must solve for one set of complex gains per source per integration.
+In order to account for propagation effects through the ionosphere direction-dependent calibration
+and peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S} must be used.  Direction-dependent
+calibration allows the per-antenna amplitude and phase towards a bright astronomical source to be
+free parameters. In the dataset used in this paper, scintillation and refractive-offset events on
+the timescale of a single integration (13 seconds) are observed (Figure~\ref{fig:scintillation}).
+Therefore the direction dependent calibration changes on these timescales and we must solve for one
+set of complex gains per source per integration.
 
 The largest angular scale of Cas~A is $\sim$8~arcmin, and the largest angular scale of Cyg~A is
-$\sim$2~arcmin. With a $\sim10$~arcmin resolution on its longest baselines, the OVRO-LWA marginally
-resolves both sources. A resolved source model is needed for both sources. We fit a self-consistent
-resolved source model to each source. This is performed by minimizing the variance within an
-aperture located on each source after peeling. By phasing up a large number of integrations before
-imaging (at least 1 hour) it is possible to smear out the contribution of the rest of the sky.  We
-then use NLopt's Sbplx routine \citep{nlopt, sbplx} to vary the parameters in a source model until
-the variance within the aperture is minimized.  Armed with resolved source models for both Cyg~A and
-Cas~A, these two sources can be peeled from the dataset to the required dynamic range.
+$\sim$2~arcmin. With a $\sim10$~arcmin resolution on its longest baselines at 73~MHz, the OVRO-LWA
+marginally resolves both sources. A resolved source model is needed for both sources. We fit a
+self-consistent resolved source model to each source. This is performed by minimizing the variance
+within an aperture located on each source after peeling. By phasing up a large number of
+integrations before imaging (at least 1 hour) it is possible to smear out the contribution of the
+rest of the sky.  We then use NLopt's Sbplx routine \citep{nlopt, sbplx} to vary the parameters in a
+source model until the variance within the aperture is minimized. Cyg~A is modeled with 2 Gaussian
+components, while Cas~A is modeled with 3~Gaussian components. Armed with these  source models, both
+sources can be peeled from the dataset to the required dynamic range.
 
 \subsubsection{Other Bright Sources}
 
@@ -819,25 +881,25 @@ the visibilities prior to imaging. Because these sources are much fainter than C
 do not need resolved source models to be able to remove these sources from the visibilities without
 residual sidelobes contaminating the image.
 
-However, the ionosphere will cause these sources to scintillate and refract. So the position and
-flux of each source is measured separately in each channel and integration. The sources are then
+However, the ionosphere will cause these sources to scintillate and refract. The position and flux
+of each source is measured separately in each channel and integration. The sources are then
 subtracted from the visibilities using the updated position and flux of the source. The brightest of
-these sources (Vir~A and Tau~A) are peeled using a direction dependent calibration when they are
-at high elevations.
+these sources (Vir~A and Tau~A) are peeled using a direction dependent calibration when they are at
+high elevations.
 
 \subsubsection{The Sun}
 
 The Sun can be trivially removed from any map of the sky by constructing the map using only data
-taken at night. A map of the entire sky can be obtained by using observations spaced 6 months apart.
-However the dataset used in this paper consists of 28 consecutive hours. Therefore we attempt to
-suppress the contribution of the Sun to the maps with the goal of suppressing its sidelobes.  The
-Sun is well-resolved by the OVRO-LWA and hence a detailed source model is needed. In fact the
-optical depth $\tau=1$ surface of the Sun changes with frequency and as a consequence a new model is
-needed for each of the 8 channel maps produced in this paper. While we could fit a limited number of
-Gaussian components to Cyg~A and Cas~A, this is insufficient for the Sun.  Additionally while most
-astronomical sources at these frequencies have negative spectral indices, the Sun has a positive
-spectral index. Therefore more care will need to be taken in subtracting the Sun at higher
-frequencies than at lower frequencies.
+collected at night. A map of the entire sky can be obtained by using observations spaced 6 months
+apart.  However the dataset used in this paper consists of 28 consecutive hours. Therefore we
+attempt to suppress the contribution of the Sun to the maps with the goal of suppressing its
+sidelobes.  The Sun is well-resolved by the OVRO-LWA and hence a detailed source model is needed. In
+fact the optical depth $\tau=1$ surface of the Sun changes with frequency and as a consequence a new
+model is needed at each frequency. While we could fit a limited number of Gaussian components to
+Cyg~A and Cas~A, this is insufficient for the Sun.  Additionally while most astronomical sources at
+these frequencies have negative spectral indices, the Sun has a positive spectral index. Therefore
+more care will need to be taken in subtracting the Sun at higher frequencies than at lower
+frequencies.
 
 The strategy used for removing the Sun below 55 MHz involves fitting a shapelet
 \citep{2003MNRAS.338...35R} model to the Sun and subtracting without the use of direction dependent
@@ -850,10 +912,9 @@ and Cas~A). The Sun is then peeled from each integration using direction depende
 \begin{figure*}[t]
     \includegraphics[width=\textwidth]{figures/flux-scale/flux-scale}
     \caption{
-        This figure shows the measured fluxes (black points) of 11 sources plotted against the
-        published spectra from \citet{2017ApJS..230....7P} (solid line above 50 MHz, dotted line
-        below 50 MHz), \citet{2012MNRAS.423L..30S} (dashed line), and \citet{1977A&A....61...99B}
-        (dot-dash line).
+        Measured fluxes (black points) of 11 sources plotted against the published spectra from
+        \citet{2017ApJS..230....7P} (solid line above 50 MHz, dotted line below 50 MHz),
+        \citet{2012MNRAS.423L..30S} (dashed line), and \citet{1977A&A....61...99B} (dot-dash line).
     }
     \label{fig:flux-scale}
 \end{figure*}
@@ -887,7 +948,7 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
         These 8 panels illustrate (with a Mollweide projection and logarithmic color scale) the 8
         full-sky maps generated with Tikhonov-regularized $m$-mode analysis imaging and the
         OVRO-LWA.  Each map covers the sky north of $\delta=-30^\circ$ with angular resolution of
-        $\sim15$ arcmin. Eight bright sources have been removed from the map (Cyg~A, Cas~A, Vir~A,
+        $\sim15$ arcmin. Eight bright sources have been removed from each map (Cyg~A, Cas~A, Vir~A,
         Tau~A, Her~A, Hya~A, Per~B, and 3C~353). The small blank region near $l=+45.7^\circ$,
         $b=-47.9^\circ$ corresponds to the location of the Sun during the observation period.  A
         detailed summary of the properties of each map is given in Table~\ref{tab:summary}.
@@ -928,17 +989,24 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
         This Mollweide-projected map is constructed from 3 maps of the sky at 36.528~MHz (red),
         52.224~MHz (green), and 73.152~MHz (blue). The maps are scaled by $\nu^{2.5}$ before
         combining and the color scale is logarithmic (as in Figure~\ref{fig:channel-maps}).
+        Therefore regions with a spectral index of $-2.5$ appear white. Areas with a steeper index
+        appear red and areas with a flatter spectral index appear blue.
     }
     \label{fig:three-color}
 \end{figure*}
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=\textwidth]{figures/spectral-index/internal-spectral-index}
+    \includegraphics[width=\textwidth]{figures/spectral-index/better-internal-spectral-index}
     \caption{
+        \todo{updated this caption}
         This plot shows the local spectral index (estimated by means of a local T-T plot) as a
         contour plot. The contours are overlaid on the three-color image from
-        Figure~\ref{fig:three-color}.
+        Figure~\ref{fig:three-color}. The spectral index fit along the galactic plane is masked
+        because T-T plots assume a single emission mechanism operates in a given region. Along the
+        galactic plane free-free dominated regions lie in close proximity to synchrotron dominated
+        regions. This introduces large systematic errors to the power-law fit unless care is taken
+        to cleanly separate the two types of emission mechanisms.
     }
     \label{fig:internal-spectral-index}
 \end{figure*}
@@ -951,11 +1019,12 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
         & \tbf{Frequency} & \tbf{Bandwidth} & \tbf{FWHM}\footnote{
                 The full-width half-maximum (FWHM) of the synthesized beam at $\delta=+45^\circ$.
             }&
-            \multicolumn2c{\tbf{Thermal Noise}\footnote{
+            \multicolumn2c{\tbf{Noise}\footnote{
                 Measured with a jackknife and splitting the dataset into even- and odd-numbered
-                integrations.
+                integrations. This estimate therefore includes all noise sources that act on the
+                timescale of a single 13 second integration (eg. thermal, ionospheric, etc.).
             }} &&
-            \multicolumn2c{\tbf{Singular Values}\footnote{
+            \multicolumn2c{\tbf{Fraction of Modes}\footnote{
                 Singular values of the transfer matrix compared with the value of the regularization
                 parameter $\varepsilon$ used while solving Equation~\ref{eq:tikhonov-solution}. As
                 discussed in the text, singular vectors with corresponding singular values $\sigma
@@ -965,8 +1034,8 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
         \cline{8-9}
         \tbf{\#} & MHz & MHz & arcmin &
             K & mJy/beam &&
-            fraction $>\sqrt{\varepsilon}$ &
-            fraction $>\sqrt{10\varepsilon}$ \\
+            with $\sigma>\sqrt{\varepsilon}$ &
+            with $\sigma>\sqrt{10\varepsilon}$ \\
         \hline
         1 & 36.528 & 0.024 & 18.5 & 595. & 799. && 0.391 & 0.077 \\
         2 & 41.760 & 0.024 & 17.2 & 541. & 824. && 0.480 & 0.070 \\
@@ -983,47 +1052,49 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
 \end{table*}
 
 Eight sky maps were constructed using Tikhonov-regularized $m$-mode analysis imaging and cleaning
-with observations from the OVRO-LWA. These maps are shown in Figure~\ref{fig:channel-maps}. Each map
-covers the sky north of $\delta=-30^\circ$ with $\sim 15$ arcmin angular resolution resolution. The
-8 brightest northern hemisphere point sources are removed from each map (Cyg~A, Cas~A, Vir~A, Tau~A,
-Her~A, Hya~A, Per~B, and 3C~353) as describe in \S\ref{sec:source-removal}. There is a small blank
-region near $l=+45.7^\circ$, $b=-47.9^\circ$ corresponding to the position of the Sun during the
-observing window. The properties of each map, including frequency, bandwidth, angular resolution,
-and thermal noise are presented in Table~\ref{tab:summary}.
+with observations from the OVRO-LWA. Each map is individually shown in
+Figure~\ref{fig:channel-maps}, and Figure~\ref{fig:three-color} is a three-color image constructed
+from the maps at 36.528~MHz, 52.224~MHz, and 73.152~MHz. The maps cover the sky north of
+$\delta=-30^\circ$ with $\sim 15$ arcmin angular resolution resolution. The 8 brightest northern
+hemisphere point sources are removed from each map (Cyg~A, Cas~A, Vir~A, Tau~A, Her~A, Hya~A, Per~B,
+and 3C~353) as described in \S\ref{sec:source-removal}, and there is a small blank region near
+$l=+45.7^\circ$, $b=-47.9^\circ$ corresponding to the position of the Sun during the observing
+window. The properties of each map, including frequency, bandwidth, angular resolution, and thermal
+noise are presented in Table~\ref{tab:summary}.
 
 Due to the considerations presented by \citet{2016ApJ...826..116V}, each of these maps is monopole
-subtracted. Consequently a simple pixel-by-pixel powerlaw fit will be unduly effected by the choice
-of zero-level correction. Instead, temperature-temperature plots (T-T plot) can be used to measure
-the spectral index independently of any zero-level corrections \citep{1962MNRAS.124..297T}. This
-method relies on the assumption that all pixels in a given region are described by the same power
-law. In Figure~\ref{fig:internal-spectral-index} the spectral index is locally estimated within a
-region $\sim10^\circ$ across by constructing a local T-T plot at every pixel between the maps at
-36.528~MHz and 73.152~MHz. The spectral index contours are overlaid on a 3-color image constructed
-from the maps at 36.528~MHz, 52.224~MHz, and 73.152~MHz where the increasing contribution of
-free-free absorption in the galactic plane is apparent as blue regions. Similarly the spectral index
-can be seen to steepen as galactic latitude increases (this is a transition from blue to white to
-yellow that is also evident in the spectral index contours).
+subtracted ($a_{00}=0$). Consequently a simple pixel-by-pixel powerlaw fit will be unduly affected
+by the choice of zero-level correction. Instead, temperature-temperature plots (T-T plot) can be
+used to measure the spectral index independently of any zero-level corrections
+\citep{1962MNRAS.124..297T}. This method relies on the assumption that all pixels in a given region
+are described by the same power law. In Figure~\ref{fig:internal-spectral-index} the spectral index
+is locally estimated within a region $\sim10^\circ$ across by constructing a local T-T plot at every
+pixel between the maps at 36.528~MHz and 73.152~MHz. The spectral index contours are overlaid on the
+3-color image from Figure~\ref{fig:three-color} where free-free regions responsible for flattening
+the spectral index in the galactic plane are plainly visible as extended blue blobs.  Similarly the
+spectral index can be seen to steepen as galactic latitude increases (this is a transition from blue
+to white to yellow that is also evident in the spectral index contours).
 
 In order to suppress sources of terrestrial interference, all spherical harmonics with $m=0$, or
 $m=1$ and $l>100$ are filtered from the map (where the spherical harmonics are defined in the J2017
 coordinate system). As will be discussed in \S\ref{sec:rfi}, these spherical harmonics are
 particularly susceptible to contamination by RFI and common-mode pickup. As a consequence,
 astronomical emission that circles the J2017 north celestial pole (NCP) is filtered from the maps.
-This tends to create rings around the NCP at the declination of bright point sources. These rings
-are naturally removed from the map during CLEANing as long as this filtering step is including in
-the PSF calculation.
+This filtering creates negative rings around the NCP at the declination of bright point sources.
+These rings are naturally removed from the map during CLEANing as long as this filtering step is
+including in the PSF calculation.
 
-The thermal noise in each map is empirically measured using jackknife resampling. The dataset is
-split into even- and odd-numbered integrations. These two groups are imaged and cleaned
-independently, before being compared against the maps constructed from all of the available data
-using the standard jackknife variance estimator. This estimate of the variance includes all sources
-of error that operate on $\sim13$ second timescales (the integration time), but does not account for
-more slowly varying effects (for example, sidereal variation in the system temperature or day-night
-fluctuations in the ionosphere). These thermal noise calculations are summarized in
-Table~\ref{tab:summary}.  VLSSr source counts \citep{2014MNRAS.440..327L} suggest that the confusion
-limit at 74 MHz and 15 arcmin angular resolution is $\sim 1000\times(\nu/74\,{\rm MHz})^{-0.7}$ mJy.
-Each channel map achieves thermal noise $<900$ mJy and therefore each map is likely at or near the
-confusion limit.
+The noise in each map is empirically measured using jackknife resampling. The dataset is split into
+even- and odd-numbered integrations. These two groups are imaged and cleaned independently, before
+being compared against the maps constructed from all of the available data using the standard
+jackknife variance estimator. This estimate of the variance includes all sources of error that
+operate on $\sim13$ second timescales (the integration time) such as thermal noise in rapid
+ionospheric fluctuations, but does not account for more slowly varying effects (for example,
+sidereal variation in the system temperature or day-night fluctuations in the ionosphere). These
+noise calculations are summarized in Table~\ref{tab:summary}.  VLSSr source counts
+\citep{2014MNRAS.440..327L} suggest that the confusion limit at 74 MHz and 15 arcmin angular
+resolution is $\sim 1000\times(\nu/74\,{\rm MHz})^{-0.7}$ mJy.  Each channel map achieves thermal
+noise $<900$ mJy and therefore each map is likely at or near the confusion limit.
 
 Each map from Figure~\ref{fig:channel-maps} is freely available online in Healpix format
 \citep{2005ApJ...622..759G} on LAMBDA (\url{https://lambda.gsfc.nasa.gov/}).
@@ -1036,22 +1107,21 @@ Each map from Figure~\ref{fig:channel-maps} is freely available online in Healpi
 \begin{figure*}[t]
     \includegraphics[width=\textwidth]{figures/terrestrial-interference/smeared}
     \caption{
-        This figure illustrates terrestrial sources of correlated noise that are apparent after
-        averaging the visibilities at 62.688 MHz over the entire 28 hour observing period (keeping
-        the phase center at zenith such that astronomical sources of radio emission are smeared
-        along tracks of constant declination). Each panel represents a different component that is
-        removed from the visibilities. The images are generated using WSCLEAN
-        \citep{2014MNRAS.444..606O}, uniform weighting, and only baselines longer than 15
-        wavelengths. Panels (a) and (b) illustrate components that appear noise-like in image-space,
-        but are in fact a constant-offset to the measured visibilities likely associated with
-        cross-talk or common-mode pickup. Panel (c) illustrates a component that is clearly
-        associated with an RFI source on the horizon to the west-north-west of the OVRO-LWA. This
-        RFI source is likely an arcing power line.  Figure~\ref{fig:rings} illustrates the
-        characteristic ring-like artifacts introduced into the maps if these 3 components are not
-        removed prior to $m$-mode analysis imaging. The component shown in panel (a) has about twice
-        the amplitude ($\|\b v_\text{terrestrial}\|$) of panels (b) and (c), and for all three
-        components $\|\b B^*\b v_\text{terrestrial}\|/(\|\b B\|\|\b v_\text{terrestrial}\|) \sim
-        0.035$.
+        Terrestrial sources of correlated noise that are apparent after averaging the visibilities
+        at 62.688 MHz over the entire 28 hour observing period (keeping the phase center at zenith
+        such that astronomical sources of radio emission are smeared along tracks of constant
+        declination). Each panel represents a different component that is removed from the
+        visibilities. The images are generated using WSClean \citep{2014MNRAS.444..606O}, uniform
+        weighting, and only baselines longer than 15 wavelengths. Panels (a) and (b) illustrate
+        components that appear noise-like in image-space, but are in fact a constant-offset to the
+        measured visibilities likely associated with cross-talk or common-mode pickup. Panel (c)
+        illustrates a component that is clearly associated with an RFI source on the horizon to the
+        west-north-west of the OVRO-LWA. This RFI source is likely an arcing power line.
+        Figure~\ref{fig:rings} illustrates the characteristic ring-like artifacts introduced into
+        the maps if these 3 components are not removed prior to $m$-mode analysis imaging. The
+        component shown in panel (a) has about twice the amplitude ($\|\b v_\text{terrestrial}\|$)
+        of panels (b) and (c), and for all three components $\|\b B^*\b v_\text{terrestrial}\|/(\|\b
+        B\|\|\b v_\text{terrestrial}\|) \sim 0.035$.
     }
     \label{fig:fitrfi}
 \end{figure*}
@@ -1069,22 +1139,23 @@ Each map from Figure~\ref{fig:channel-maps} is freely available online in Healpi
     \label{fig:rings}
 \end{figure*}
 
-When writing down Equation~\ref{eq:basic-imaging}, it is implicitly assumed that the correlated
-voltage fluctuations measured between pairs of antennas are exclusively generated by astronomical
-sources of radio emission. In practice this implicit assumption can be violated. For instance a
-low-frequency interferometer located in the vicinity of an arcing power line will see an additional
-contribution from the radio-frequency interference (RFI) generated by the arcing process. Similarly
-common-mode pickup along the analog signal path of the interferometer may generate an additional
-spurious contribution to the measured visibilities. While the amplitude and phase of these
-contaminating signals may fluctuate with time, they do not sweep across the sky at the sidereal rate
+When writing Equation~\ref{eq:basic-imaging}, it is implicitly assumed that the correlated voltage
+fluctuations measured between pairs of antennas are exclusively generated by astronomical sources of
+radio emission. In practice this assumption can be violated. For instance a low-frequency
+interferometer located in the vicinity of an arcing power line will see an additional contribution
+from the radio-frequency interference (RFI) generated by the arcing process. Similarly common-mode
+pickup along the analog signal path of the interferometer may generate an additional spurious
+contribution to the measured visibilities. While the amplitude and phase of these contaminating
+signals may fluctuate with time, they do not sweep across the sky at the sidereal rate
 characteristic of astronomical sources.
 
 The Owens Valley is an important source of water and power for the city of Los Angeles.
-Unfortunately this means that high voltage power lines run along the valley to the west of the OVRO-
-LWA. Some of these power line poles have faulty insulators that arc and produce pulsed, broadband
-RFI. Because these poles exist in the near-field of the array, we have been able to localize some of
-them by using the curvature of the incoming wavefront to infer a distance. Efforts are currently
-underway to work with the utility pole owners to have these insulators replaced.
+Unfortunately this means that high voltage power lines run along the valley $\gtrsim10$~km to the
+west of the OVRO-LWA. Some of these power line poles have faulty insulators that arc and produce
+pulsed, broadband RFI. Because these poles exist in the near-field of the array, we have been able
+to localize some of them by using the curvature of the incoming wavefront to infer a distance.
+Efforts are currently underway to work with the utility pole owners to have these insulators
+replaced.
 
 In the meantime it is possible to suppress their contamination in the dataset. The contribution of
 these RFI sources to the visibilities can be plainly seen by averaging $>24$ hours of data with the
@@ -1093,15 +1164,15 @@ declination while terrestrial sources (ie. the arcing power lines or any contrib
 common-mode pickup) are not smeared.  Obtaining a model for the RFI is complicated by the fact that
 the contaminating sources are at extremely low elevations where the antenna response is essentially
 unknown (and inhomogeneous due to antenna shadowing effects). Therefore it is not enough to know the
-physical location of the faulty insulator generating the RFI. In addition you must also know the
-response of each antenna (amplitude and phase) in the appropriate direction. This motivates the use
-of peeling, which allows the antenna response to be a free parameter.  Therefore model visibilities
-for the RFI can be obtained by peeling the sources after smearing the visibilities over $>24$ hours.
-See Figure~\ref{fig:fitrfi} for an illustration of some of the removed components at 62.688 MHz.
+physical location of the faulty insulator generating the RFI. In addition we must know the response
+of each antenna (amplitude and phase) in the appropriate direction. This motivates the use of
+peeling, which allows the antenna response to be a free parameter.  Therefore model visibilities for
+the RFI can be obtained by peeling the sources after smearing the visibilities over $>24$ hours.
+Figure~\ref{fig:fitrfi} shows an illustration of some of the removed components at 62.688 MHz.
 
 While attempting to peel RFI sources from the averaged visibilities, it was discovered that
-frequently peeling would prefer to remove components from the visibilities that are not obviously
-associated with any source on the horizon or elsewhere in the sky (see panels (a) and (b) in
+frequently peeling would remove components from the visibilities that are not obviously associated
+with any source on the horizon or elsewhere in the sky (see panels (a) and (b) in
 Figure~\ref{fig:fitrfi}).  These components appear noise-like in the images, but they are actually a
 constant offset to the measured visibilities and are therefore likely associated with cross-talk or
 some form of common-mode pickup. If these components are not subtracted from the measured
@@ -1127,20 +1198,103 @@ an astronomical signal ($\|\b B^*\b v_\text{terrestrial}\|/(\|\b B\|\|\b v_\text
 
 These terrestrial sources do not rotate with the sky and hence their contamination tends to be
 restricted to modes with small $m$. In this dataset the contamination is largely restricted to $m
-\lesssim 1$. Although the RFI is capable of fluctuating on short timescales, in practice the
-artifacts it introduces seems to be restricted to small $m$ (presumably because the phase is not
+\lesssim 1$. Although the RFI is capable of fluctuating on short timescales, in this case the
+artifacts it introduces seem to be restricted to small $m$ (presumably because the phase is not
 fluctuating).  As a result if the contamination is not suppressed, it will manifest itself as rings
 along stripes of constant declination. This effect is plainly visible in Figure~\ref{fig:fitrfi}.
-Because of the distinctive ring-like pattern created by terrestrial sources, we chose to discard
-spherical harmonics with either $m=0$ or $m=1$ and $l>100$ in order to further suppress the
-contamination.
+Because of the distinctive ring-like pattern created by terrestrial sources, we additionally chose
+to discard spherical harmonics with either $m=0$ or $m=1$ and $l>100$ in order to further suppress
+the contamination.
+
+\subsection{The Ionosphere}\label{sec:ionosphere}
+
+\begin{figure*}[t]
+    \centering
+    \begin{tabular}{cc}
+        \includegraphics[width=\columnwidth]{figures/ionospheric-simulations/scintillation-4} &
+        \includegraphics[width=\columnwidth]{figures/ionospheric-simulations/scintillation-18} \\
+        \includegraphics[width=\columnwidth]{figures/ionospheric-simulations/refraction-4} &
+        \includegraphics[width=\columnwidth]{figures/ionospheric-simulations/refraction-18} \\
+    \end{tabular}
+    %\includegraphics[width=\textwidth]{figures/ionospheric-simulations/ionospheric-simulations}
+    \caption{
+        This figure illustrates the corrupting influence of the ionosphere at 36.528~MHz (left
+        column) compared with 73.152~MHz (right column). Each panel shows the \textit{simulated} PSF
+        for a source at the location of Cas~A.  Each panel illustrates the percent difference
+        (relative to the peak flux of the uncorrupted PSF) due to including an ionospheric effect.
+        In the top row, the simulated source scintillates using the measured light-curve for Cas~A
+        in Figure~\ref{fig:scintillation}. In the bottom row, the simulated source is refracted from
+        its true position using the measured refractive offsets for Cas~A in
+        Figure~\ref{fig:scintillation}.
+    }
+    \label{fig:ionospheric-simulations}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/postage-stamps/3C134}
+    \caption{
+        A zoom-in of 3C~134 at 36.528~MHz (left panel), 52.224~MHz (middle panel), and 73.152~MHz
+        (right panel). At 36.528~MHz there are $\sim10\%$ artifacts around 3C~134 that persist after
+        CLEANing due to ionospheric effects. As expected for an ionospheric origin, these artifacts
+        decrease in amplitude as frequency increases.
+    }
+    \label{fig:3C134}
+\end{figure*}
+
+One of the key assumptions made by $m$-mode analysis is that the sky is static.  We assume that the
+only time-dependent behavior is the rotation of the Earth, which slowly rotates the sky through the
+fringe patterns of the interferometer. At low frequencies the ionosphere violates this assumption.
+In particular, ionospheric scintillation and refractive offsets will cause even static sources to
+exhibit significant variability (Figure~\ref{fig:scintillation}).
+
+The correlation observed on a given baseline for a single point source is
+\begin{equation}
+    V_\nu(t_{\textrm{sidereal}}) = I_\nu B_\nu(t_{\textrm{sidereal}}),
+\end{equation}
+where $I_\nu$ is the flux of the source at the frequency $\nu$, and $B_\nu$ is the baseline transfer
+function defined by Equation~\ref{eq:baseline-transfer-function}. The transfer function is a
+function of the direction to the source, which is in turn a function of the sidereal time
+$t_{\textrm{sidereal}}$. If the source is varying, from intrinsic variability or due to
+scintillation, than the source flux is also a function of the time coordinate $t$ such that
+\begin{equation}
+    V_\nu(t_{\textrm{sidereal}}) = I_\nu(t) B_\nu(t_{\textrm{sidereal}}),
+\end{equation}
+where $t_{\textrm{sidereal}} = (t \mod 23^h56^m)$.
+
+In order to compute the $m$-modes we must take the Fourier transform with respect to the sidereal
+time. As a consequence of the Fourier convolution theorem we find:
+\begin{equation}\label{eq:no-longer-block-diagonal}
+    V_{\nu, m} \sim \sum_{m^\prime} V_{m^\prime}^\textrm{static} I_{\nu, m-m^\prime}\,.
+\end{equation}
+where $V_{\nu, m}^{\textrm{static}}$ is the set of observed $m$-modes if the source was actually
+static, and $I_{\nu, m-m^\prime}$ is the Fourier transform of the light curve $I_{\nu}(t)$.
+Equation~\ref{eq:no-longer-block-diagonal} indicates that power is scattered between different
+values of $m$. As a consequence, the true transfer matrix, which is exactly block diagonal in the
+ideal case, is no longer truly block diagonal \citep{richard_ionosphere_thoughts}.
+
+The maps presented in Figure~\ref{fig:channel-maps} do not account for any off-diagonal terms
+arising from ionospheric fluctuations. The effect of this can be seen in
+Figure~\ref{fig:ionospheric-simulations}. In this simulation at 36.528~MHz, a point source is placed
+at the location of Cas A. In the first panel the source flux traces the beam model exactly and the
+source is always located exactly at the location of Cas A. In the middle panel, the source is
+allowed to scintillate in the same way Cas A does in Figure~\ref{fig:scintillation}. The image of
+the point source is effectively unchanged from the ideal PSF. In the right panel, the source
+position is allowed to vary in the same way Cas A does in Figure~\ref{fig:scintillation}. The
+refractive offsets lead to a clear degradation of the sidelobes. Because the sidelobes are altered
+from that of the ideal PSF, refractive offsets will restrict the dynamic range it is possible to
+obtain with the CLEAN algorithm described in \S\ref{sec:clean}. This effect can be clearly seen in
+Figure~\ref{fig:3c134}, where 10\% errors within 1$^\circ$ of 3C~134 are seen at 36.528~MHz.  As
+expected for an ionospheric effect these errors decrease to a few percent at 52.224~MHz, and less at
+73.152~MHz. We therefore conclude that ionospheric effects directly limit the dynamic range in the
+vicinity of bright point sources.
 
 \subsection{Beam Errors}
 
-A good model of the antenna beam is essential for widefield imaging. Because $m$-mode analysis
-imaging operates on a full sidereal day of data, images are constructed after watching each point in
-the sky move through a large slice of the beam (excepting the celestial poles). The beam model
-therefore serves two purposes:
+A model of the antenna beam is essential for widefield imaging. Because $m$-mode analysis imaging
+operates on a full sidereal day of data, images are constructed after watching each point in the sky
+move through a large slice of the beam (excepting the celestial poles). The beam model therefore
+serves two purposes:
 
 \begin{enumerate}
     \item setting the flux scale as a function of declination
@@ -1151,27 +1305,25 @@ In the first case, all sources at a given declination take the same path through
 beam. If the antenna response is overestimated along this track then all sources at this declination
 will have their flux underestimated. Similarly if the antenna response is underestimated then all
 the sources will have their flux overestimated. The errors in Figure~\ref{fig:flux-scale} do not
-show a clear pattern with declination. Two sources show a clear systematic error at all frequencies:
-3C 353 and 3C 380. 3C 353 is the second southernmost source, but Hya A -- the first southernmost
-source -- does not exhibit this systematic error. Similarly 3C 380 is at a comparable declination to
-Lyn A, which appears, if anything, to have its flux overestimated. The absence of a coherent pattern
-doesn't eliminate the possibility of beam errors effecting the flux scale, but it does mean that
-these errors are at least comparable to the errors inherent to the flux scale itself. On the other
-hand, the spectral indices presented in Figure~\ref{fig:internal-spectral-index} are systematically
-flatter from declinations between $-20^\circ$ and $-30^\circ$. This indicates the existence of beam
-errors at elevations $\lesssim20^\circ$.
+show a clear pattern with declination. Two sources have a clear systematic offset at all
+frequencies: 3C 353 and 3C 380. 3C 353 is the second southernmost source, but Hya A -- the first
+southernmost source -- does not exhibit this systematic error. Similarly 3C 380 is at a comparable
+declination to Lyn A, which appears, if anything, to have its flux overestimated. The absence of a
+coherent pattern does not eliminate the possibility of beam errors effecting the flux scale, but it
+does mean that these errors are at least comparable to the errors inherent to the flux scale itself.
 
 The second case is more subtle. Sources are observed at a wide range of locations in the primary
-beam of the antenna. The imaging process must reconcile all of these observations together. The beam
-model essentially provides the instructions on how to do this. For example if at a time $t_1$ the
-antenna gain towards a source is $g$ and at a later time $t_2$ the antenna gain towards that same
-source (which has now moved) is $g/2$, then in order to correctly estimate the flux of the source
-the observations from time $t_1$ need to be multiplied by $1/g$ but the observations from time $t_2$
-need to be multiplied by $2/g$. A mistake in the beam model here will lead to a mistake in the
-estimated flux.  However in general the amplitude and phase of the antenna response needs to be
-known and so beam model errors can lead to observations being combined with incorrect phase as well.
-This will lead to a degraded PSF in the final map. This effect is negligible compared to the
-ionospheric effects discussed in \S\ref{sec:ionosphere}.
+beam of the antenna. The imaging process must reconcile all of these observations together, and the
+beam model provides the instructions for how to do this. In the event of an error in the beam model,
+it can be expected that the beam will introduce errors into the sky maps that will limit the dynamic
+range in the vicinity of bright point sources.  \citet{2015PhRvD..91h3514S} simulate the effect of
+beam errors on a cosmological analysis concluding that the beam must be known to one part in $10^4$.
+Our requirements are significantly less stringent because we are estimating the sky brightness
+instead of estimating the amplitude of a faint cosmological signal in the presence of foreground
+emission that dominates the signal by 5 orders of magnitude. In fact in \S\ref{sec:ionopshere} we
+found that ionospheric effects likely dominate over other sources of error that affect the PSF
+shape. Therefore we conclude that the beam models generated in \S\ref{sec:beam} are sufficient to
+limit the effect of beam errors on the PSF to at least less than those introduced by the ionosphere.
 
 \subsection{Polarization Leakage}
 
@@ -1199,67 +1351,6 @@ Stokes-$Q$ into Stokes-$I$ will be large. However, the impact on the unpolarized
 maps is mild, amounting to a 0.5\% error in the flux of the source with no measurable effect on the
 PSF.
 
-\subsection{The Ionosphere}\label{sec:ionosphere}
-
-\begin{figure*}[t]
-    \includegraphics[width=\textwidth]{figures/ionospheric-simulations/ionospheric-simulations}
-    \caption{
-        This figure illustrates the corrupting influence of the ionosphere at 36.528 MHz. Each panel
-        shows the simulated PSF at the position of Cas~A. The left panel shows the PSF in the event
-        that there is no ionospheric scintillation and no refractive offsets. This is the PSF used
-        to deconvolve the maps with CLEAN. The middle panel shows the PSF with the measured
-        ionospheric scintillation for Cas~A from Figure~\ref{fig:scintillation} but no refractive
-        offsets. The right panel shows the PSF with the measured refractive offsets for Cas~A from
-        Figure~\ref{fig:scintillation} but no scintillation. This demonstrates that the long
-        synthesis images generated by $m$-mode analysis imaging are relatively insensitive to
-        scintillation, but uncorrected refractive offsets can limit the achievable dynamic range.
-    }
-    \label{fig:ionospheric-simulations}
-\end{figure*}
-
-One of the key assumptions made by $m$-mode analysis is that the sky is completely static.  We
-assume that the only time-dependent behavior is the rotation of the Earth, which slowly rotates the
-sky through the fringe patterns of the interferometer. At low frequencies the ionosphere violates
-this assumption. In particular, ionospheric scintillation and refractive offsets will cause even
-static sources to exhibit significant variability (see Figure~\ref{fig:scintillation}).
-
-The correlation observed on a given baseline for a single point source is
-\begin{equation}
-    V_\nu(t_{\textrm{sidereal}}) = I_\nu B_\nu(t_{\textrm{sidereal}}),
-\end{equation}
-where $I_\nu$ is the flux of the source at the frequency $\nu$, and $B_\nu$ is the baseline transfer
-function defined by Equation~\ref{eq:baseline-transfer-function}. The transfer function is a
-function of the direction to the source, which is in turn a function of the sidereal time
-$t_{\textrm{sidereal}}$. If the source is varying, from intrinsic variability or due to
-scintillation, than the source flux is also a function of the time coordinate $t$ such that
-\begin{equation}
-    V_\nu(t_{\textrm{sidereal}}) = I_\nu(t) B_\nu(t_{\textrm{sidereal}}),
-\end{equation}
-where $t_{\textrm{sidereal}} = (t \mod 23.9345\,\textrm{hours})$.
-
-In order to compute the $m$-modes we must Fourier transform with respect to the sidereal time. As a
-consequence of the Fourier convolution theorem we find:
-\begin{equation}\label{eq:no-longer-block-diagonal}
-    V_{\nu, m} \sim \sum_{m^\prime} V_{m^\prime}^\textrm{static} I_{\nu, m-m^\prime}\,.
-\end{equation}
-where $V_{\nu, m}^{\textrm{static}}$ is the set of observed $m$-modes if the source was actually
-static, and $I_{\nu, m-m^\prime}$ is the Fourier transform of the light curve $I_{\nu}(t)$.
-Equation~\ref{eq:no-longer-block-diagonal} indicates that power is scattered between different
-values of $m$. As a consequence, the true transfer matrix, which is exactly block diagonal in the
-ideal case, is no longer truly block diagonal \citep{richard_ionosphere_thoughts}.
-
-The maps presented in Figure~\ref{fig:channel-maps} do not account for any off-diagonal terms
-arising from ionospheric fluctuations. The effect of this can be seen in
-Figure~\ref{fig:ionospheric-simulations}. In this simulation a point source is placed at the
-location of Cas A. In the first panel the source flux traces the beam model exactly and the source
-is always located exactly at the location of Cas A. In the middle panel, the source is allowed to
-scintillate in the same way Cas A does in Figure~\ref{fig:scintillation}. The image of the point
-source is effectively unchanged from the ideal PSF. In the right panel, the source position is
-allowed to vary in the same way Cas A does in Figure~\ref{fig:scintillation}. The refractive offsets
-lead to a clear degradation of the sidelobes. Because the sidelobes are altered from that of the
-ideal PSF, refractive offsets will restrict the dynamic range it is possible to obtain with the
-CLEAN algorithm described in \S\ref{sec:clean}.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Comparisons with Other Sky Maps}\label{sec:compare}
 
@@ -1273,10 +1364,8 @@ CLEAN algorithm described in \S\ref{sec:clean}.
         MHz map, and the OVRO-LWA map at 46.992 MHz (degraded to $5^\circ$ resolution). A positive
         value indicates regions where the OVRO-LWA map has more emission that the Guzm\'{a}n map,
         and a negative value indicates regions where the Guzm\'{a}n map has more emission than the
-        OVRO-LWA map. The red patch around the north celestial pole corresponds to where the
-        Guzm\'{a}n map has a blank region.  The larger blue patch around the south celestial pole
-        corresponds to where the OVRO-LWA map has a blank region. Note also that the OVRO-LWA map
-        has several bright point sources subtracted that are not subtracted from the Guzm\'{a}n map.
+        OVRO-LWA map. Cas A, Cyg A, Vir A, and Tau A are masked due to the fact that they are
+        subtracted from the OVRO-LWA maps but not the Guzm\'{a}n map.
     }
     \label{fig:guzman-comparison}
 \end{figure*}
@@ -1296,8 +1385,9 @@ as much as $-20\%$.
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[height=0.32\textheight]{figures/haslam/haslam-spectral-index}
+    \includegraphics[height=0.32\textheight]{figures/haslam/better-haslam-spectral-index}
     \caption{
+        \todo{update caption}
         The contours show the spectral index between the reprocessed Haslam 408 MHz map and the
         73.152 MHz map (degraded to 56 arcmin resolution). These contours are overlaid on the same
         three-color map from Figure~\ref{fig:three-color}. The regions with shallow spectral index
@@ -1333,14 +1423,14 @@ also seen at higher frequencies.
 
 In this work we presented a new imaging technique -- Tikhonov regularized $m$-mode analysis imaging
 and cleaning -- for drift-scanning telescopes like the OVRO-LWA.  This technique exactly corrects
-for widefield effects in interferometric imaging, but offers a $\sim10^6$ times speed-up relative to
-the naive approach for the OVRO-LWA. We applied this technique to a 28 hour dataset and generated 8
-sky maps between 36.528~MHz and 73.152~MHz. These sky maps are a substantial improvement over
-existing maps at these frequencies due to their 15~arcmin angular resolution and $<600$~K thermal
-noise. The point source flux scale is consistent with that defined by \citet{2012MNRAS.423L..30S} to
-about 5\% and large angular scales are consistent with the work of \citet{2011A&A...525A.138G} to
-within 20\%.  These maps are primarily intended to be used as part of a foreground modeling and
-subtraction routine for 21~cm cosmology experiments.
+for widefield effects in interferometric imaging with a single synthesis imaging step.  We applied
+Tikhonov regularized $m$-mode analysis imaging to a 28 hour dataset and generated 8 sky maps between
+36.528~MHz and 73.152~MHz.  These sky maps are a substantial improvement over existing maps at these
+frequencies due to their 15~arcmin angular resolution and $<600$~K thermal noise. The point source
+flux scale is consistent with that defined by \citet{2012MNRAS.423L..30S} to about 5\% and large
+angular scales are consistent with the work of \citet{2011A&A...525A.138G} to within 20\%.  These
+maps are primarily intended to be used as part of a foreground modeling and subtraction routine for
+21~cm cosmology experiments.
 
 At frequencies above $\sim55$~MHz, the angular resolution of these maps is limited by the selection
 of $l_\text{max}=1000$. Future work will increase $l_\text{max}$ to remove this restriction, as well
@@ -1350,6 +1440,10 @@ residuals. Observations could also be extended to slightly higher and lower freq
 $85$~MHz) to take advantage of the full frequency range of the OVRO-LWA. The higher frequencies are
 particularly interesting in order to maximize the overlap with the MWA in the southern hemisphere,
 which could be used to fill-in the hole around the southern celestial pole.
+
+\acknowledgments
+This work is dedicated to the memory of Professor Marjorie Corcoran, who was an influential mentor
+to M.~W.~Eastwood.
 
 \bibliographystyle{apj}
 \bibliography{paper}

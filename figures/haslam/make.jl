@@ -8,8 +8,8 @@ using Colors, PerceptualColourMaps
 path = dirname(@__FILE__)
 
 function go()
-    slope, residual, mask = load(joinpath(path, "haslam-spectral-index.jld"),
-                                 "slope", "residual", "mask")
+    slope, R², mask = load(joinpath(path, "haslam-spectral-index-updated.jld"),
+                           "slope", "coefficient-of-determination", "mask")
 
     ν1 = 36.528
     ν2 = 52.224
@@ -63,10 +63,14 @@ function go()
     tight_layout()
 
     map = RingHealpixMap(clamp.(solve_for_spectral_index(slope, ν3, ν4), -3.5, -1.5))
-    img = mollweide(map, (4096, 2048))
-    mask_img = mollweide(RingHealpixMap(mask), (4096, 2048))
+    img = mollweide(map, (2048, 4096))
+    mask_img = mollweide(RingHealpixMap(mask), (2048, 4096))
+    R²_img = mollweide(RingHealpixMap(R²), (2048, 4096))
     img[mask_img] = NaN
     img[img .== 0] = NaN # this deletes contours around the edge of the map
+    R²_img[mask_img] = NaN
+    R²_img[img .== 0] = NaN # this deletes contours around the edge of the map
+
     cs = contour(img, -3.5:0.1:-1.5,
                  extent=(-2, 2, 1, -1), origin="lower",
                  #cmap=ColorMap(cmap_samples),
@@ -82,6 +86,39 @@ function go()
 
     savefig(joinpath(path, "haslam-spectral-index.pdf"),
             bbox_inches="tight", pad_inches=0, transparent=true)
+
+    figure(2, figsize=(12, 5)); clf()
+    ellipse = plt[:Polygon]([x y], alpha=0)
+    gca()[:add_patch](ellipse)
+
+    xlim(-2, 2)
+    ylim(-1, 1)
+    gca()[:set_aspect]("equal")
+    gca()[:get_xaxis]()[:set_visible](false)
+    gca()[:get_yaxis]()[:set_visible](false)
+    axis("off")
+    tight_layout()
+
+    cs1 = contour(R²_img, [0.7, 0.9, 1.0],
+                  extent=(-2, 2, 1, -1), origin="lower",
+                  linewidths=1,
+                  colors="k",
+                  clip_path=ellipse)
+    clabel(cs1, inline=true, fontsize=12, fontweight="bold", fmt="%.1f", rightside_up=true)
+    cs2 = imshow(img, vmin=-3.5, vmax=-1.5,
+                  extent=(-2, 2, 1, -1), origin="lower",
+                  #cmap=ColorMap(cmap_samples),
+                  cmap=get_cmap("RdBu"),
+                  clip_path=ellipse)
+
+    cbar = colorbar(cs2)
+    cbar[:ax][:tick_params](labelsize=12)
+    cbar[:set_label]("local spectral index", fontsize=12, rotation=270)
+    cbar[:ax][:get_yaxis]()[:set_label_coords](4.5, 0.5)
+
+    savefig(joinpath(path, "better-haslam-spectral-index.pdf"),
+            bbox_inches="tight", pad_inches=0, transparent=true)
+
 end
 
 function solve_for_spectral_index(slope, ν1, ν2)
