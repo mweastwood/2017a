@@ -22,7 +22,7 @@ core = setdiff(core, off)
 gca()[:tick_params](axis="both", which="major", labelsize=12)
 
 scatter(east[core], north[core], marker=".", c="k", s=20, lw=0)
-scatter(east[off], north[off], marker=".", c="r", s=20, lw=0)
+scatter(east[off], north[off], marker=".", c="#d62728", s=20, lw=0)
 scatter(east[leda], north[leda], marker="+", c="k", s=50)
 scatter(east[expansion], north[expansion], marker="^", c="k", s=20)
 gca()[:set_aspect]("equal")

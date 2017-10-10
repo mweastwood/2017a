@@ -176,7 +176,7 @@ that are aiming to detect the spectral signature of the cosmologically redshifte
 after averaging over the entire sky (otherwise known as the monopole), and power spectrum
 experiments that incorporate angular information to attempt to measure the 3D spatial power spectrum
 of cosmological 21~cm perturbations.  Ongoing global experiments include EDGES
-\citep{2010Natur.468..796B, 2017ApJ...835...49M}, LEDA \citep{2017arXiv170909313P}, BIGHORNS
+\citep{2010Natur.468..796B, 2017ApJ...847...64M}, LEDA \citep{2017arXiv170909313P}, BIGHORNS
 \citep{2015PASA...32....4S}, SCI-HI \citep{2014ApJ...782L...9V}, and SARAS 2
 \citep{2017arXiv170306647S}.  Ongoing power spectrum experiments include PAPER/HERA
 \citep{2015ApJ...809...61A, 2016arXiv160607473D}, LOFAR \citep{2017ApJ...838...65P}, and the MWA
@@ -231,9 +231,9 @@ The structure of this paper is as follows. In \S\ref{sec:imaging}, we present Ti
 $m$-mode analysis imaging, a new imaging technique that allows us to image the entire visible sky in
 one coherent synthesis imaging step with exact widefield corrections. In \S\ref{sec:observations} we
 describe our observations with the Owens Valley Long Wavelength Array (OVRO-LWA). In
-\S\ref{sec:results} we present the sky maps, and in \S\ref{sec:error} we discuss some of the sources
-of error present in the maps. Finally in \S\ref{sec:compare} the new sky maps are compared against
-other low-frequency sky maps, and in \S\ref{sec:conclusion} we present our conclusions.
+\S\ref{sec:results} we present the sky maps and compare these maps against other low-frequency sky
+maps.  In \S\ref{sec:error} we discuss some of the sources of error present in the maps, and finally
+in \S\ref{sec:conclusion} we present our conclusions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{All-Sky Imaging}\label{sec:imaging}
@@ -426,8 +426,8 @@ zero, which means it is not an invertible matrix.
 Another way of looking at the problem is that because the interferometer is not sensitive to part of
 the southern hemisphere, there are infinitely many possible solutions to
 Equation~\ref{eq:m-mode-matrix-equation} that will fit the measured data equally well.  We will
-regularize the problem and apply an additional constraint that prefers a unique yet physically
-reasonable solution.
+therefore regularize the problem and apply an additional constraint that prefers a unique yet
+physically reasonable solution.
 
 \subsubsection{Tikhonov Regularization}
 
@@ -471,10 +471,6 @@ values -- the ones that the interferometer is the least sensitive to -- actually
 the covariance of the measured spherical harmonic coefficients. Tikhonov regularization improves
 this situation by downweighting these components.
 
-While Tikhonov regularization will force unmeasured modes to zero, if a prior map of the sky already
-exists, it would be preferrable to instead minimize $\|\b v - \b B\b a\|^2 + \varepsilon \|\b a-\b
-a_\text{prior}\|^2$.
-
 \subsubsection{L-Curves}
 
 \begin{figure}[t]
@@ -515,11 +511,17 @@ OVRO-LWA we selected $\varepsilon = 0.01$ across all frequency channels. The dis
 singular values of the transfer matrix with respect to $\sqrt{\varepsilon}$ is summarized in
 Table~\ref{tab:summary}.
 
-\subsubsection{The Moore-Penrose Pseudoinverse}
+\subsubsection{Other Regularization Schemes}
 
-The Moore-Penrose pseudoinverse (denoted in this paper with a superscript $\dagger$), is commonly
-applied to find the minimum-norm linear-least squares solution to a set of linear equations. This
-can be used in place of Tikhonov regularization as
+The choice of applying Tikhonov regularization to $m$-mode analysis imaging is not unique. There
+exists a plethora of alternative regularization schemes that could also be applied. Each
+regularization scheme has its own advantages and disadvantages. For instance Tikhonov regularization
+is simple, independent of prior information, and sets unmeasured modes to zero (a sensible
+expectation). We will now briefly discuss a few other alternatives.
+
+The Moore-Penrose pseudoinverse (denoted with a superscript $\dagger$), is commonly applied to find
+the minimum-norm linear-least squares solution to a set of linear equations. This can be used in
+place of Tikhonov regularization as
 \begin{equation}
     \b{\hat a}_\text{Moore-Penrose} = \b B^\dagger\b v\,.
 \end{equation}
@@ -528,24 +530,39 @@ singular values (below some user-defined threshold) to zero. Components with lar
 (above the user-defined threshold) are included in the calculation at their full amplitude with no
 down-weighting of modes near the threshold. The essential difference between using the Moore-Penrose
 pseudoinverse and Tikhonov regularization is that the pseudoinverse defines a hard transition from
-on to off. Modes are either set to zero or included in the map at their full amplitude. On the other
-hand Tikhonov regularization smoothly interpolates between these behaviors. Because of this,
-Tikhonov regularization tends to produce better results in practical applications.
+``on'' to ``off''. Modes are either set to zero or included in the map at their full amplitude. On
+the other hand Tikhonov regularization smoothly interpolates between these behaviors. Because of
+this, Tikhonov regularization tends to produce better results in practical applications.
 
-\subsubsection{Other Regularization Schemes}
+In the event that the observer has a prior map of the sky, $\|\b a - \b a_\text{prior}\|^2$ can be
+used as the regularizing norm. This will use the prior map to fill-in missing information instead of
+setting these modes to zero. In this case the minimum is at
+\begin{equation}
+    \b{\hat a}_\text{with prior} = (\b B^*\b B + \varepsilon\b I)^{-1}
+        (\b B^*(\b v - \b B\b a_\text{prior}))
+        + \b a_\text{prior}\,.
+\end{equation}
+If instead the observer has a prior expectation on the covariance of the spherical harmonic
+coefficients, Wiener filtering can also be used.  This technique is demonstrated for simulated
+measurements by \citet{2016arXiv161203255B}.
 
-In compressed-sensing applications, the $L^1$-norm is used in place of the $L^2$-norm in order to
-encourage sparsity in the reconstructed signal. By expressing the sky in terms of spherical
-harmonics there is no such expectation of sparsity in the solution, and so the $L^1$-norm is
-inappropriate for this application.
+Alternatively we could opt to regularize the problem by enforcing smoothness in the sky maps. In
+this case, the regularizing norm should be of the form $\|\nabla I(\hat r)\|^2$, where $\nabla I$ is
+the gradient of the sky brightness in the direction $\hat r$. This is actually a generalization of
+Tikhonov regularization where the objective function is $\|\b v-\b B\b a\|^2 + \varepsilon\|\b A\b
+a\|^2$ for some matrix $\b A$. The minimum is at
+\begin{equation}
+    \b{\hat a}_\text{generalized} = (\b B^*\b B + \varepsilon\b A^*\b A)^{-1}\b B^*\b v\,.
+\end{equation}
 
-Wiener filtering can also be used in place of Tikhonov regularization in the event that the observer
-has a prior expectation on the covariance of the spherical harmonic coefficients in order to
-interpolate missing information. This technique is demonstrated for simulated measurements by
-\citet{2016arXiv161203255B}.
-
-In this work we elect to pursue Tikhonv regularization due to its computational simplicity, smooth
-down-weighting of noisy modes, and independence of prior information.
+Finally in many machine learning applications the $L_1$-norm\footnote{
+    $\|\b a\|_1 = \sum_i |a_i|$
+} is used in place of the usual $L_2$-norm in order to encourage sparsity in the reconstructed
+signal. Applying this to $m$-mode analysis imaging would amount to minimizing $\|\b v-\b B\b a\|_2^2
++ \varepsilon\|\b a\|_1$. However, because we have decomposed the sky in terms of spherical
+harmonics, the vector $\b a$ is not expected to be sparse. Consequently the $L_1$-norm is generally
+inappropriate for $m$-mode analysis imaging without an additional change-of-variables designed to
+introduce sparsity.
 
 \subsection{CLEAN}\label{sec:clean}
 
@@ -784,7 +801,8 @@ Per~B\footnote{
 those flux measurements. We select the basis functions to have the desired symmetry ($Z_0^0$,
 $Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, and $Z_8^8$) and the beam amplitude
 at zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustration of a fitted beam
-model at several frequencies. This process is repeated for each frequency channel.
+model at several frequencies. This process is repeated for each frequency channel. Residuals for
+Cyg~A and Cas~A can be seen in Figure~\ref{fig:scintillation}.
 
 \subsection{Ionospheric Conditions}
 
@@ -833,8 +851,8 @@ Small scale fluctuations are best characterized by source scintillation and refr
 Figure~\ref{fig:scintillation} shows the apparent flux and position offset of Cyg~A and Cas~A as a
 function of time over the entire observing period. Both sources exhibit rapid scintillation on the
 timescale of a single integration (13 seconds). For example at 36.528 MHz, it is not unusual for Cyg
-A to have a measured flux variations of 50\% between adjacent 13 second integrations.  The variance
-at 36.528~MHz compared with the variance at 73.152~MHz is consistent with an ionospheric $\nu^{-2}$
+A to have measured flux variations of 50\% between adjacent 13 second integrations.  The variance at
+36.528~MHz compared with the variance at 73.152~MHz is consistent with an ionospheric $\nu^{-2}$
 origin. The measured position offset of each source is a measurement of the ionospheric phase
 gradient across the array.  This varies on slower 10 minute timescales refracting each source by as
 much as 20 arcmin (at 36.528 MHz) from their true astronomical positions as waves in the ionosphere
@@ -855,7 +873,7 @@ confusion limit at 74 MHz with a 15~arcmin beam is 1000~mJy \citep{2014MNRAS.440
 we require that Cyg~A's sidelobes be at least $-45$~dB down from the main lobe to prevent Cyg~A's
 sidelobes from dominating the variance in the image.
 
-In order to account for propagation effects through the ionosphere direction-dependent calibration
+In order to account for propagation effects through the ionosphere, direction-dependent calibration
 and peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S} must be used.  Direction-dependent
 calibration allows the per-antenna amplitude and phase towards a bright astronomical source to be
 free parameters. In the dataset used in this paper, scintillation and refractive-offset events on
@@ -876,10 +894,10 @@ sources can be peeled from the dataset to the required dynamic range.
 
 \subsubsection{Other Bright Sources}
 
-Other bright sources namely Vir~A, Tau~A, Her~A, Hya~A, Per~B, and 3C~353 are also removed from
-the visibilities prior to imaging. Because these sources are much fainter than Cyg~A and Cas~A, we
-do not need resolved source models to be able to remove these sources from the visibilities without
-residual sidelobes contaminating the image.
+Other bright sources -- namely Vir~A, Tau~A, Her~A, Hya~A, Per~B, and 3C~353 -- are also removed
+from the visibilities prior to imaging. Because these sources are much fainter than Cyg~A and Cas~A,
+we do not need resolved source models to be able to remove these sources from the visibilities
+without residual sidelobes contaminating the image.
 
 However, the ionosphere will cause these sources to scintillate and refract. The position and flux
 of each source is measured separately in each channel and integration. The sources are then
@@ -989,8 +1007,8 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
         This Mollweide-projected map is constructed from 3 maps of the sky at 36.528~MHz (red),
         52.224~MHz (green), and 73.152~MHz (blue). The maps are scaled by $\nu^{2.5}$ before
         combining and the color scale is logarithmic (as in Figure~\ref{fig:channel-maps}).
-        Therefore regions with a spectral index of $-2.5$ appear white. Areas with a steeper index
-        appear red and areas with a flatter spectral index appear blue.
+        Therefore regions with a spectral index of $-2.5$ will tend to appear white. Areas with a
+        steeper index appear red and areas with a flatter spectral index appear blue.
     }
     \label{fig:three-color}
 \end{figure*}
@@ -999,16 +1017,31 @@ indicates that the PB17 spectra cannot be extrapolated below 50 MHz.
     \centering
     \includegraphics[width=\textwidth]{figures/spectral-index/better-internal-spectral-index}
     \caption{
-        \todo{updated this caption}
-        This plot shows the local spectral index (estimated by means of a local T-T plot) as a
-        contour plot. The contours are overlaid on the three-color image from
-        Figure~\ref{fig:three-color}. The spectral index fit along the galactic plane is masked
-        because T-T plots assume a single emission mechanism operates in a given region. Along the
-        galactic plane free-free dominated regions lie in close proximity to synchrotron dominated
-        regions. This introduces large systematic errors to the power-law fit unless care is taken
-        to cleanly separate the two types of emission mechanisms.
+        The local spectral index measured between the 36.528~MHz map and the 73.152~MHz map
+        estimated by means of a local T-T plot. The color scale gives the spectral index where blue
+        is flat spectrum and red is steep spectrum. The contours give the
+        coefficient-of-determination ($R^2$) for the linear fit to the local T-T plot. If $R^2$ is
+        low, the quality of the fit is low and the estimated spectral index is unreliable. This can
+        be either due to insufficient dynamic range in the local T-T plot or due to multiple
+        emission mechanisms operating in close proximity. Consequently $R^2$ tends to drop at higher
+        galactic latitudes (due to dynamic range), and near \ion{H}{2} regions in the galactic
+        plane (due to multiple emission mechanisms).
     }
     \label{fig:internal-spectral-index}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[height=0.32\textheight]{figures/haslam/better-haslam-spectral-index}
+    \caption{
+        The local spectral index measured between the 73.152~MHz OVRO-LWA map and the reprocessed
+        408~MHz Haslam map \citep{2015MNRAS.451.4311R}.  The color scale gives the spectral index
+        where blue is flat spectrum and red is steep spectrum. The contours give the
+        coefficient-of-determination ($R^2$) for the linear fit to the local T-T plot. See the
+        caption of Figure~\ref{fig:internal-spectral-index} for more details about the
+        coefficient-of-determination..
+    }
+    \label{fig:haslam-spectral-index}
 \end{figure*}
 
 \begin{table*}[t]
@@ -1062,33 +1095,25 @@ $l=+45.7^\circ$, $b=-47.9^\circ$ corresponding to the position of the Sun during
 window. The properties of each map, including frequency, bandwidth, angular resolution, and thermal
 noise are presented in Table~\ref{tab:summary}.
 
-Due to the considerations presented by \citet{2016ApJ...826..116V}, each of these maps is monopole
-subtracted ($a_{00}=0$). Consequently a simple pixel-by-pixel powerlaw fit will be unduly affected
-by the choice of zero-level correction. Instead, temperature-temperature plots (T-T plot) can be
-used to measure the spectral index independently of any zero-level corrections
-\citep{1962MNRAS.124..297T}. This method relies on the assumption that all pixels in a given region
-are described by the same power law. In Figure~\ref{fig:internal-spectral-index} the spectral index
-is locally estimated within a region $\sim10^\circ$ across by constructing a local T-T plot at every
-pixel between the maps at 36.528~MHz and 73.152~MHz. The spectral index contours are overlaid on the
-3-color image from Figure~\ref{fig:three-color} where free-free regions responsible for flattening
-the spectral index in the galactic plane are plainly visible as extended blue blobs.  Similarly the
-spectral index can be seen to steepen as galactic latitude increases (this is a transition from blue
-to white to yellow that is also evident in the spectral index contours).
+Each map from Figure~\ref{fig:channel-maps} will be made freely available online in Healpix format
+\citep{2005ApJ...622..759G} on LAMBDA (\url{https://lambda.gsfc.nasa.gov/}).
 
-In order to suppress sources of terrestrial interference, all spherical harmonics with $m=0$, or
-$m=1$ and $l>100$ are filtered from the map (where the spherical harmonics are defined in the J2017
+Due to the considerations presented by \citet{2016ApJ...826..116V} and discussed in
+\S\ref{sec:mmode-analysis}, each of these maps is monopole subtracted ($a_{00}=0$).  Furthermore, in
+order to suppress sources of terrestrial interference, all spherical harmonics with $m=0$, or $m=1$
+and $l>100$ are filtered from the map (where the spherical harmonics are defined in the J2017
 coordinate system). As will be discussed in \S\ref{sec:rfi}, these spherical harmonics are
 particularly susceptible to contamination by RFI and common-mode pickup. As a consequence,
 astronomical emission that circles the J2017 north celestial pole (NCP) is filtered from the maps.
-This filtering creates negative rings around the NCP at the declination of bright point sources.
+This filtering creates negative rings around the NCP at the declination of bright point sources, but
 These rings are naturally removed from the map during CLEANing as long as this filtering step is
-including in the PSF calculation.
+included in the PSF calculation.
 
 The noise in each map is empirically measured using jackknife resampling. The dataset is split into
 even- and odd-numbered integrations. These two groups are imaged and cleaned independently, before
 being compared against the maps constructed from all of the available data using the standard
 jackknife variance estimator. This estimate of the variance includes all sources of error that
-operate on $\sim13$ second timescales (the integration time) such as thermal noise in rapid
+operate on $\sim13$ second timescales (the integration time) such as thermal noise and rapid
 ionospheric fluctuations, but does not account for more slowly varying effects (for example,
 sidereal variation in the system temperature or day-night fluctuations in the ionosphere). These
 noise calculations are summarized in Table~\ref{tab:summary}.  VLSSr source counts
@@ -1096,13 +1121,90 @@ noise calculations are summarized in Table~\ref{tab:summary}.  VLSSr source coun
 resolution is $\sim 1000\times(\nu/74\,{\rm MHz})^{-0.7}$ mJy.  Each channel map achieves thermal
 noise $<900$ mJy and therefore each map is likely at or near the confusion limit.
 
-Each map from Figure~\ref{fig:channel-maps} is freely available online in Healpix format
-\citep{2005ApJ...622..759G} on LAMBDA (\url{https://lambda.gsfc.nasa.gov/}).
+In the absence of a zero-level correction, a pixel-by-pixel power law fit to the new maps is
+impossible. In general this zero-level correction requires calibrated total power measurements that
+will be included in future work.  Instead, temperature-temperature plots (T-T plot) can be used to
+measure the spectral index independently of any zero-level corrections \citep{1962MNRAS.124..297T}.
+This method relies on the assumption that all pixels in a given region are described by the same
+power law. In that case there exists a linear relationship between the brightness temperature at
+frequency $\nu_1$ and frequency $\nu_2$. The slope of this best-fit line is a measure of the
+spectral index between the two frequencies. T-T plots can fail to obtain a reliable measure of the
+spectral index in two ways.  First, if there is not enough dynamic range in the emission region
+there may be only a weak correlation between the brightness temperature at $\nu_1$ and $\nu_2$.
+Second, if two emission mechanisms operate in close proximity (ie.  synchrotron and free-free) then
+a single power-law interpretation of the emission in that region will be poor. Consequently spectral
+indices estimated from T-T plots can require careful interpretation.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Comparisons with Other Sky Maps}\label{sec:compare}
+In Figure~\ref{fig:internal-spectral-index} the spectral index is locally estimated in each part of
+the sky within a region $\sim10^\circ$ across by constructing local T-T plots between 36.528~MHz and
+73.152~MHz. Contours of constant $R^2$ (the coefficient-of-determination) are overlaid. If $R^2\sim
+1$, the spectral index is reliable because there is locally a strong linear correlation between
+36.528~MHz and 73.152~MHz. However if $R^2\ll 1$, the spectral index calculation is unreliable.
+$R^2$ tends to drop in cold patches of the sky where there is not enough dynamic range to find a
+strong correlation between the two frequencies. $R^2$ also tends to drop in the vicinity of
+\ion{H}{2} regions in the galactic plane due to multiple emission mechanisms violating the
+assumption of a single spectral index. Therefore we should restrict our interpretation of
+Figure~\ref{fig:internal-spectral-index} to the galactic plane and north galactic spur. In the
+galactic plane, the synchrotron spectral index varies between $\sim-2.5$ and $-2.75$. In the
+vicinity of \ion{H}{2} regions the spectral index flattens significantly.  These \ion{H}{2} regions
+can be seen with higher resolution in Figure~\ref{fig:three-color}. Along the galactic plane,
+especially towards the galactic center, \ion{H}{2} regions appear as blue shadows due to free-free
+absorption.
 
-\subsection{Guzm\'{a}n 45 MHz Map}
+In the literature the spectral index at low frequencies is commonly computed with respect to the
+Haslam 408~MHz map \citep{1981A&A...100..209H, 1982A&AS...47....1H}, which was reprocessed by
+\citet{2015MNRAS.451.4311R} to remove artifacts associated with $1/f$ noise and bright sources.
+Figure~\ref{fig:haslam-spectral-index} displays the spectral index computed between the 73.152~MHz
+map and the reprocessed Haslam map. The spectral index was estimated by degrading the 73.152~MHz map
+to the resolution of the Haslam map and constructing local T-T plots in every direction. The
+coefficient-of-determination is overlaid as a contour plot, however because
+$\log(408\,\text{MHz}/73.152\,\text{MHz}) > \log(73.152\,\text{MHz}/36.528\,\text{MHz})$, the
+spectral indices presented in Figure~\ref{fig:haslam-spectral-index} tend to be more robust than
+those presented in Figure~\ref{fig:internal-spectral-index}. This is reflected by the fact that
+$R^2$ is larger, but the interpretation must still generally be restricted to the galactic plane.
+
+\subsection{Comparisons with Other Sky Maps}\label{sec:compare}
+
+\subsubsection{LWA1 Low Frequency Sky Survey}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/lwa1/lwa1}
+    \caption{\todo{a thing}}
+    \label{fig:lwa1-comparison}
+\end{figure*}
+
+The LWA1 Low Frequency Sky Survey (LLFSS) \citep{2017MNRAS.469.4537D} produced 9 maps of the sky
+between 35~MHz and 80~MHz. 6 of these maps are interior to the frequency range spanned by this work.
+A direct comparison with these LLFSS maps can be seen in Figure~\ref{fig:lwa1-comparison}. In this
+figure the LLFSS maps are filtered to remove the monopole and all modes with $m=0$, and the OVRO-LWA
+maps are interpolated in frequency and blurred to match the angular resolution of the corresponding
+LWA1 map. The dominant feature in this map is a shift of the galactic plane. This feature is also
+seen in comparisons of the LLFSS with the GSM (see for example Figure~9 of
+\citet{2017MNRAS.469.4537D}). Therefore we conclude that this is an artifact of the LLFSS. Otherwise
+at 60~MHz the agreement is generally better than 10\%. However at lower frequencies the agreement
+deterioriates to about 20\%.
+
+The LLFSS incorporates calibrated total power radiometry to estimate the missing flux from short
+spacings. As a result \citet{2017MNRAS.469.4537D} report per-pixel spectral-indices from combining
+all 9 sky maps. Care must be taken in comparing these spectral indices with
+Figure~\ref{fig:internal-spectral-index} because they are susceptible to different systematic
+errors. Both calculations are sensitive to mistakes in the antenna primary beam, but the LLFSS
+spectral indices are additionally sensitive to errors in the zero-level. We will restrict the
+comparison to the galactic plane where the spectral indices are likely to be the most reliable.
+Towards the galactic center both surveys agree that the spectral index is very flat $>-2.2$ due to
+the influence of free-free absorption.  However at galactic latitudes $\sim 180^\circ$ this work
+suggests that the spectral index varies between -2.5 and -2.75, while the LLFSS reports
+substantially flatter indices in the range -2.3 to -2.2. In this region $0.7 < R^2 < 0.9$ so this
+could be an artifact of the comparatively weak correlation between the brightness at 36.528~MHz and
+73.152~MHz, which tends to bias the spectral index towards $-\infty$.
+
+The LLFSS also computes spectral indices with respect to the Haslam 408~MHz map. These spectral
+indices are subject to the same caveats and systematic errors as before. However in general the
+qualitative agreement with Figure~\ref{fig:haslam-spectral-index} is better potentially due to the
+increased robustness associated with estimating spectral indices with a larger fractional bandwidth.
+
+\subsubsection{Guzm\'{a}n 45 MHz Map}
 
 \begin{figure*}[t]
     \centering
@@ -1118,50 +1220,26 @@ Each map from Figure~\ref{fig:channel-maps} is freely available online in Healpi
     \label{fig:guzman-comparison}
 \end{figure*}
 
+The Guzm\'{a}n 45 MHz map \citep{2011A&A...525A.138G} is compiled from a southern hemisphere survey
+\citep{1997A&AS..124..315A} and a northern hemisphere survey \citep{1999A&AS..140..145M} with a
+small gap around the NCP. In this work the zero-level is set by comparing against published
+low-frequency measurements in the literature in six different directions.
+
 A direct comparison between the OVRO-LWA maps interpolated to 45 MHz and the Guzm\'{a}n 45 MHz map
-\citep{2011A&A...525A.138G} can be seen in Figure~\ref{fig:guzman-comparison}. In order to make this
-comparison the OVRO-LWA map was degraded to a 5$^\circ$ resolution by convolving with a Gaussian
-kernel, and the Guzm\'{a}n map has had spherical harmonics with $m=0$ discarded in order to make it
-consistent with the maps presented in this paper. This figure shows a $\sim20\%$ excess of emission
-in the galactic plane that is consistent with the discrepancy observed by the LWA1 sky survey
-\citep{2017MNRAS.469.4537D}. However, while the LWA1 sky survey has an excess of emission near the
-north galactic pole, no such excess is observed in this work. Instead there is a 10\% excess of
-emission near the south galactic pole. Elsewhere off the plane of the galaxy the discrepancy can be
-as much as $-20\%$.
+can be seen in Figure~\ref{fig:guzman-comparison}. In order to make this comparison the OVRO-LWA map
+was degraded to a 5$^\circ$ resolution by convolving with a Gaussian kernel, and the Guzm\'{a}n map
+has had spherical harmonics with $m=0$ discarded in order to make it consistent with the maps
+presented in this paper. This figure shows a $\sim20\%$ excess of emission in the galactic plane
+that is consistent with the discrepancy observed between the LLFSS and the Guzm\'{a}n map.  However
+while the LLFSS has an excess of emission near the north galactic pole, no such excess is observed
+in this work. Instead there is a 10\% excess of emission near the south galactic pole. Elsewhere off
+the plane of the galaxy the discrepancy can be as much as $-20\%$.
 
-\subsection{Haslam 408 MHz Map}
-
-\begin{figure*}[t]
-    \centering
-    \includegraphics[height=0.32\textheight]{figures/haslam/better-haslam-spectral-index}
-    \caption{
-        \todo{update caption}
-        The contours show the spectral index between the reprocessed Haslam 408 MHz map and the
-        73.152 MHz map (degraded to 56 arcmin resolution). These contours are overlaid on the same
-        three-color map from Figure~\ref{fig:three-color}. The regions with shallow spectral index
-        between 73.152 MHz and 408 MHz coincide with regions with large free-free absorption that is
-        evident between 36.528 MHz and 73.152 MHz.
-    }
-    \label{fig:haslam-spectral-index}
-\end{figure*}
-
-The Haslam 408 MHz map \citep{1981A&A...100..209H, 1982A&AS...47....1H} was reprocessed by
-\citet{2015MNRAS.451.4311R} to remove artifacts associated with $1/f$ noise and bright sources. In
-order to compare the OVRO-LWA maps with the lower resolution Haslam map, the OVRO-LWA maps were
-degraded to 56 arcmin resolution and the spectral index between the 73.152 MHz map and the 408 MHz
-Haslam map was computed by means of a local T-T plot at each pixel in the maps (in order to obviate
-the need for a zero-level correction to the 73.152 MHz map). The results of this computation are
-shown in Figure~\ref{fig:haslam-spectral-index}. Because this comparison uses a local T-T plot to
-estimate the spectral index, the angular resolution of this computation is somewhat degraded
-relative to other comparisons in the literature but the spectral indices in
-Figure~\ref{fig:haslam-spectral-index} are robust to zero-level errors in either map.
-
-The primary difference between the spectral index derived between 73.152 MHz and 408 MHz
-(Figure~\ref{fig:haslam-spectral-index}), and the spectral index derived between 36.528 MHz and
-73.152 MHz (Figure~\ref{fig:internal-spectral-index}) is the appearance of a multitude of \ion{H}{2}
-regions that dot the galactic plane in the latter. The free-free absorption from these \ion{H}{2}
-regions contributes to an overall flattening of the spectral index in the galactic plane that is
-also seen at higher frequencies.
+\citet{2011A&A...525A.138G} compute the spectral index between their 45~MHz map and the 408~MHz
+Haslam map. Along the galactic plane the spectral index varies between -2.2 (in the vicinity of
+\ion{H}{2} regions), and -2.5 (at galactic longitudes $\sim 180^\circ$). The north galactic spur has
+a spectral index of -2.5. This is generally consistent with the results presented in
+Figure~\ref{fig:haslam-spectral-index}.
 
 %\subsection{The Global Sky Model}?
 %\subsection{LWA1 Sky Survey}?
@@ -1249,7 +1327,7 @@ position is allowed to vary in the same way Cas A does in Figure~\ref{fig:scinti
 refractive offsets lead to a clear degradation of the sidelobes. Because the sidelobes are altered
 from that of the ideal PSF, refractive offsets will restrict the dynamic range it is possible to
 obtain with the CLEAN algorithm described in \S\ref{sec:clean}. This effect can be clearly seen in
-Figure~\ref{fig:3c134}, where 10\% errors within 1$^\circ$ of 3C~134 are seen at 36.528~MHz.  As
+Figure~\ref{fig:3C134}, where 10\% errors within 1$^\circ$ of 3C~134 are seen at 36.528~MHz.  As
 expected for an ionospheric effect these errors decrease to a few percent at 52.224~MHz, and less at
 73.152~MHz. We therefore conclude that ionospheric effects directly limit the dynamic range in the
 vicinity of bright point sources.
@@ -1285,7 +1363,7 @@ range in the vicinity of bright point sources.  \citet{2015PhRvD..91h3514S} simu
 beam errors on a cosmological analysis concluding that the beam must be known to one part in $10^4$.
 Our requirements are significantly less stringent because we are estimating the sky brightness
 instead of estimating the amplitude of a faint cosmological signal in the presence of foreground
-emission that dominates the signal by 5 orders of magnitude. In fact in \S\ref{sec:ionopshere} we
+emission that dominates the signal by 5 orders of magnitude. In fact in \S\ref{sec:ionosphere} we
 found that ionospheric effects likely dominate over other sources of error that affect the PSF
 shape. Therefore we conclude that the beam models generated in \S\ref{sec:beam} are sufficient to
 limit the effect of beam errors on the PSF to at least less than those introduced by the ionosphere.
