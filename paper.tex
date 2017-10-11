@@ -1,62 +1,3 @@
-% OUTLINE
-% =======
-%
-% 1. Introduction
-%
-%   Here I will introduce the need for a new high-fidelity, low-frequency map of the sky. The
-%   justifications are: 21 cm foreground mapping, galactic structure (?), others?
-%
-% 2. Observations
-%
-%   2.1 - Introduce the Owens Valley LWA
-%   2.2 - Describe the 100 hour dataset
-%   2.3 - Calibration strategy
-%   2.4 - Source removal strategy
-%   2.5 - Horizon RFI suppression strategy
-%   2.6 - Beam fitting work
-%   2.7 - Ionospheric conditions
-%
-% 3. Imaging
-%
-%   Give a brief overview of other widefield imaging algorithms. This should set the context for the
-%   advantages of m-mode analysis.
-%
-%   3.1 - Introduce m-mode analysis imaging
-%   3.2 - Describe my implementation of m-mode analysis on the ASTM
-%   3.3 - L-curves (?)
-%   3.4 - CLEAN
-%
-% 4. Results
-%
-%   Present sky maps with an estimate of the thermal noise in each pixel. Systematic errors will be
-%   described in the following sub-sections.
-%
-%   4.1 - Horizon RFI
-%   4.2 - Ionospheric effects
-%   4.3 - Beam errors
-%   4.4 - Peeling failures
-%
-% 5. Discussion
-%
-%   Compare with the Haslam map and Jayce's map.
-%
-% 6. Conclusion
-%
-% FIGURES
-% =======
-%
-% * Antenna layout of the OVRO-LWA
-% * Before/after snapshot image of the RFI removal
-% * Image of the empirical beam (with source tracks)
-% * Plot of ionospheric scintillation and refraction of an A-team source
-% * Example L-curve
-% * Zoom-in of the dirty PSF
-% * Sky maps with their boot-strapped thermal noise estimates
-% * (Model) image of the horizontal stripes that show up if the horizon RFI is not removed
-% * (Model) image of the PSF distortion from ionospheric effects (scintillation, refraction)
-% * (Model) image of the systematic errors in the map created from beam errors
-% * (Model) image of the errors created from sporadic peeling failures
-
 \documentclass[twocolumn]{aastex61}
 
 \usepackage[T1]{fontenc}
@@ -1244,9 +1185,6 @@ Haslam map. Along the galactic plane the spectral index varies between -2.2 (in 
 a spectral index of -2.5. This is generally consistent with the results presented in
 Figure~\ref{fig:haslam-spectral-index}.
 
-%\subsection{The Global Sky Model}?
-%\subsection{LWA1 Sky Survey}?
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Error Analysis}\label{sec:error}
 
@@ -1260,7 +1198,6 @@ Figure~\ref{fig:haslam-spectral-index}.
         \includegraphics[width=\columnwidth]{figures/ionospheric-simulations/refraction-4} &
         \includegraphics[width=\columnwidth]{figures/ionospheric-simulations/refraction-18} \\
     \end{tabular}
-    %\includegraphics[width=\textwidth]{figures/ionospheric-simulations/ionospheric-simulations}
     \caption{
         This figure illustrates the corrupting influence of the ionosphere at 36.528~MHz (left
         column) compared with 73.152~MHz (right column). Each panel shows the \textit{simulated} PSF
