@@ -171,11 +171,11 @@ bubbles during the EoR at $z\sim 7$ where a detection can constrain the ionizing
 galaxies, the UV photon mean-free-path, and the minimum halo mass that can support star formation
 \citep{2015MNRAS.449.4246G}.
 
-Current 21~cm cosmology experiments can be broadly separated into two classes: global experiments
-that are aiming to detect the spectral signature of the cosmologically redshifted 21~cm transition
-after averaging over the entire sky (otherwise known as the monopole), and power spectrum
+Current 21~cm cosmology experiments can be broadly separated into two classes: global signal
+experiments that are aiming to detect the spectral signature of the cosmologically redshifted 21~cm
+transition after averaging over the entire sky (otherwise known as the monopole), and power spectrum
 experiments that incorporate angular information to attempt to measure the 3D spatial power spectrum
-of cosmological 21~cm perturbations.  Ongoing global experiments include EDGES
+of cosmological 21~cm perturbations.  Ongoing global signal experiments include EDGES
 \citep{2010Natur.468..796B, 2017ApJ...847...64M}, LEDA \citep{2017arXiv170909313P}, BIGHORNS
 \citep{2015PASA...32....4S}, SCI-HI \citep{2014ApJ...782L...9V}, and SARAS 2
 \citep{2017arXiv170306647S}.  Ongoing power spectrum experiments include PAPER/HERA
@@ -460,7 +460,7 @@ regularization therefore acts to suppress any component for which
 $\sigma_i\lesssim\sqrt{\varepsilon}$.  If $\sigma_i = 0$, the component is set to zero.
 
 In practice the measurement $\b v$ is corrupted by noise with covariance $\b N$. For illustrative
-purposes we will assume that $\b N=n\b I$ for some scalar $n$. In this case the covariance of the
+purposes we will assume that $\b N=n\b I$ for some $n>0$. In this case the covariance of the
 Tikhonov-regularized spherical harmonic coefficients is
 \begin{equation}
     \b C = n \b V (\b\Sigma^2 + \varepsilon\b I)^{-2} \b\Sigma^2 \b V^*\,.
@@ -503,7 +503,7 @@ $\|\b v - \b B\b a\|^2$.
 In practice, the L-curve should be used as a guide to estimate a reasonable value of $\varepsilon$.
 However better results can often be obtained by tuning the value of $\varepsilon$. For instance
 increasing the value of $\varepsilon$ can improve the noise properties of the map by down-weighting
-noisy modes. Decreasing the value of $\varepsilon$ can improve the resolution in the map by
+noisy modes. Decreasing the value of $\varepsilon$ can improve the resolution of the map by
 up-weighting the contribution of longer baselines, which are likely fewer in number. In this respect
 choosing the value of $\varepsilon$ is analagous to picking the weighting scheme in traditional
 imaging where robust weighting schemes can be tuned to similar effect \citep{briggs}.  For the
@@ -611,16 +611,13 @@ vector of spherical harmonic coefficients for a point source at $(\theta, \phi)$
     \end{pmatrix} \,.
 \end{equation}
 In general the PSF can be a function of the right ascension and declination. However point sources
-at the same declination take the same track through the sky and therefore (barring any ionospheric
-effects) will have the same PSF. The PSF is therefore only a function of the declination. For
-example, sources at low elevations will tend to have an extended PSF along the north-south axis due
-to baseline foreshortening. For the OVRO-LWA antenna configuration
-(Figure~\ref{fig:antenna-layout}), example PSFs at three separate frequencies are shown in
-Figure~\ref{fig:psf}.  Adapting CLEAN for $m$-mode analysis requires either pre-computing
-Equation~\ref{eq:psf} at a grid of declinations, or a method for rapidly evaluating
-Equation~\ref{eq:psf} on the fly.
-
-%\citep{2011MNRAS.413..411B} % I think Lincoln wants me to cite this paper
+at the same declination take the same track through the sky and (barring any ionospheric effects)
+will have the same PSF. The PSF is therefore only a function of the declination. For example,
+sources at low elevations will tend to have an extended PSF along the north-south axis due to
+baseline foreshortening. For the OVRO-LWA antenna configuration (Figure~\ref{fig:antenna-layout}),
+example PSFs at three separate frequencies are shown in Figure~\ref{fig:psf}.  Adapting CLEAN for
+$m$-mode analysis requires either pre-computing Equation~\ref{eq:psf} at a grid of declinations, or
+a method for rapidly evaluating Equation~\ref{eq:psf} on the fly.
 
 For an interferometer with more baselines than spherical harmonics used in the maps (eg. the
 OVRO-LWA), $\b B^*\b B$ can be a much smaller matrix than the full transfer matrix $\b B$. Therefore
@@ -643,8 +640,6 @@ component. Instead we can identify $N$ CLEAN components, accumulate $\b a_\text{
 component, and evaluate Equation~\ref{eq:rapid-psf} on the accumulation. This can greatly reduce the
 number of times this equation needs to be evaluated, but care must be taken to ensure that the $N$
 components are not so close together that sidelobes from one may interact with another.
-
-%\todo{describe blurring to avoid cleaning the diffuse emission}
 
 Altogether the adaptation of CLEAN applied to the maps presented in this paper is summarized below.
 \begin{algorithmic}[1]
@@ -748,7 +743,7 @@ as ``Stefcal''
 Cyg~A and Cas~A are -- by an order of magnitude -- the brightest point-like radio sources in the
 northern hemisphere. Therefore the optimal time to solve for the interferometer's gain calibration
 is when these sources are at high elevations.  The antenna complex gains are measured from a 22
-minute track of data when Cyg~A and Cas are at high elevations. The gains measured in this way are
+minute track of data when Cyg~A and Cas~A are at high elevations. The gains measured in this way are
 then used to calibrate the entire 28 hour dataset. The calibration sky model consists only of Cyg~A
 and Cas~A. The model flux of Cyg~A is set to the \citet{1977A&A....61...99B} spectrum while the flux
 of Cas~A is measured from the data itself (using a preliminary calibration solved for with a
@@ -797,7 +792,7 @@ We measure the flux of several bright sources (Cyg~A, Cas~A, Tau~A, Vir~A, Her~A
 Per~B\footnote{
     At 74~MHz, Per~B is about two times brighter than Per~A.
 }, and
-3C~353) as they pass through the sky and then fit a beam model composed of Zernike polynomials to
+3C~353) as they pass through the sky, and then fit a beam model composed of Zernike polynomials to
 those flux measurements. We select the basis functions to have the desired symmetry ($Z_0^0$,
 $Z_2^0$, $Z_4^0$, $Z_4^4$, $Z_6^0$, $Z_6^4$, $Z_8^0$, $Z_8^4$, and $Z_8^8$) and the beam amplitude
 at zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustration of a fitted beam
@@ -854,12 +849,12 @@ timescale of a single integration (13 seconds). For example at 36.528 MHz, it is
 A to have measured flux variations of 50\% between adjacent 13 second integrations.  The variance at
 36.528~MHz compared with the variance at 73.152~MHz is consistent with an ionospheric $\nu^{-2}$
 origin. The measured position offset of each source is a measurement of the ionospheric phase
-gradient across the array.  This varies on slower 10 minute timescales refracting each source by as
-much as 20 arcmin (at 36.528 MHz) from their true astronomical positions as waves in the ionosphere
-pass through the line of sight. At 74~MHz on the VLA, \citet{2007ApJS..172..686K} observe $\sim
-1$~arcmin refractive offsets during the night, and $\sim 4$~arcmin offsets during the day on similar
-$\sim10$ minute timescales.  The impact of these effects on the sky maps is simulated in
-\S\ref{sec:ionosphere}.
+gradient across the array.  This varies on slower 10 minute timescales, with each source refracting
+by as much as 20 arcmin (at 36.528 MHz) from their true astronomical positions as waves in the
+ionosphere pass through the line of sight. At 74~MHz on the VLA, \citet{2007ApJS..172..686K} observe
+$\sim 1$~arcmin refractive offsets during the night, and $\sim 4$~arcmin offsets during the day on
+similar $\sim10$ minute timescales, which is consistent with what is seen here.  The impact of these
+effects on the sky maps is simulated in \S\ref{sec:ionosphere}.
 
 \subsection{Source Removal}\label{sec:source-removal}
 
@@ -939,7 +934,7 @@ and Cas~A). The Sun is then peeled from each integration using direction depende
 
 The flux scale of the data was tied to the \citet{1977A&A....61...99B} spectrum of Cyg~A during gain
 calibration. However gain calibration is also a function of the beam model and the spectrum used for
-Cas~A. Recent work by \citet{2012MNRAS.423L..30S} (hereafter SH12) using archival date from the
+Cas~A. Recent work by \citet{2012MNRAS.423L..30S} (hereafter SH12) using archival data from the
 literature and \citet{2017ApJS..230....7P} (hereafter PB17) using the VLA has expanded the number of
 low-frequency radio sources with calibrated flux measurements from one (just Cyg~A) to eleven in
 total. While the SH12 flux scale is valid between 30 MHz and 300 MHz, the PB17 flux scale is
@@ -1092,8 +1087,8 @@ $\delta=-30^\circ$ with $\sim 15$ arcmin angular resolution resolution. The 8 br
 hemisphere point sources are removed from each map (Cyg~A, Cas~A, Vir~A, Tau~A, Her~A, Hya~A, Per~B,
 and 3C~353) as described in \S\ref{sec:source-removal}, and there is a small blank region near
 $l=+45.7^\circ$, $b=-47.9^\circ$ corresponding to the position of the Sun during the observing
-window. The properties of each map, including frequency, bandwidth, angular resolution, and thermal
-noise are presented in Table~\ref{tab:summary}.
+window. The properties of each map -- including frequency, bandwidth, angular resolution, and
+thermal noise -- are presented in Table~\ref{tab:summary}.
 
 Each map from Figure~\ref{fig:channel-maps} will be made freely available online in Healpix format
 \citep{2005ApJ...622..759G} on LAMBDA (\url{https://lambda.gsfc.nasa.gov/}).
@@ -1110,7 +1105,7 @@ These rings are naturally removed from the map during CLEANing as long as this f
 included in the PSF calculation.
 
 The noise in each map is empirically measured using jackknife resampling. The dataset is split into
-even- and odd-numbered integrations. These two groups are imaged and cleaned independently, before
+even- and odd-numbered integrations. These two groups are imaged and CLEANed independently, before
 being compared against the maps constructed from all of the available data using the standard
 jackknife variance estimator. This estimate of the variance includes all sources of error that
 operate on $\sim13$ second timescales (the integration time) such as thermal noise and rapid
@@ -1123,7 +1118,7 @@ noise $<900$ mJy and therefore each map is likely at or near the confusion limit
 
 In the absence of a zero-level correction, a pixel-by-pixel power law fit to the new maps is
 impossible. In general this zero-level correction requires calibrated total power measurements that
-will be included in future work.  Instead, temperature-temperature plots (T-T plot) can be used to
+will be included in future work.  Instead, temperature-temperature plots (T-T plots) can be used to
 measure the spectral index independently of any zero-level corrections \citep{1962MNRAS.124..297T}.
 This method relies on the assumption that all pixels in a given region are described by the same
 power law. In that case there exists a linear relationship between the brightness temperature at
@@ -1147,9 +1142,9 @@ assumption of a single spectral index. Therefore we should restrict our interpre
 Figure~\ref{fig:internal-spectral-index} to the galactic plane and north galactic spur. In the
 galactic plane, the synchrotron spectral index varies between $\sim-2.5$ and $-2.75$. In the
 vicinity of \ion{H}{2} regions the spectral index flattens significantly.  These \ion{H}{2} regions
-can be seen with higher resolution in Figure~\ref{fig:three-color}. Along the galactic plane,
-especially towards the galactic center, \ion{H}{2} regions appear as blue shadows due to free-free
-absorption.
+can be seen with higher resolution in Figure~\ref{fig:three-color}. In this figure \ion{H}{2}
+regions appear as blue shadows along the galactic plane due to the increasing impact of free-free
+absorption at lower frequencies.
 
 In the literature the spectral index at low frequencies is commonly computed with respect to the
 Haslam 408~MHz map \citep{1981A&A...100..209H, 1982A&AS...47....1H}, which was reprocessed by
@@ -1170,7 +1165,14 @@ $R^2$ is larger, but the interpretation must still generally be restricted to th
 \begin{figure*}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/lwa1/lwa1}
-    \caption{\todo{a thing}}
+    \caption{
+        The fractional difference between maps from the LWA1 Low Frequency Sky Survey and the
+        OVRO-LWA maps (Figure~\ref{fig:channel-maps}) after interpolating to the corresponding
+        frequency and smoothing to the corresponding resolution. A positive value indicates regions
+        where the OVRO-LWA map has more emission that the corresponding LWA1 Low Frequency Sky
+        Survey map. Cas A, Cyg A, Vir A, and Tau A are masked due to the fact that they are
+        subtracted from the OVRO-LWA maps.
+    }
     \label{fig:lwa1-comparison}
 \end{figure*}
 
@@ -1179,7 +1181,7 @@ between 35~MHz and 80~MHz. 6 of these maps are interior to the frequency range s
 A direct comparison with these LLFSS maps can be seen in Figure~\ref{fig:lwa1-comparison}. In this
 figure the LLFSS maps are filtered to remove the monopole and all modes with $m=0$, and the OVRO-LWA
 maps are interpolated in frequency and blurred to match the angular resolution of the corresponding
-LWA1 map. The dominant feature in this map is a shift of the galactic plane. This feature is also
+LLFSS map. The dominant feature in this map is a shift of the galactic plane. This feature is also
 seen in comparisons of the LLFSS with the GSM (see for example Figure~9 of
 \citet{2017MNRAS.469.4537D}). Therefore we conclude that this is an artifact of the LLFSS. Otherwise
 at 60~MHz the agreement is generally better than 10\%. However at lower frequencies the agreement
@@ -1210,12 +1212,13 @@ increased robustness associated with estimating spectral indices with a larger f
     \centering
     \includegraphics[height=0.32\textheight]{figures/guzman/guzman}
     \caption{
-        This Mollweide projection map compares the fractional difference between the Guzm\'{a}n 45
-        MHz map, and the OVRO-LWA map at 46.992 MHz (degraded to $5^\circ$ resolution). A positive
-        value indicates regions where the OVRO-LWA map has more emission that the Guzm\'{a}n map,
-        and a negative value indicates regions where the Guzm\'{a}n map has more emission than the
-        OVRO-LWA map. Cas A, Cyg A, Vir A, and Tau A are masked due to the fact that they are
-        subtracted from the OVRO-LWA maps but not the Guzm\'{a}n map.
+        This Mollweide projected map compares the fractional difference between the Guzm\'{a}n 45
+        MHz map, and the OVRO-LWA maps (Figure~\ref{fig:channel-maps}) interpolated to 45~MHz
+        (degraded to $5^\circ$ resolution). A positive value indicates regions where the OVRO-LWA
+        map has more emission that the Guzm\'{a}n map, and a negative value indicates regions where
+        the Guzm\'{a}n map has more emission than the OVRO-LWA map. Cas A, Cyg A, Vir A, and Tau A
+        are masked due to the fact that they are subtracted from the OVRO-LWA maps but not the
+        Guzm\'{a}n map.
     }
     \label{fig:guzman-comparison}
 \end{figure*}
@@ -1223,7 +1226,7 @@ increased robustness associated with estimating spectral indices with a larger f
 The Guzm\'{a}n 45 MHz map \citep{2011A&A...525A.138G} is compiled from a southern hemisphere survey
 \citep{1997A&AS..124..315A} and a northern hemisphere survey \citep{1999A&AS..140..145M} with a
 small gap around the NCP. In this work the zero-level is set by comparing against published
-low-frequency measurements in the literature in six different directions.
+low-frequency measurements in six different directions.
 
 A direct comparison between the OVRO-LWA maps interpolated to 45 MHz and the Guzm\'{a}n 45 MHz map
 can be seen in Figure~\ref{fig:guzman-comparison}. In order to make this comparison the OVRO-LWA map
@@ -1287,7 +1290,7 @@ Figure~\ref{fig:haslam-spectral-index}.
 
 One of the key assumptions made by $m$-mode analysis is that the sky is static.  We assume that the
 only time-dependent behavior is the rotation of the Earth, which slowly rotates the sky through the
-fringe patterns of the interferometer. At low frequencies the ionosphere violates this assumption.
+fringe pattern of the interferometer. At low frequencies the ionosphere violates this assumption.
 In particular, ionospheric scintillation and refractive offsets will cause even static sources to
 exhibit significant variability (Figure~\ref{fig:scintillation}).
 
@@ -1318,19 +1321,20 @@ ideal case, is no longer truly block diagonal \citep{richard_ionosphere_thoughts
 
 The maps presented in Figure~\ref{fig:channel-maps} do not account for any off-diagonal terms
 arising from ionospheric fluctuations. The effect of this can be seen in
-Figure~\ref{fig:ionospheric-simulations}. In this simulation at 36.528~MHz, a point source is placed
-at the location of Cas A. In the first panel the source flux traces the beam model exactly and the
-source is always located exactly at the location of Cas A. In the middle panel, the source is
-allowed to scintillate in the same way Cas A does in Figure~\ref{fig:scintillation}. The image of
-the point source is effectively unchanged from the ideal PSF. In the right panel, the source
-position is allowed to vary in the same way Cas A does in Figure~\ref{fig:scintillation}. The
-refractive offsets lead to a clear degradation of the sidelobes. Because the sidelobes are altered
-from that of the ideal PSF, refractive offsets will restrict the dynamic range it is possible to
-obtain with the CLEAN algorithm described in \S\ref{sec:clean}. This effect can be clearly seen in
-Figure~\ref{fig:3C134}, where 10\% errors within 1$^\circ$ of 3C~134 are seen at 36.528~MHz.  As
-expected for an ionospheric effect these errors decrease to a few percent at 52.224~MHz, and less at
-73.152~MHz. We therefore conclude that ionospheric effects directly limit the dynamic range in the
-vicinity of bright point sources.
+Figure~\ref{fig:ionospheric-simulations}. In this simulation a point source is placed at the
+location of Cas~A. In one case the source is allowed to scintillate in the same way Cas~A does in
+Figure~\ref{fig:scintillation}, but the source is always located exactly at the location of Cas~A.
+In the second case the source position is allowed to vary in the same way Cas~A does in
+Figure~\ref{fig:scintillation}, but the flux of the source exactly traces the beam model. The
+scintillation, although large, introduces only $<0.3\%$ errors in the vicinity of bright point
+sources. Refractive offsets, however, can introduce $\sim 15\%$ errors at 36.528~MHz and $\sim 5\%$
+errors at 73.152~MHz.  Because the sidelobes of the PSF are altered from that of the ideal PSF,
+refractive offsets will restrict the dynamic range it is possible to obtain with the CLEAN algorithm
+described in \S\ref{sec:clean}. This effect can be clearly seen in Figure~\ref{fig:3C134}, where
+10\% errors within 1$^\circ$ of 3C~134 are seen at 36.528~MHz.  As expected for an ionospheric
+effect these errors decrease to a few percent at 52.224~MHz, and less at 73.152~MHz. We therefore
+conclude that ionospheric effects directly limit the dynamic range in the vicinity of bright point
+sources.
 
 \subsection{Beam Errors}
 
@@ -1351,9 +1355,10 @@ the sources will have their flux overestimated. The errors in Figure~\ref{fig:fl
 show a clear pattern with declination. Two sources have a clear systematic offset at all
 frequencies: 3C 353 and 3C 380. 3C 353 is the second southernmost source, but Hya A -- the first
 southernmost source -- does not exhibit this systematic error. Similarly 3C 380 is at a comparable
-declination to Lyn A, which appears, if anything, to have its flux overestimated. The absence of a
-coherent pattern does not eliminate the possibility of beam errors effecting the flux scale, but it
-does mean that these errors are at least comparable to the errors inherent to the flux scale itself.
+declination to Lyn A, which appears, if anything, to have its flux systematically offset in the
+other direction. The absence of a coherent pattern does not eliminate the possibility of beam errors
+effecting the flux scale, but it does mean that these errors are at least comparable to the errors
+inherent to the flux scale itself.
 
 The second case is more subtle. Sources are observed at a wide range of locations in the primary
 beam of the antenna. The imaging process must reconcile all of these observations together, and the
