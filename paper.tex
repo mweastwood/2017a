@@ -27,6 +27,40 @@
     }
 }
 
+\newcommand{\eecaltech}{
+    \affiliation{
+        Department of Electrical Engineering,
+        California Institute of Technology,
+        1200 E California Blvd,
+        Pasadena, CA 91125
+    }
+}
+
+\newcommand{\ovro}{
+    \affiliation{
+        Owens Valley Radio Observatory,
+        California Institute of Technology,
+        Big Pine, CA 93513
+    }
+}
+
+\newcommand{\jpl}{
+    \affiliation{
+        Jet Propulsion Laboratory,
+        California Institute of Technology,
+        4800 Oak Grove Dr,
+        Pasadena, CA 91109
+    }
+}
+
+\newcommand{\harvard}{
+    \affiliation{
+        Harvard-Smithsonian Center for Astrophysics,
+        60 Garden Street,
+        Cambridge, MA 02138
+    }
+}
+
 \begin{document}
 
 %\watermark{draft}
@@ -36,26 +70,16 @@
     with the Owens Valley Long Wavelength Array
 }
 
-\author{Michael W. Eastwood}
-\astrocaltech
+\author{Michael~W.~Eastwood} \astrocaltech
+\author{Marin~M.~Anderson}   \astrocaltech
+\author{Ryan~M.~Monroe}      \eecaltech
+\author{Gregg~Hallinan}      \astrocaltech
 
-\author{Marin M. Anderson}
-\astrocaltech
+% alphabetical by last name
+\author{Lincoln~J.~Greenhill} \harvard
+\author{T.~Joseph~W.~Lazio}   \jpl
+\author{David~P.~Woody}       \ovro
 
-\author{Ryan M. Monroe}
-\astrocaltech
-
-\author{Gregg Hallinan}
-\astrocaltech
-
-\author{Other People}
-\affiliation{
-    At some institution
-}
-
-%\author{Lincoln Greenhill}
-%\affiliation{Harvard}
-%
 %\author{Hugh Garsden}
 %\affiliation{Harvard}
 %
@@ -1466,6 +1490,21 @@ which could be used to fill-in the hole around the southern celestial pole.
 \acknowledgments
 This work is dedicated to the memory of Professor Marjorie Corcoran, who was an influential mentor
 to M.~W.~Eastwood.
+
+Part of this research was carried out at the Jet Propulsion Laboratory, California Institute of
+Technology, under a contract with the National Aeronautics and Space Administration, including
+partial funding through the President's and Director's Fund Program.
+
+This work has benefited from open-source technology shared by the Collaboration for Astronomy Signal
+Processing and Electronics Research (CASPER).  We thank the Xilinx University Program for donations;
+NVIDIA for proprietary tools, discounts, and donations; Digicom for collaboration on manufacture and
+testing of DSP processors.
+
+We thank the Smithsonian Astrophysical Observatory Submillimeter Receiver Lab for the collaboration
+of its members.
+
+Development, adaptation, and operation of the LEDA real-time digital signal processing systems at
+OVRO-LWA has been supported in part by NSF grants AST/1106059, PHY/0835713, and OIA/1125087.
 
 \bibliographystyle{apj}
 \bibliography{paper}
