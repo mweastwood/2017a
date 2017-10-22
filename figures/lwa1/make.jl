@@ -1,12 +1,32 @@
 #!/usr/bin/env julia
 
 using JLD, PyPlot, LibHealpix
+using CasaCore.Measures
 
 path = dirname(@__FILE__)
 
 originals, lwa1, ovro, masks = load(joinpath(path, "lwa1-comparison.jld"),
                                     "lwa1-original", "lwa1", "ovro", "masks")
 ν = ["38 MHz", "40 MHz", "45 MHz", "50 MHz", "60 MHz", "70 MHz"]
+
+function rotate_to_galactic(map)
+    frame = ReferenceFrame()
+    z = Direction(dir"J2000", 0, 0, 1)
+    z_ = measure(frame, z, dir"GALACTIC")
+    x = Direction(dir"J2000", 1, 0, 0)
+    x_ = measure(frame, x, dir"GALACTIC")
+    zvec = [z_.x, z_.y, z_.z]
+    xvec = [x_.x, x_.y, x_.z]
+    yvec = cross(zvec, xvec)
+    pixels = zeros(length(map))
+    for idx = 1:length(map)
+        vec = pix2vec(map, idx)
+        θ = acos(dot(vec, zvec))
+        ϕ = atan2(dot(vec, yvec), dot(vec, xvec))
+        pixels[idx] = LibHealpix.interpolate(map, θ, ϕ)
+    end
+    RingHealpixMap(pixels)
+end
 
 figure(1, figsize=(12, 8)); clf()
 axes = []
@@ -23,7 +43,9 @@ for idx = 1:6
 
     δ = (ovro[idx]-lwa1[idx])./originals[idx]
     δ[.!masks[idx]] = NaN
-    _im = imshow(mollweide(RingHealpixMap(δ)), interpolation="nearest",
+    δmap = rotate_to_galactic(RingHealpixMap(δ))
+
+    _im = imshow(mollweide(δmap), interpolation="nearest",
                  vmin=-0.5, vmax=+0.5,
                  cmap=get_cmap("RdBu_r"),
                  extent=(-2, 2, -1, 1),
