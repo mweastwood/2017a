@@ -23,7 +23,7 @@
         Department of Astronomy,
         California Institute of Technology,
         1200 E California Blvd,
-        Pasadena, CA 91125
+        Pasadena, CA 91125, USA
     }
 }
 
@@ -32,15 +32,15 @@
         Department of Electrical Engineering,
         California Institute of Technology,
         1200 E California Blvd,
-        Pasadena, CA 91125
+        Pasadena, CA 91125, USA
     }
 }
 
 \newcommand{\ovro}{
     \affiliation{
-        Owens Valley Radio Observatory,
         California Institute of Technology,
-        Big Pine, CA 93513
+        Owens Valley Radio Observatory,
+        Big Pine, CA 93513, USA
     }
 }
 
@@ -49,7 +49,7 @@
         Jet Propulsion Laboratory,
         California Institute of Technology,
         4800 Oak Grove Dr,
-        Pasadena, CA 91109
+        Pasadena, CA 91109, USA
     }
 }
 
@@ -57,7 +57,7 @@
     \affiliation{
         National Radio Astronomy Observatory,
         P.O. Box O,
-        Socorro, NM 87801
+        Socorro, NM 87801, USA
     }
 }
 
@@ -65,7 +65,7 @@
     \affiliation{
         Harvard-Smithsonian Center for Astrophysics,
         60 Garden Street,
-        Cambridge, MA 02138
+        Cambridge, MA 02138, USA
     }
 }
 
@@ -73,7 +73,7 @@
     \affiliation{
         University of California Berkeley,
         501 Campbell Hall,
-        Berkeley, CA 94720
+        Berkeley, CA 94720, USA
     }
 }
 
@@ -90,14 +90,14 @@
     \affiliation{
         Department of Physics and Astronomy,
         University of New Mexico,
-        Albuquerque, NM 87131
+        Albuquerque, NM 87131, USA
     }
 }
 
 \newcommand{\vt}{
     \affiliation{
         Bradley Department of Electrical \& Computer Engineering,
-        Blacksburg, VA 24061
+        Blacksburg, VA 24061, USA
     }
 }
 
@@ -105,7 +105,7 @@
     \affiliation{
         NVIDIA Corporation,
         2701 San Tomas Expressway,
-        Santa Clara, CA 95050
+        Santa Clara, CA 95050, USA
     }
 }
 
@@ -133,9 +133,10 @@
 \author{Lincoln~J.~Greenhill} \harvard
 \author{Jonathon~Kocz}        \astrocaltech
 \author{T.~Joseph~W.~Lazio}   \jpl
-\author{Daniel~C.~Price}      \harvard \berkeley \swinburne
+\author{Danny~C.~Price}       \harvard \berkeley \swinburne
 \author{Frank~K.~Schinzel}    \nrao \unm
 \author{Gregory~B.~Taylor}    \unm
+\author{Yuankun~Wang}         \astrocaltech
 \author{David~P.~Woody}       \ovro
 
 \correspondingauthor{Michael W. Eastwood}
@@ -1240,7 +1241,7 @@ work.  A direct comparison with these LLFSS maps can be seen in Figure~\ref{fig:
 this figure, the LLFSS maps are filtered to remove the monopole and all modes with $m=0$. The
 OVRO-LWA maps are interpolated in frequency and blurred to match the angular resolution of the
 corresponding LLFSS map. This comparison uncovered a $\sim45$~arcmin rotation in the LLFSS maps
-about the NCP, which is corrected in Figure~\ref{fig:lwa1-comparison}.  60~MHz, the agreement is
+about the NCP, which is corrected in Figure~\ref{fig:lwa1-comparison}.  At 60~MHz, the agreement is
 generally better than 10\%. However at lower frequencies the agreement deteriorates to about 20\%.
 Typically the OVRO-LWA maps have excess emission in the galactic plane and a deficit of emission off
 the galactic plane relative to the LLFSS.
@@ -1445,12 +1446,13 @@ polarization in Stokes-$Q$ at the location of Cas A.  The simulated visibilities
 the measured beams for $x$- and $y$-dipoles. Because the amplitude of the two beams are not equal in
 every direction on the sky, this introduces a direction-dependent leakage of Stokes-$Q$ into
 Stokes-$I$. At 73.152~MHz, this leakage is $\lesssim5\%$ above $15^\circ$ elevation, but rapidly
-rises to $\gtrsim50\%$ at lower elevations. Cas A is a circumpolar source and spends about seven
-hours every day skirting the horizon where the polarization leakage is large, so by placing the
-simulated source at the location of Cas A, we are engineering a situation where the polarization
-leakage from Stokes-$Q$ into Stokes-$I$ will be large. However, the impact on the unpolarized
-$m$-mode analysis maps is mild, amounting to a 0.5\% error in the flux of the source with no
-measurable effect on the PSF.
+rises to $\gtrsim50\%$ at lower elevations. \citet{2015JAI.....450004O} report similar polarization
+leakage measurements with the LWA1.  Cas A is a circumpolar source and spends about seven hours
+every day skirting the horizon where the polarization leakage is large, so by placing the simulated
+source at the location of Cas A, we are engineering a situation where the polarization leakage from
+Stokes-$Q$ into Stokes-$I$ will be large. However, the impact on the unpolarized $m$-mode analysis
+maps is mild, amounting to a 0.5\% error in the flux of the source with no measurable effect on the
+PSF.
 
 \subsection{Terrestrial Interference and Pickup}\label{sec:rfi}
 
@@ -1584,7 +1586,7 @@ available on LAMBDA.
 
 \acknowledgments
 This work is dedicated to the memory of Professor Marjorie Corcoran, who was an influential mentor
-to M.~W.~Eastwood.
+to MWE.
 
 Part of this research was carried out at the Jet Propulsion Laboratory, California Institute of
 Technology, under a contract with the National Aeronautics and Space Administration, including
@@ -1600,6 +1602,8 @@ of its members.
 
 Development, adaptation, and operation of the LEDA real-time digital signal processing systems at
 OVRO-LWA has been supported in part by NSF grants AST/1106059, PHY/0835713, and OIA/1125087.
+
+GBT, JD and FKS acknowledge support from the National Science Foundation under grant AST-1139974.
 
 \bibliographystyle{aasjournal}
 \bibliography{paper}
