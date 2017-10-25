@@ -57,6 +57,8 @@ function allsky()
 
     savefig(joinpath(path, "ovro-lwa-sky-map.pdf"),
             bbox_inches="tight", pad_inches=0, transparent=true)
+    savefig(joinpath(path, "ovro-lwa-sky-map.png"),
+            bbox_inches="tight", pad_inches=0, transparent=true)
 end
 
 function cutout(map)
