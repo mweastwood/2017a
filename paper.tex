@@ -449,9 +449,13 @@ The key advantage of $m$-mode analysis is the block-diagonal structure of
 Equation~\ref{eq:m-mode-matrix-equation}. The computational complexity of many common matrix
 operations (eg. solving a linear system of equations) is $\mathcal{O}(N^3)$, where $N$ is the linear
 size of the matrix.  By splitting the equation into $M$ independent blocks, the number of floating
-point operations required to solve the linear system of equations is now $\mathcal{O}(N^3M^{-2})$
+point operations required to solve the linear system of equations is now $\mathcal{O}(N^3M^{-2})$,
 because each block can be manipulated independently of the other blocks. This computational savings
-is what makes this matrix algebra approach to interferometric imaging feasible.
+is what makes this matrix algebra approach to interferometric imaging feasible. For the dataset
+presented in this paper, computing the elements of the transfer matrix takes $\sim$10 hours per
+frequency channel on a 10-node cluster, but once the matrix has been computed the imaging process
+described in \S\ref{sec:mmode-imaging} takes $\sim$10 minutes, and the deconvolution process
+described in \S\ref{sec:clean} was allowed to run for $\sim$10 hours.
 
 \subsection{$m$-Mode Analysis Imaging}\label{sec:mmode-imaging}
 
@@ -1186,11 +1190,11 @@ included in the PSF calculation.
 The noise in each map is empirically measured using jackknife resampling. The dataset is first split
 into even- and odd-numbered integrations. These two groups are then imaged and CLEANed
 independently, before being compared against the maps constructed from all of the available data
-using the standard jackknife variance estimator. This estimate of the variance includes all sources
-of error that operate on $\sim13$ second timescales (the integration time) such as thermal noise and
-rapid ionospheric fluctuations, but does not account for more slowly varying effects (for example,
-sidereal variation in the system temperature or day-night fluctuations in the ionosphere). These
-noise calculations are summarized in Table~\ref{tab:summary}.  VLSSr source counts
+using the jackknife standard error estimator. This estimate of the standard error includes all
+sources of error that operate on $\sim13$ second timescales (the integration time) such as thermal
+noise and rapid ionospheric fluctuations, but does not account for more slowly varying effects (for
+example, sidereal variation in the system temperature or day-night fluctuations in the ionosphere).
+These noise calculations are summarized in Table~\ref{tab:summary}.  VLSSr source counts
 \citep{2014MNRAS.440..327L} suggest that the confusion limit at 74 MHz and 15 arcmin angular
 resolution is $\sim 1000\times(\nu/74\,{\rm MHz})^{-0.7}$ mJy.  Each channel map achieves thermal
 noise $<900$ mJy and therefore each map is likely at or near the confusion limit.
