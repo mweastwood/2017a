@@ -21,7 +21,9 @@ function allsky()
         img[x, y, 3] = brightness3[x, y]
     end
 
-    figure(1, figsize=(12, 5)); clf()
+    dpi = 256
+    figure(1, figsize=(size(img, 2)÷dpi, size(img, 1)÷dpi), dpi=dpi); clf()
+    gcf()[:subplots_adjust](left=0, right=1, bottom=0, top=1)
 
     θ = linspace(0, 2π, 512)
     x = 2cos.(θ)
