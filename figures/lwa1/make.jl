@@ -45,11 +45,18 @@ for idx = 1:6
     δ[.!masks[idx]] = NaN
     δmap = rotate_to_galactic(RingHealpixMap(δ))
 
-    _im = imshow(mollweide(δmap), interpolation="nearest",
+    img = mollweide(δmap)
+    img[img .== 0] = NaN # this deletes contours around the edge of the map
+    _im = imshow(img, interpolation="nearest",
                  vmin=-0.5, vmax=+0.5,
                  cmap=get_cmap("RdBu_r"),
                  extent=(-2, 2, -1, 1),
                  clip_path=ellipse, zorder=1)
+    cs = contour(img, -0.1:0.1:0.1,
+                 extent=(-2, 2, 1, -1), origin="lower",
+                 linewidths=0.5,
+                 colors=("k", "k"),
+                 clip_path=ellipse)
     xlim(-2, 2)
     ylim(-1, 1)
     gca()[:set_aspect]("equal")

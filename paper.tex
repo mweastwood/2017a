@@ -862,7 +862,7 @@ at zenith is constrained to be unity. See Figure~\ref{fig:beam} for an illustrat
 model at several frequencies. This process is repeated for each frequency channel. Residuals for
 Cyg~A and Cas~A can be seen in Figure~\ref{fig:scintillation}.
 
-\subsection{Ionospheric Conditions}
+\subsection{Ionospheric Conditions}\label{sec:ionosphere-conditions}
 
 \begin{figure*}[t]
     \includegraphics[width=\textwidth]{figures/scintillation-refraction/scintillation-refraction}
@@ -932,24 +932,41 @@ confusion limit at 74 MHz with a 15~arcmin beam is 1000~mJy \citep{2014MNRAS.440
 we require that Cyg~A's sidelobes be at least $-45$~dB down from the main lobe to prevent Cyg~A's
 sidelobes from dominating the variance in the image.
 
-In order to account for propagation effects through the ionosphere, direction-dependent calibration
-and peeling \citep{2008ISTSP...2..707M, 2015MNRAS.449.2668S} must be used.  Direction-dependent
-calibration allows the per-antenna amplitude and phase towards a bright astronomical source to be
-free parameters. In the dataset used in this paper, scintillation and refractive-offset events on
-the timescale of a single integration (13 seconds) are observed (Figure~\ref{fig:scintillation}).
-Therefore, the direction dependent calibration changes on these timescales, and we must solve for
-one set of complex gains per source per integration.
+\revision{To achieve this dynamic range at low frequencies, it is important to account for
+propagation effects through the ionosphere. In the weak scattering regime ($b_\text{max} \ll 2\pi
+r_\text{diff}$, where $b_\text{max}$ is the maximum baseline length, and $r_\text{diff}$ is the
+diffractive scale of the ionosphere), fluctuations within the ionosphere contribute amplitude and
+phase scintillations that can be described by a direction-dependent complex-gain calibration. This
+justifies the use of ``peeling'', which incorporates a direction-dependent calibration to subtract
+sources in the presence of ionospheric scintillation.  \citep[eg.][]{2008ISTSP...2..707M,
+2015MNRAS.449.2668S}.}
 
-The largest angular scale of Cas~A is $\sim$8~arcmin, and the largest angular scale of Cyg~A is
-$\sim$2~arcmin. With a $\sim10$~arcmin resolution on its longest baselines at 73~MHz, the OVRO-LWA
-marginally resolves both sources. A resolved source model is needed for both sources. We fit a
-self-consistent resolved source model to each source. This is performed by minimizing the variance
-within an aperture located on each source after peeling. By phasing up a large number of
-integrations before imaging (at least 1 hour), it is possible to smear out the contribution of the
-rest of the sky.  We then use a non-linear optimization routine (NLopt Sbplx) \citep{nlopt, sbplx}
-to vary the parameters in a source model until the variance within the aperture is minimized. Cyg~A
-is modeled with 2 Gaussian components, while Cas~A is modeled with 3~Gaussian components. Armed with
-these  source models, both sources can be peeled from the dataset to the required dynamic range.
+\revision{In the strong scattering regime ($b_\text{max} \gtrsim 2\pi r_\text{diff}$), the image of
+a point source can ``break apart'' into multiple images or speckles \citep{2015MNRAS.453..925V}.
+Attempting to peel a source in the strong scattering regime will lead to source subtraction
+artifacts in the final sky map.  \citet{2016RaSc...51..927M} measured that from the location of
+LOFAR at 150 MHz, the diffractive scale of the ionosphere is $>5$ km 90\% of the time. This implies
+that at 73 MHz, the diffractive scale is typically $>2$ km, and at 36 MHz, the diffractive scale is
+typically $>1$ km. The maximum baseline length of the OVRO-LWA is $\sim 1.5$ km, and therefore we do
+not generally expect to see strong scattering from the ionosphere.  Furthermore, ionospheric
+conditions during the observing period were mild (see \S\ref{sec:ionosphere-conditions}), but we
+still observe scintillation and refractive-offset events on the timescale of a single integration
+(13 seconds, see Figure~\ref{fig:scintillation}). Consequently we peeled Cyg~A and Cas~A from the
+dataset using a new solution for each integration.}
+
+\revision{In addition, the largest angular scale of Cas~A is $\sim$8~arcmin, and the largest angular
+scale of Cyg~A is $\sim$2~arcmin. With a $\sim10$~arcmin resolution on its longest baselines at
+73~MHz, the OVRO-LWA marginally resolves both sources. A resolved source model is needed for both
+sources. We fit a self-consistent resolved source model to each source. This is performed by
+minimizing the variance within an aperture located on each source after peeling. By phasing up a
+large number of integrations before imaging (at least 1 hour), it is possible to smear out the
+contribution of the rest of the sky.  We then use a non-linear optimization routine (NLopt Sbplx)
+\citep{nlopt, sbplx} to vary the parameters in a source model until the variance within the aperture
+is minimized. Cyg~A is modeled with 2 Gaussian components, while Cas~A is modeled with 3~Gaussian
+components.  Ultimately, these multi-component models are used to peel Cyg~A and Cas~A, but residual
+errors from this model and from the ionosphere (particularly while these sources are at low
+elevations) contribute residual artifacts that are largely localized to within 1$^\circ$ of each
+source.}
 
 \subsubsection{Other Bright Sources}
 
@@ -1262,14 +1279,21 @@ $R^2$ is larger, but the interpretation must still generally be restricted to th
 
 The LWA1 Low Frequency Sky Survey (LLFSS) \citep{2017MNRAS.469.4537D} produced nine maps of the sky
 between 35~MHz and 80~MHz. Six of these maps are interior to the frequency range spanned by this
-work.  A direct comparison with these LLFSS maps can be seen in Figure~\ref{fig:lwa1-comparison}. In
-this figure, the LLFSS maps are filtered to remove the monopole and all modes with $m=0$. The
-OVRO-LWA maps are interpolated in frequency and blurred to match the angular resolution of the
-corresponding LLFSS map. This comparison uncovered a $\sim45$~arcmin rotation in the LLFSS maps
-about the NCP, which is corrected in Figure~\ref{fig:lwa1-comparison}.  At 60~MHz, the agreement is
-generally better than 10\%. However at lower frequencies the agreement deteriorates to about 20\%.
-Typically the OVRO-LWA maps have excess emission in the galactic plane and a deficit of emission off
-the galactic plane relative to the LLFSS.
+work. \revision{Initial comparisons with the LLFSS helped characterize a systematic rotation in the
+LWA1's antenna positions. After phase-calibration, this manifested itself as a systematic rotation
+and translation in the snapshot images that were mosaicked to form the final sky map. This
+systematic error has been corrected in the comparisons presented here and in the latest version of
+the LLFSS\footnote{
+    Available for download at: \url{http://lda10g.alliance.unm.edu/LWA1LowFrequencySkySurvey/}
+}.}
+
+\revision{A direct comparison with these updated LLFSS maps can be seen in
+Figure~\ref{fig:lwa1-comparison}.  In this figure, the LLFSS maps are filtered to remove the
+monopole and all modes with $m=0$. The OVRO-LWA maps are interpolated in frequency and blurred to
+match the angular resolution of the corresponding LLFSS map.  At 60~MHz, the agreement is generally
+better than 10\%. However at lower frequencies the agreement deteriorates to about 20\%.  Typically
+the OVRO-LWA maps have excess emission in the galactic plane and a deficit of emission off the
+galactic plane relative to the LLFSS.}
 
 The LLFSS incorporates calibrated total power radiometry to estimate the missing flux from short
 spacings. As a result \citet{2017MNRAS.469.4537D}, report per-pixel spectral-indices from combining
