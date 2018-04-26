@@ -4,5 +4,6 @@
 *.log
 *Notes.bib
 *.fits
-eastwood-ovro-sky-maps*
+eastwood-ovro-sky-maps
+eastwood-ovro-sky-maps.tar
 arxiv*
