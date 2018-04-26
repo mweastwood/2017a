@@ -212,11 +212,12 @@ experiments that aim to detect the spectral signature of the cosmologically reds
 transition after averaging over the entire sky (otherwise known as the monopole), and power spectrum
 experiments that incorporate angular information to attempt to measure the 3D spatial power spectrum
 of cosmological 21-cm perturbations.  Ongoing global signal experiments include EDGES
-\citep{2010Natur.468..796B, 2017ApJ...847...64M}, LEDA \citep{2017arXiv170909313P}, BIGHORNS
-\citep{2015PASA...32....4S}, SCI-HI \citep{2014ApJ...782L...9V}, and SARAS 2
-\citep{2017arXiv170306647S}.  Ongoing power spectrum experiments include PAPER/HERA
-\citep{2015ApJ...809...61A, 2016arXiv160607473D}, LOFAR \citep{2017ApJ...838...65P}, and the MWA
-\citep{2016ApJ...833..102B, 2016MNRAS.460.4320E}.
+\citep{2017ApJ...847...64M}, LEDA \citep{2017arXiv170909313P}, BIGHORNS \citep{2015PASA...32....4S},
+SCI-HI \citep{2014ApJ...782L...9V}, and SARAS 2 \citep{2017arXiv170306647S}.  Ongoing power spectrum
+experiments include PAPER/HERA \citep{2015ApJ...809...61A, 2016arXiv160607473D}, LOFAR
+\citep{2017ApJ...838...65P}, and the MWA \citep{2016ApJ...833..102B, 2016MNRAS.460.4320E}. Recently,
+EDGES reported the first detection of 21-cm absorption in the globally averaged sky-signal
+\citep{2018Natur.555...67B}.
 
 Just as for CMB experiments, foreground removal or suppression is an essential component of both
 classes of 21-cm cosmology experiments. The brightness temperature of the galactic synchrotron
@@ -226,15 +227,15 @@ emission at high galactic latitudes is measured by \revision{\citet{2017MNRAS.46
 \end{equation}}
 Therefore, experiments conservatively need to achieve 5 orders of dynamic range against this
 foreground emission before the cosmological signal can be measured. Current foreground removal
-methods (for example, \citealt{2012ApJ...756..165P}) rely on the assumption that the foreground
-emission is spectrally smooth. The low-frequency radio sky is composed of several components:
-galactic synchrotron emission, supernova remnants, radio galaxies, free-free emission and absorption
-from \ion{H}{2} regions, and a confusing background of radio sources.  Ideally, a foreground removal
-strategy should be informed by the measured spatial structure and frequency spectrum of all
-foreground components. For instance, CMB experiments typically construct several maps at several
-frequencies to enable component separation.  At low frequencies, this possibility is limited by the
-availability of suitable high-fidelity sky maps on angular scales ranging from tens of degrees to
-arcminutes.
+methods (for example, \citealt{2012ApJ...756..165P} and \citealt{2013MNRAS.429..165C}) rely on the
+assumption that the foreground emission is spectrally smooth. The low-frequency radio sky is
+composed of several components: galactic synchrotron emission, supernova remnants, radio galaxies,
+free-free emission and absorption from \ion{H}{2} regions, and a confusing background of radio
+sources.  Ideally, a foreground removal strategy should be informed by the measured spatial
+structure and frequency spectrum of all foreground components. For instance, CMB experiments
+typically construct several maps at several frequencies to enable component separation.  At low
+frequencies, this possibility is limited by the availability of suitable high-fidelity sky maps on
+angular scales ranging from tens of degrees to arcminutes.
 
 Recently, a host of new low-frequency sky surveys have been conducted including MSSS
 \citep{2015A&A...582A.123H}, GLEAM \citep{2015PASA...32...25W}, and TGSS
@@ -339,8 +340,8 @@ gridding and mosaicking. Instead the entire sky is imaged in one coherent synthe
 will briefly summarize $m$-mode analysis below, but the interested reader should consult
 \citet{2014ApJ...781...57S, 2015PhRvD..91h3514S} for a complete derivation.
 
-In the context of $m$-mode analysis a transit telescope is any interferometer for which the response
-pattern of the individual elements does not change with respect to time. This may be an
+In the context of $m$-mode analysis, a transit telescope is any interferometer for which the
+response pattern of the individual elements does not change with respect to time. This may be an
 interferometer like the OVRO-LWA where the correlation elements are fixed dipoles, but it may also
 be an interferometer like LOFAR or the MWA if the steerable beams are held in a fixed position (not
 necessarily at zenith). The interferometer also does not necessarily have to be homogeneous.
@@ -588,9 +589,10 @@ pseudoinverse and Tikhonov regularization is that the pseudoinverse defines a ha
 the other hand, Tikhonov regularization smoothly interpolates between these behaviors. Because of
 this, Tikhonov regularization tends to produce better results in practical applications.
 
-If the baselines have a noise covariance matrix $\b N \neq n\b I$ for some scalar $n$ (eg. the
-interferometer is inhomogeneous), then the observer should minimize $(\b v-\b B\b a)^*\b N^{-1}(\b
-v-\b B\b a) + \varepsilon\|\b a\|^2$. The matrix $\b N$ is used to weight the measurements such that
+If the measured $m$-modes have a noise covariance matrix $\b N \neq n\b I$ for some scalar $n$ (eg.
+the interferometer is inhomogeneous), then the observer should minimize $(\b v-\b B\b a)^*\b
+N^{-1}(\b v-\b B\b a) + \varepsilon\|\b a\|^2$. The noise covariance matrix $\b N$ is used to weight
+the measurements such that
 \begin{equation}
     \b{\hat a}_\text{min variance} = (\b B^*\b N^{-1}\b B + \varepsilon\b I)^{-1}
         \b B\b N^{-1}\b v\,.
@@ -872,9 +874,8 @@ Cyg~A and Cas~A can be seen in Figure~\ref{fig:scintillation}.
         solid black curves show the expected flux computed using the empirical beam model fits. The
         thermal noise contribution to each point is about 50 Jy.  Cyg~A is occulted by the White
         Mountains when it is low on the horizon to the east.
-        Panels (c) and (d) These panels show the measured position offset of Cyg~A and Cas~A
-        relative to their true astronomical positions at 36.528 MHz (red line) and 73.152 MHz (blue
-        line).
+        Panels (c) and (d) show the measured position offset of Cyg~A and Cas~A relative to their
+        true astronomical positions at 36.528 MHz (red line) and 73.152 MHz (blue line).
     }
     \label{fig:scintillation}
 \end{figure*}
@@ -932,41 +933,49 @@ confusion limit at 74 MHz with a 15~arcmin beam is 1000~mJy \citep{2014MNRAS.440
 we require that Cyg~A's sidelobes be at least $-45$~dB down from the main lobe to prevent Cyg~A's
 sidelobes from dominating the variance in the image.
 
-\revision{To achieve this dynamic range at low frequencies, it is important to account for
-propagation effects through the ionosphere. In the weak scattering regime ($b_\text{max} \ll 2\pi
-r_\text{diff}$, where $b_\text{max}$ is the maximum baseline length, and $r_\text{diff}$ is the
-diffractive scale of the ionosphere), fluctuations within the ionosphere contribute amplitude and
-phase scintillations that can be described by a direction-dependent complex-gain calibration. This
-justifies the use of ``peeling'', which incorporates a direction-dependent calibration to subtract
-sources in the presence of ionospheric scintillation.  \citep[eg.][]{2008ISTSP...2..707M,
-2015MNRAS.449.2668S}.}
+\revision{
+    To achieve this dynamic range at low frequencies, it is important to account for propagation
+    effects through the ionosphere. In the weak scattering regime ($r_\text{diff} \gg r_\text{f}$,
+    where $r_\text{diff}$ is the diffractive scale of the ionosphere, $r_\text{f} =
+    \sqrt{\lambda D / 2\pi}$ is the Fresnel scale, $\lambda$ is the wavelength, and $D$ is the
+    distance to the ionosphere), fluctuations within the ionosphere contribute
+    amplitude and phase scintillations that can be described by a direction-dependent complex-gain
+    calibration. This justifies the use of ``peeling'', which incorporates a direction-dependent
+    calibration to subtract sources in the presence of ionospheric scintillation.
+    \citep[eg.][]{2008ISTSP...2..707M, 2015MNRAS.449.2668S}.
+}
 
-\revision{In the strong scattering regime ($b_\text{max} \gtrsim 2\pi r_\text{diff}$), the image of
-a point source can ``break apart'' into multiple images or speckles \citep{2015MNRAS.453..925V}.
-Attempting to peel a source in the strong scattering regime will lead to source subtraction
-artifacts in the final sky map.  \citet{2016RaSc...51..927M} measured that from the location of
-LOFAR at 150 MHz, the diffractive scale of the ionosphere is $>5$ km 90\% of the time. This implies
-that at 73 MHz, the diffractive scale is typically $>2$ km, and at 36 MHz, the diffractive scale is
-typically $>1$ km. The maximum baseline length of the OVRO-LWA is $\sim 1.5$ km, and therefore we do
-not generally expect to see strong scattering from the ionosphere.  Furthermore, ionospheric
-conditions during the observing period were mild (see \S\ref{sec:ionosphere-conditions}), but we
-still observe scintillation and refractive-offset events on the timescale of a single integration
-(13 seconds, see Figure~\ref{fig:scintillation}). Consequently we peeled Cyg~A and Cas~A from the
-dataset using a new solution for each integration.}
+\revision{
+    In the strong scattering regime ($r_\text{diff} \lesssim r_\text{f}$), the image of a point
+    source can ``break apart'' into multiple images or speckles \citep{2015MNRAS.453..925V}.
+    Attempting to peel a source in the strong scattering regime will lead to source subtraction
+    artifacts in the final sky map.  \citet{2016RaSc...51..927M} measured that from the location of
+    LOFAR at 150 MHz, the diffractive scale of the ionosphere is $>5$ km 90\% of the time. This
+    implies that at 73 MHz, the diffractive scale is typically $>2$ km, and at 36 MHz, the
+    diffractive scale is typically $>1$ km. These limits are comparable to the Fresnel scale for the
+    OVRO-LWA (ie. $r_\text{diff} > r_\text{f}$), and therefore we do not generally expect to see
+    strong scattering from the ionosphere.  Ionospheric conditions during the observing period were
+    mild (see \S\ref{sec:ionosphere-conditions}). However, we do observe scintillation and
+    refractive-offset events on the timescale of a single integration (13 seconds, see
+    Figure~\ref{fig:scintillation}). Consequently we peeled Cyg~A and Cas~A from the dataset using a
+    new solution for each integration.
+}
 
-\revision{In addition, the largest angular scale of Cas~A is $\sim$8~arcmin, and the largest angular
-scale of Cyg~A is $\sim$2~arcmin. With a $\sim10$~arcmin resolution on its longest baselines at
-73~MHz, the OVRO-LWA marginally resolves both sources. A resolved source model is needed for both
-sources. We fit a self-consistent resolved source model to each source. This is performed by
-minimizing the variance within an aperture located on each source after peeling. By phasing up a
-large number of integrations before imaging (at least 1 hour), it is possible to smear out the
-contribution of the rest of the sky.  We then use a non-linear optimization routine (NLopt Sbplx)
-\citep{nlopt, sbplx} to vary the parameters in a source model until the variance within the aperture
-is minimized. Cyg~A is modeled with 2 Gaussian components, while Cas~A is modeled with 3~Gaussian
-components.  Ultimately, these multi-component models are used to peel Cyg~A and Cas~A, but residual
-errors from this model and from the ionosphere (particularly while these sources are at low
-elevations) contribute residual artifacts that are largely localized to within 1$^\circ$ of each
-source.}
+\revision{
+    In addition, the largest angular scale of Cas~A is $\sim$8~arcmin, and the largest angular scale
+    of Cyg~A is $\sim$2~arcmin. With a $\sim10$~arcmin resolution on its longest baselines at
+    73~MHz, the OVRO-LWA marginally resolves both sources. A resolved source model is needed for
+    both sources. We fit a self-consistent resolved source model to each source. This is performed
+    by minimizing the variance within an aperture located on each source after peeling. By phasing
+    up a large number of integrations before imaging (at least 1 hour), it is possible to smear out
+    the contribution of the rest of the sky.  We then use a non-linear optimization routine (NLopt
+    Sbplx) \citep{nlopt, sbplx} to vary the parameters in a source model until the variance within
+    the aperture is minimized. Cyg~A is modeled with 2 Gaussian components, while Cas~A is modeled
+    with 3~Gaussian components.  Ultimately, these multi-component models are used to peel Cyg~A and
+    Cas~A, but residual errors from this model and from the ionosphere (particularly while these
+    sources are at low elevations) contribute residual artifacts that are largely localized to
+    within 1$^\circ$ of each source.
+}
 
 \subsubsection{Other Bright Sources}
 
@@ -1500,8 +1509,7 @@ leakage measurements with the LWA1.  Cas A is a circumpolar source and spends ab
 every day skirting the horizon where the polarization leakage is large, so by placing the simulated
 source at the location of Cas A, we are engineering a situation where the polarization leakage from
 Stokes-$Q$ into Stokes-$I$ will be large. However, the impact on the unpolarized $m$-mode analysis
-maps is mild, amounting to a 0.5\% error in the flux of the source with no measurable effect on the
-PSF.
+maps is mild, amounting to a 0.5\% error in the flux of the source.
 
 \subsection{Terrestrial Interference and Pickup}\label{sec:rfi}
 
