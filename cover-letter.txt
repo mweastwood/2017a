@@ -1,0 +1,55 @@
+We appreciated the reviewer's helpful comments, particularly the concern about ionospheric
+scintillation resolving to antenna gains.  We interpreted this concern as primarily applicable to
+direction-dependent calibration, which is used during the removal of bright point sources (primarily
+Cyg A and Cas A). The relevant length scales in the ionosphere are the diffractive scale
+(essentially the length over which the ionosphere imparts a 1 radian phase difference) and the
+Fresnel scale. In the usual case where the diffractive scale is much larger than the Fresnel scale,
+you can see phase and amplitude scintillation, but these effects can be absorbed into
+direction-dependent complex gains. However, when the diffractive scale is less than the Fresnel
+scale, you can see a point source break apart into multiple images. This cannot be entirely absorbed
+into direction-dependent complex gains, but the error you make during source removal leads to
+residual artifacts in the vicinity of the source. We added additional text to Section 3.5.1 that
+addresses this possibility.
+
+The second-to-last paragraph in Section 2.1 explains why we restricted ourselves to single channel
+imaging (reproduced below):
+
+    If each element of the matrix is stored as a 64-bit complex floating point number, a single
+    block is 500 MB for the case of single-channel imaging with the OVRO-LWA, which a modern
+    computer can easily store and manipulate in memory.  However, with additional bandwidth these
+    blocks quickly become unwieldy; thus as a first pass, the analysis in this paper is restricted
+    to single-channel imaging.
+
+However, additional text and explicit runtimes have been added to clarify how additional bandwidth
+impacts the amount of processing time necessary to generate the maps presented in this work.
+
+Changes to the text are highlighted with red font and boldface. These changes are listed below.
+
+
+List of changes
+===============
+
+1. The "Owens Valley Radio Observatory Long Wavelength Array" (OVRO-LWA) was incorrectly referred to
+as the "Owens Valley Long Wavelength Array". This has been corrected throughout the article.
+
+2. A URL pointing to where the final sky maps can be downloaded from LAMBDA has been added
+(https://lambda.gsfc.nasa.gov/product/foreground/fg_ovrolwa_radio_maps_info.cfm).
+
+3. In Section 1, the brightness temperature of the galactic synchrotron emission was updated to
+reference a more recent measurement.
+
+3. In Section 2.1, additional text clarifies the use of multiple "N"s and gives some explicit
+examples typical runtime for each step of the analysis. There is also an additional sentence
+mentioning that for a block diagonal matrices, all of the blocks can be manipulated independently.
+
+4. In Section 3.5.1 we added additional text discussing the impact of the ionosphere in the strong
+scattering regime (summarized above).
+
+5. In Section 4, the text incorrectly mentioned estimating the variance with a jackknife estimator.
+We are actually estimating the standard error, and the standard error is reported in Table 1.
+
+6. The original text described a ~45 arcmin rotation that was apparent in comparisons with the LWA1
+Low Frequency Sky Survey. We have discovered and corrected the origin of that rotation, and Section
+4.1.1 has been updated accordingly. Figure 13 has also been updated to provide comparisons with the
+corrected LWA1 maps.
+
